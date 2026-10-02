@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "data:validate": "python scripts/data_pipeline/validate_data.py",
+    "data:publish": "python scripts/data_pipeline/publish_data.py",
+    "prebuild": "npm run data:validate && npm run data:publish",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
