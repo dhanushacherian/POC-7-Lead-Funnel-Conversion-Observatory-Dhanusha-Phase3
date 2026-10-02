@@ -1,0 +1,57 @@
+{
+  "project": "Lead Funnel Conversion Observatory",
+  "phase": "Phase 3",
+  "track": "Track A \u2014 Comparative",
+  "data_version": "phase3-v2",
+  "analytical_question": "How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?",
+  "overall_summary": {
+    "source_leads_analyzed": 30,
+    "total_lead_value": 2023000.0,
+    "average_lead_value": 67433.33333333333,
+    "average_days_in_stage": 13.1,
+    "median_days_in_stage": 10.0
+  },
+  "highest_observed_groups": {
+    "highest_value_stage": {
+      "stage": "Won",
+      "total_lead_value": 949000.0
+    },
+    "highest_value_product": {
+      "product": "Payments",
+      "total_lead_value": 942000.0
+    },
+    "highest_value_source": {
+      "source": "Website",
+      "total_lead_value": 689000.0
+    },
+    "highest_average_age_stage": {
+      "stage": "Lost",
+      "average_days_in_stage": 30.333333333333332
+    }
+  },
+  "interpretation": [
+    "The analysis covers 30 source CRM leads.",
+    "The total observed lead value is 2023000.00.",
+    "The overall average lead value is 67433.33.",
+    "The overall average days in stage is 13.10.",
+    "The stage with the highest total observed lead value is Won.",
+    "The product category with the highest total observed lead value is Payments.",
+    "The acquisition source with the highest total observed lead value is Website.",
+    "The stage with the highest average days in stage is Lost."
+  ],
+  "limitations": [
+    "The analysis uses 30 source CRM leads.",
+    "The dataset is synthetic.",
+    "Results describe the available sample and should not be generalized to a larger CRM population without additional evidence.",
+    "Comparative associations do not establish causation.",
+    "Team and location are not available as separate canonical fields.",
+    "The analysis does not perform predictive modeling."
+  ],
+  "outputs": [
+    "track_a_analysis_dataset.csv",
+    "track_a_stage_comparison.csv",
+    "track_a_product_comparison.csv",
+    "track_a_source_comparison.csv",
+    "track_a_comparative_analysis.json"
+  ]
+}
