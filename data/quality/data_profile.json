@@ -1,0 +1,83 @@
+{
+  "profile_version": "phase3-v1",
+  "source": {
+    "path": "src/data/crmData.ts",
+    "extracted_path": "data/source-sample/source_sample.csv",
+    "record_count": 30,
+    "column_count": 9
+  },
+  "source_columns": [
+    "id",
+    "date",
+    "location",
+    "team",
+    "product",
+    "source",
+    "stage",
+    "daysInStage",
+    "value"
+  ],
+  "date_range": {
+    "minimum": "2026-01-05",
+    "maximum": "2026-03-20"
+  },
+  "categorical_fields": {
+    "location": [
+      "Bangalore",
+      "Mumbai",
+      "Delhi",
+      "Chennai",
+      "Hyderabad"
+    ],
+    "team": [
+      "Enterprise",
+      "SMB",
+      "Growth"
+    ],
+    "product": [
+      "Payments",
+      "Analytics",
+      "Security"
+    ],
+    "source": [
+      "Website",
+      "Referral",
+      "Campaign",
+      "Partner"
+    ],
+    "stage": [
+      "Lead",
+      "Qualified",
+      "Opportunity",
+      "Proposal",
+      "Won",
+      "Lost"
+    ]
+  },
+  "numeric_fields": [
+    "daysInStage",
+    "value"
+  ],
+  "canonical": {
+    "path": "data/canonical/intelligence_data.csv",
+    "record_count": 60,
+    "column_count": 20
+  },
+  "sampling": {
+    "method": "full_retention",
+    "source_records_retained": 30,
+    "source_records_removed": 0,
+    "random_sampling": false,
+    "random_seed": null
+  },
+  "provenance": {
+    "synthetic_status": "not_documented",
+    "requires_confirmation": true
+  },
+  "quality_notes": [
+    "All available Phase 2 source records were retained.",
+    "Canonical transformation creates two records per source lead.",
+    "Currency for the source value field is not documented.",
+    "Synthetic or real-data status is not documented in the Phase 2 repository."
+  ]
+}

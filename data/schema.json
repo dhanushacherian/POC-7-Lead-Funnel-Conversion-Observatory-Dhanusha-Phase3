@@ -1,0 +1,127 @@
+{
+  "schema_name": "phase3_canonical_intelligence_data",
+  "schema_version": "1.0",
+  "description": "Canonical schema for the Phase 3 Lead Funnel Conversion Observatory data package.",
+  "columns": [
+    {
+      "name": "record_id",
+      "type": "string",
+      "required": true,
+      "description": "Stable unique identifier for the canonical record."
+    },
+    {
+      "name": "record_type",
+      "type": "string",
+      "required": true,
+      "description": "Type of record represented by the row."
+    },
+    {
+      "name": "observed_at",
+      "type": "datetime",
+      "required": true,
+      "description": "Observation date/time in ISO 8601 format."
+    },
+    {
+      "name": "entity_id",
+      "type": "string",
+      "required": true,
+      "description": "Primary entity identifier from the source."
+    },
+    {
+      "name": "related_entity_id",
+      "type": "string",
+      "required": false,
+      "description": "Identifier of a related entity when applicable."
+    },
+    {
+      "name": "entity_name",
+      "type": "string",
+      "required": false,
+      "description": "Human-readable entity name when available."
+    },
+    {
+      "name": "category",
+      "type": "string",
+      "required": false,
+      "description": "Standardized high-level category."
+    },
+    {
+      "name": "subcategory",
+      "type": "string",
+      "required": false,
+      "description": "Standardized lower-level category."
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": false,
+      "description": "Current status of the record."
+    },
+    {
+      "name": "stage",
+      "type": "string",
+      "required": false,
+      "description": "Funnel or process stage."
+    },
+    {
+      "name": "metric_name",
+      "type": "string",
+      "required": false,
+      "description": "Name of the numeric or measurable attribute."
+    },
+    {
+      "name": "metric_value",
+      "type": "number",
+      "required": false,
+      "description": "Numeric value associated with metric_name."
+    },
+    {
+      "name": "metric_unit",
+      "type": "string",
+      "required": false,
+      "description": "Unit associated with metric_value."
+    },
+    {
+      "name": "text_value",
+      "type": "string",
+      "required": false,
+      "description": "Textual value when a source attribute is represented as text."
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "required": false,
+      "description": "Latitude when geographic coordinates are available."
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "required": false,
+      "description": "Longitude when geographic coordinates are available."
+    },
+    {
+      "name": "source_name",
+      "type": "string",
+      "required": true,
+      "description": "Name of the source dataset."
+    },
+    {
+      "name": "source_record_id",
+      "type": "string",
+      "required": true,
+      "description": "Original source record identifier."
+    },
+    {
+      "name": "is_synthetic",
+      "type": "boolean",
+      "required": true,
+      "description": "Indicates whether the record is synthetic. Must be confirmed from source provenance."
+    },
+    {
+      "name": "data_version",
+      "type": "string",
+      "required": true,
+      "description": "Version identifier for the canonical data package."
+    }
+  ]
+}

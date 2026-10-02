@@ -1,0 +1,43 @@
+{
+  "manifest_version": "phase3-v1",
+  "package_name": "POC-7 Lead Funnel Conversion Observatory - Phase 3 Canonical Data Package",
+  "source": {
+    "application": "Phase 2 Lead Funnel Conversion Observatory",
+    "source_path": "src/data/crmData.ts",
+    "source_sample": "data/source-sample/source_sample.csv",
+    "source_record_count": 30
+  },
+  "sampling": {
+    "method": "full_retention",
+    "records_retained": 30,
+    "records_removed": 0,
+    "random_sampling": false
+  },
+  "canonical": {
+    "path": "data/canonical/intelligence_data.csv",
+    "record_count": 60,
+    "column_count": 20,
+    "schema_path": "data/schema.json"
+  },
+  "published": {
+    "path": "data/published/intelligence_data.json",
+    "generated_from": "data/canonical/intelligence_data.csv"
+  },
+  "quality": {
+    "data_profile": "data/quality/data_profile.json",
+    "validation_report": "data/quality/validation_report.json"
+  },
+  "pipeline": {
+    "extract": "scripts/data_pipeline/extract_data.py",
+    "sample": "scripts/data_pipeline/sample_data.py",
+    "standardize": "scripts/data_pipeline/standardize_data.py",
+    "validate": "scripts/data_pipeline/validate_data.py",
+    "publish": "scripts/data_pipeline/publish_data.py"
+  },
+  "data_version": "phase3-v1",
+  "provenance": {
+    "synthetic_status": "not_documented",
+    "confirmation_required": true
+  },
+  "status": "PENDING_FINAL_VALIDATION"
+}
