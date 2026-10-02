@@ -42,6 +42,11 @@ CANONICAL_COLUMNS = [
 ]
 
 
+DATA_VERSION = "phase3-v2"
+SOURCE_NAME = "phase2_crmData"
+IS_SYNTHETIC = "true"
+
+
 def create_lead_record(row):
     """Create the canonical lead-value record."""
 
@@ -64,15 +69,15 @@ def create_lead_record(row):
         ),
         "latitude": "",
         "longitude": "",
-        "source_name": "phase2_crmData",
+        "source_name": SOURCE_NAME,
         "source_record_id": row["id"],
-        "is_synthetic": "",
-        "data_version": "phase3-v1",
+        "is_synthetic": IS_SYNTHETIC,
+        "data_version": DATA_VERSION,
     }
 
 
 def create_days_in_stage_record(row):
-    """Create a canonical metric record for days spent in stage."""
+    """Create the canonical metric record for days spent in stage."""
 
     return {
         "record_id": f"{row['id']}_days_in_stage",
@@ -93,10 +98,10 @@ def create_days_in_stage_record(row):
         ),
         "latitude": "",
         "longitude": "",
-        "source_name": "phase2_crmData",
+        "source_name": SOURCE_NAME,
         "source_record_id": row["id"],
-        "is_synthetic": "",
-        "data_version": "phase3-v1",
+        "is_synthetic": IS_SYNTHETIC,
+        "data_version": DATA_VERSION,
     }
 
 
@@ -151,12 +156,23 @@ def main():
     print(
         f"Source records processed: {len(source_rows)}"
     )
+
     print(
         f"Canonical records created: {len(canonical_rows)}"
     )
+
     print(
         f"Canonical columns: {len(CANONICAL_COLUMNS)}"
     )
+
+    print(
+        f"Synthetic flag: {IS_SYNTHETIC}"
+    )
+
+    print(
+        f"Data version: {DATA_VERSION}"
+    )
+
     print(
         f"Output: {OUTPUT_FILE}"
     )

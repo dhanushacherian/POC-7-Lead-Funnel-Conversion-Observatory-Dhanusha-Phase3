@@ -1,0 +1,245 @@
+{
+  "assessment_version": "post2-v1",
+  "source_of_truth": "data\\canonical\\intelligence_data.csv",
+  "result": "PASS",
+  "dataset": {
+    "record_count": 60,
+    "column_count": 20,
+    "file_size_bytes": 10578,
+    "file_size_mb": 0.0101
+  },
+  "completeness": {
+    "record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 60
+    },
+    "record_type": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "observed_at": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "entity_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "related_entity_id": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "entity_name": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "category": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 3
+    },
+    "subcategory": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 4
+    },
+    "status": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "stage": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "metric_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 52
+    },
+    "metric_unit": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "text_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 15
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "longitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "source_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "source_record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "is_synthetic": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "data_version": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    }
+  },
+  "uniqueness": {
+    "total_record_ids": 60,
+    "unique_record_ids": 60,
+    "empty_record_ids": 0,
+    "duplicate_record_ids": 0
+  },
+  "temporal": {
+    "non_null_date_count": 60,
+    "parseable_date_count": 60,
+    "invalid_date_count": 0,
+    "parse_success_rate": 100.0
+  },
+  "numeric": {
+    "longitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "invalid_count": 0
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    }
+  },
+  "coordinates": {
+    "latitude": {
+      "minimum": -90,
+      "maximum": 90,
+      "invalid_count": 0
+    },
+    "longitude": {
+      "minimum": -180,
+      "maximum": 180,
+      "invalid_count": 0
+    }
+  },
+  "metric_units": {
+    "lead_value": [
+      "currency_unspecified"
+    ],
+    "days_in_stage": [
+      "days"
+    ]
+  },
+  "mixed_metric_units": {},
+  "categories": {
+    "category": {
+      "Payments": 24,
+      "Analytics": 18,
+      "Security": 18
+    },
+    "subcategory": {
+      "Website": 22,
+      "Campaign": 14,
+      "Referral": 14,
+      "Partner": 10
+    },
+    "status": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "stage": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "record_type": {
+      "crm_lead": 30,
+      "crm_lead_metric": 30
+    },
+    "metric_name": {
+      "days_in_stage": 30,
+      "lead_value": 30
+    },
+    "metric_unit": {
+      "currency_unspecified": 30,
+      "days": 30
+    }
+  },
+  "synthetic_distribution": {
+    "true": 60
+  },
+  "text": {
+    "non_empty_count": 60,
+    "empty_count": 0,
+    "average_length": 28.9,
+    "maximum_length": 34,
+    "over_500_characters": 0
+  },
+  "source_accuracy_check": {
+    "source_sample_available": true,
+    "source_sample_record_count": 30,
+    "canonical_source_record_count": 30,
+    "all_source_ids_present_in_canonical": true,
+    "source_ids_missing_from_canonical": []
+  },
+  "blocking_issues": [],
+  "warnings": [],
+  "notes": [
+    "Post #2 uses only the approved canonical CSV as the analytical source.",
+    "The source repository does not document whether the CRM records are synthetic.",
+    "Latitude and longitude are empty because the Phase 2 source does not provide coordinates."
+  ]
+}

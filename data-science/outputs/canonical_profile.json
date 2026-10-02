@@ -1,0 +1,443 @@
+{
+  "profile_version": "post2-v1",
+  "source_of_truth": "data\\canonical\\intelligence_data.csv",
+  "dataset_structure": {
+    "record_count": 60,
+    "column_count": 20,
+    "file_size_bytes": 10578,
+    "file_size_mb": 0.0101,
+    "data_versions": [
+      "phase3-v2"
+    ],
+    "source_record_count": 30
+  },
+  "record_type_distribution": {
+    "crm_lead": 30,
+    "crm_lead_metric": 30
+  },
+  "source_distribution": {
+    "phase2_crmData": 60
+  },
+  "synthetic_distribution": {
+    "true": 60
+  },
+  "columns": {
+    "record_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 60,
+      "example_values": [
+        "L001",
+        "L001_days_in_stage",
+        "L002",
+        "L002_days_in_stage",
+        "L003"
+      ],
+      "expected_role": "Unique canonical record identifier"
+    },
+    "record_type": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "crm_lead",
+        "crm_lead_metric"
+      ],
+      "expected_role": "Canonical record type"
+    },
+    "observed_at": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "2026-01-05",
+        "2026-01-08",
+        "2026-01-10",
+        "2026-01-12",
+        "2026-01-15"
+      ],
+      "expected_role": "Observation date or timestamp"
+    },
+    "entity_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "L001",
+        "L002",
+        "L003",
+        "L004",
+        "L005"
+      ],
+      "expected_role": "Primary entity identifier"
+    },
+    "related_entity_id": {
+      "dtype_observed": "string",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Related entity identifier"
+    },
+    "entity_name": {
+      "dtype_observed": "string",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Human-readable entity name"
+    },
+    "category": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 3,
+      "example_values": [
+        "Analytics",
+        "Payments",
+        "Security"
+      ],
+      "expected_role": "Primary category"
+    },
+    "subcategory": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 4,
+      "example_values": [
+        "Campaign",
+        "Partner",
+        "Referral",
+        "Website"
+      ],
+      "expected_role": "Secondary category"
+    },
+    "status": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6,
+      "example_values": [
+        "Lead",
+        "Lost",
+        "Opportunity",
+        "Proposal",
+        "Qualified"
+      ],
+      "expected_role": "Operational status"
+    },
+    "stage": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6,
+      "example_values": [
+        "Lead",
+        "Lost",
+        "Opportunity",
+        "Proposal",
+        "Qualified"
+      ],
+      "expected_role": "Lifecycle or funnel stage"
+    },
+    "metric_name": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "days_in_stage",
+        "lead_value"
+      ],
+      "expected_role": "Metric definition"
+    },
+    "metric_value": {
+      "dtype_observed": "numeric",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 52,
+      "example_values": [
+        "10",
+        "101000",
+        "105000",
+        "11",
+        "110000"
+      ],
+      "expected_role": "Numeric metric value"
+    },
+    "metric_unit": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "currency_unspecified",
+        "days"
+      ],
+      "expected_role": "Metric unit"
+    },
+    "text_value": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 15,
+      "example_values": [
+        "location=Bangalore;team=Enterprise",
+        "location=Bangalore;team=Growth",
+        "location=Bangalore;team=SMB",
+        "location=Chennai;team=Enterprise",
+        "location=Chennai;team=Growth"
+      ],
+      "expected_role": "Contextual text value"
+    },
+    "latitude": {
+      "dtype_observed": "numeric",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Geographic latitude"
+    },
+    "longitude": {
+      "dtype_observed": "numeric",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Geographic longitude"
+    },
+    "source_name": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "phase2_crmData"
+      ],
+      "expected_role": "Source system identifier"
+    },
+    "source_record_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "L001",
+        "L002",
+        "L003",
+        "L004",
+        "L005"
+      ],
+      "expected_role": "Original source record identifier"
+    },
+    "is_synthetic": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "true"
+      ],
+      "expected_role": "Synthetic-data provenance flag"
+    },
+    "data_version": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "phase3-v2"
+      ],
+      "expected_role": "Canonical data version"
+    }
+  },
+  "numerical_coverage": {
+    "latitude": {
+      "non_null_count": 0,
+      "minimum": null,
+      "maximum": null,
+      "mean": null,
+      "median": null,
+      "standard_deviation": null,
+      "invalid_count": 0
+    },
+    "longitude": {
+      "non_null_count": 0,
+      "minimum": null,
+      "maximum": null,
+      "mean": null,
+      "median": null,
+      "standard_deviation": null,
+      "invalid_count": 0
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "minimum": 3.0,
+      "maximum": 132000.0,
+      "mean": 33723.21666666667,
+      "median": 12517.5,
+      "standard_deviation": 41199.326686571425,
+      "invalid_count": 0
+    }
+  },
+  "date_time_coverage": {
+    "non_null_date_count": 60,
+    "parseable_date_count": 60,
+    "parse_success_rate": 100.0,
+    "earliest": "2026-01-05T00:00:00",
+    "latest": "2026-03-20T00:00:00",
+    "unique_dates": 30,
+    "unique_months": 3,
+    "unique_date_values": [
+      "2026-01-05",
+      "2026-01-08",
+      "2026-01-10",
+      "2026-01-12",
+      "2026-01-15",
+      "2026-01-18",
+      "2026-01-20",
+      "2026-01-22",
+      "2026-01-25",
+      "2026-01-27",
+      "2026-02-01",
+      "2026-02-03",
+      "2026-02-05",
+      "2026-02-08",
+      "2026-02-10",
+      "2026-02-12",
+      "2026-02-15",
+      "2026-02-18",
+      "2026-02-20",
+      "2026-02-22",
+      "2026-02-25",
+      "2026-03-01",
+      "2026-03-04",
+      "2026-03-06",
+      "2026-03-08",
+      "2026-03-10",
+      "2026-03-12",
+      "2026-03-15",
+      "2026-03-17",
+      "2026-03-20"
+    ],
+    "unique_month_values": [
+      "2026-01",
+      "2026-02",
+      "2026-03"
+    ],
+    "timezone_consistency_note": "Source dates are date-only values; no timezone is explicitly documented."
+  },
+  "categorical_coverage": {
+    "category": {
+      "Payments": 24,
+      "Analytics": 18,
+      "Security": 18
+    },
+    "subcategory": {
+      "Website": 22,
+      "Campaign": 14,
+      "Referral": 14,
+      "Partner": 10
+    },
+    "status": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "stage": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "metric_name": {
+      "days_in_stage": 30,
+      "lead_value": 30
+    },
+    "metric_unit": {
+      "currency_unspecified": 30,
+      "days": 30
+    },
+    "record_type": {
+      "crm_lead": 30,
+      "crm_lead_metric": 30
+    }
+  },
+  "geographic_coverage": {
+    "valid_latitude_count": 0,
+    "invalid_latitude_count": 0,
+    "valid_longitude_count": 0,
+    "invalid_longitude_count": 0,
+    "latitude_range": null,
+    "longitude_range": null,
+    "coordinate_pair_count": 0
+  },
+  "text_coverage": {
+    "non_null_count": 60,
+    "empty_count": 0,
+    "average_length": 28.9,
+    "maximum_length": 34,
+    "possible_truncation_count": 0
+  },
+  "observations": [
+    "The canonical dataset contains 60 records across 20 columns.",
+    "The record-type distribution contains {'crm_lead': 30, 'crm_lead_metric': 30}.",
+    "The dataset spans 2026-01-05T00:00:00 to 2026-03-20T00:00:00.",
+    "Latitude and longitude are blank for the available canonical records because the Phase 2 source does not provide coordinate data.",
+    "Synthetic-data status is undocumented in the available Phase 2 repository."
+  ],
+  "uniqueness": {
+    "record_id_count": 60,
+    "unique_record_id_count": 60,
+    "duplicate_record_id_count": 0,
+    "empty_record_id_count": 0,
+    "unique_entity_id_count": 30,
+    "unique_related_entity_id_count": 0
+  },
+  "metric_unit_consistency": {
+    "lead_value": [
+      "currency_unspecified"
+    ],
+    "days_in_stage": [
+      "days"
+    ]
+  },
+  "provenance": {
+    "synthetic_record_count": 60,
+    "non_synthetic_record_count": 0,
+    "undocumented_or_missing_provenance_count": 0,
+    "source_names": [
+      "phase2_crmData"
+    ],
+    "provenance_note": "The Phase 2 repository does not document whether the CRM records are synthetic, anonymized, or derived from real operational data."
+  }
+}

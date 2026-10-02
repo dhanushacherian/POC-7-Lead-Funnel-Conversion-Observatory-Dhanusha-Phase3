@@ -18,8 +18,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L001",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L001_days_in_stage",
@@ -40,8 +40,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L001",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L002",
@@ -62,8 +62,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L002",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L002_days_in_stage",
@@ -84,8 +84,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L002",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L003",
@@ -106,8 +106,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L003",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L003_days_in_stage",
@@ -128,8 +128,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L003",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L004",
@@ -150,8 +150,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L004",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L004_days_in_stage",
@@ -172,8 +172,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L004",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L005",
@@ -194,8 +194,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L005",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L005_days_in_stage",
@@ -216,8 +216,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L005",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L006",
@@ -238,8 +238,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L006",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L006_days_in_stage",
@@ -260,8 +260,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L006",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L007",
@@ -282,8 +282,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L007",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L007_days_in_stage",
@@ -304,8 +304,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L007",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L008",
@@ -326,8 +326,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L008",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L008_days_in_stage",
@@ -348,8 +348,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L008",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L009",
@@ -370,8 +370,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L009",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L009_days_in_stage",
@@ -392,8 +392,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L009",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L010",
@@ -414,8 +414,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L010",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L010_days_in_stage",
@@ -436,8 +436,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L010",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L011",
@@ -458,8 +458,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L011",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L011_days_in_stage",
@@ -480,8 +480,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L011",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L012",
@@ -502,8 +502,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L012",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L012_days_in_stage",
@@ -524,8 +524,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L012",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L013",
@@ -546,8 +546,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L013",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L013_days_in_stage",
@@ -568,8 +568,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L013",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L014",
@@ -590,8 +590,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L014",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L014_days_in_stage",
@@ -612,8 +612,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L014",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L015",
@@ -634,8 +634,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L015",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L015_days_in_stage",
@@ -656,8 +656,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L015",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L016",
@@ -678,8 +678,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L016",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L016_days_in_stage",
@@ -700,8 +700,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L016",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L017",
@@ -722,8 +722,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L017",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L017_days_in_stage",
@@ -744,8 +744,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L017",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L018",
@@ -766,8 +766,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L018",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L018_days_in_stage",
@@ -788,8 +788,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L018",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L019",
@@ -810,8 +810,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L019",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L019_days_in_stage",
@@ -832,8 +832,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L019",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L020",
@@ -854,8 +854,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L020",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L020_days_in_stage",
@@ -876,8 +876,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L020",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L021",
@@ -898,8 +898,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L021",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L021_days_in_stage",
@@ -920,8 +920,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L021",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L022",
@@ -942,8 +942,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L022",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L022_days_in_stage",
@@ -964,8 +964,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L022",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L023",
@@ -986,8 +986,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L023",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L023_days_in_stage",
@@ -1008,8 +1008,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L023",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L024",
@@ -1030,8 +1030,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L024",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L024_days_in_stage",
@@ -1052,8 +1052,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L024",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L025",
@@ -1074,8 +1074,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L025",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L025_days_in_stage",
@@ -1096,8 +1096,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L025",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L026",
@@ -1118,8 +1118,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L026",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L026_days_in_stage",
@@ -1140,8 +1140,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L026",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L027",
@@ -1162,8 +1162,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L027",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L027_days_in_stage",
@@ -1184,8 +1184,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L027",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L028",
@@ -1206,8 +1206,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L028",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L028_days_in_stage",
@@ -1228,8 +1228,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L028",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L029",
@@ -1250,8 +1250,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L029",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L029_days_in_stage",
@@ -1272,8 +1272,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L029",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L030",
@@ -1294,8 +1294,8 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L030",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   },
   {
     "record_id": "L030_days_in_stage",
@@ -1316,7 +1316,7 @@
     "longitude": "",
     "source_name": "phase2_crmData",
     "source_record_id": "L030",
-    "is_synthetic": "",
-    "data_version": "phase3-v1"
+    "is_synthetic": "true",
+    "data_version": "phase3-v2"
   }
 ]

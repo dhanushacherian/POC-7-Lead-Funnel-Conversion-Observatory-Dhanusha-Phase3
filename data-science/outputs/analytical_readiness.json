@@ -1,0 +1,89 @@
+{
+  "project": "Lead Funnel Conversion Observatory",
+  "phase": "Phase 3",
+  "data_version": "phase3-v2",
+  "source_name": "phase2_crmData",
+  "canonical_records": 60,
+  "canonical_columns": 20,
+  "source_leads": 30,
+  "structural_validation": {
+    "status": "PASS",
+    "missing_columns": []
+  },
+  "metadata_validation": {
+    "status": "PASS",
+    "synthetic_values": [
+      "true"
+    ],
+    "data_versions": [
+      "phase3-v2"
+    ]
+  },
+  "measure_validation": {
+    "status": "PASS",
+    "lead_value_records": 30,
+    "lead_value_numeric": true,
+    "days_in_stage_records": 30,
+    "days_in_stage_numeric": true
+  },
+  "coverage_validation": {
+    "status": "PASS",
+    "source_leads": 30
+  },
+  "primary_archetype": "Process Lifecycle",
+  "secondary_archetype": "Entity / Snapshot",
+  "archetype_evidence": [
+    "CRM funnel stages are explicitly represented.",
+    "Days in stage provides process-ageing information.",
+    "Won and Lost provide outcome stages.",
+    "Product and acquisition-source categories are preserved.",
+    "Dates provide temporal context but do not establish repeated longitudinal measurements."
+  ],
+  "tracks": {
+    "Track A \u2014 Comparative": "SUPPORTED",
+    "Track B \u2014 Trend": "CONDITIONAL",
+    "Track C \u2014 Risk & Priority": "CONDITIONAL",
+    "Track D \u2014 Anomaly": "CONDITIONAL",
+    "Track E \u2014 Segmentation": "SUPPORTED",
+    "Track F \u2014 Predictive": "NOT SUPPORTED",
+    "Track G \u2014 Simulation": "NOT SUPPORTED",
+    "Track H \u2014 Text & Theme": "NOT SUPPORTED"
+  },
+  "primary_track": "Track A \u2014 Comparative",
+  "optional_supporting_track": "Track C \u2014 Risk & Priority",
+  "primary_analytical_question": "How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?",
+  "decision_use": "Operational review of the existing lead funnel by identifying where lead value and stage ageing are concentrated across available CRM groups.",
+  "available_dimensions": {
+    "stages": [
+      "Lead",
+      "Lost",
+      "Opportunity",
+      "Proposal",
+      "Qualified",
+      "Won"
+    ],
+    "products": [
+      "Analytics",
+      "Payments",
+      "Security"
+    ],
+    "sources": [
+      "Campaign",
+      "Partner",
+      "Referral",
+      "Website"
+    ]
+  },
+  "limitations": [
+    "The source dataset contains 30 CRM leads.",
+    "The dataset is synthetic.",
+    "The canonical dataset contains 60 standardized analytical records derived from the 30 source leads.",
+    "Dates do not establish repeated longitudinal measurements.",
+    "The canonical schema does not preserve team and location as separate canonical fields.",
+    "No geographic coordinates are available.",
+    "No substantial free-text field is available for text/theme analysis.",
+    "No scenario parameters are available for simulation analysis.",
+    "The sample should not be interpreted as representative of a larger real-world CRM population without additional evidence."
+  ],
+  "final_result": "DATA READY FOR ANALYTICAL TRACK DEVELOPMENT"
+}

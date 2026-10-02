@@ -4,7 +4,5 @@
   "canonical_record_count": 60,
   "canonical_column_count": 20,
   "errors": [],
-  "warnings": [
-    "is_synthetic is not fully populated with confirmed boolean provenance values."
-  ]
+  "warnings": []
 }

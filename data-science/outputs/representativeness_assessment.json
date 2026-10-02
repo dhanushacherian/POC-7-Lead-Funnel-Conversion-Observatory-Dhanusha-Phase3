@@ -1,0 +1,272 @@
+{
+  "project": "POC-7 Lead Funnel Conversion Observatory",
+  "canonical_data_version": [
+    "phase3-v2"
+  ],
+  "source_name": [
+    "phase2_crmData"
+  ],
+  "contains_synthetic_data": [
+    "True"
+  ],
+  "source_sample": {
+    "record_count": 30,
+    "column_count": 9,
+    "file_size_bytes": 2061
+  },
+  "canonical_dataset": {
+    "record_count": 60,
+    "column_count": 20,
+    "lead_record_count": 30,
+    "file_size_bytes": 10578
+  },
+  "sampling_information": {
+    "is_sampled": null,
+    "sampling_method": null,
+    "random_seed": null,
+    "original_record_count": null,
+    "sample_record_count": null
+  },
+  "identity_assessment": {
+    "source_unique_ids": 30,
+    "canonical_unique_source_ids": 30,
+    "missing_source_ids": [],
+    "unexpected_canonical_ids": [],
+    "all_source_ids_preserved": true
+  },
+  "coverage_assessment": {
+    "products": {
+      "source_distribution": {
+        "Payments": 12,
+        "Analytics": 9,
+        "Security": 9
+      },
+      "canonical_distribution": {
+        "Payments": 12,
+        "Analytics": 9,
+        "Security": 9
+      },
+      "comparison": {
+        "source_values": [
+          "Analytics",
+          "Payments",
+          "Security"
+        ],
+        "canonical_values": [
+          "Analytics",
+          "Payments",
+          "Security"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
+    },
+    "acquisition_sources": {
+      "source_distribution": {
+        "Website": 11,
+        "Referral": 7,
+        "Campaign": 7,
+        "Partner": 5
+      },
+      "canonical_distribution": {
+        "Website": 11,
+        "Referral": 7,
+        "Campaign": 7,
+        "Partner": 5
+      },
+      "comparison": {
+        "source_values": [
+          "Campaign",
+          "Partner",
+          "Referral",
+          "Website"
+        ],
+        "canonical_values": [
+          "Campaign",
+          "Partner",
+          "Referral",
+          "Website"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
+    },
+    "stages": {
+      "source": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "canonical": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "all_source_stages_preserved": true
+    },
+    "statuses": {
+      "source_distribution": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "canonical_distribution": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "comparison": {
+        "source_values": [
+          "Lead",
+          "Lost",
+          "Opportunity",
+          "Proposal",
+          "Qualified",
+          "Won"
+        ],
+        "canonical_values": [
+          "Lead",
+          "Lost",
+          "Opportunity",
+          "Proposal",
+          "Qualified",
+          "Won"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
+    },
+    "locations": {
+      "source_distribution": {
+        "Bangalore": 7,
+        "Mumbai": 6,
+        "Delhi": 6,
+        "Chennai": 6,
+        "Hyderabad": 5
+      },
+      "canonical_distribution": {
+        "Bangalore": 7,
+        "Mumbai": 6,
+        "Delhi": 6,
+        "Chennai": 6,
+        "Hyderabad": 5
+      },
+      "comparison": {
+        "source_values": [
+          "Bangalore",
+          "Chennai",
+          "Delhi",
+          "Hyderabad",
+          "Mumbai"
+        ],
+        "canonical_values": [
+          "Bangalore",
+          "Chennai",
+          "Delhi",
+          "Hyderabad",
+          "Mumbai"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
+    },
+    "teams": {
+      "source_distribution": {
+        "Enterprise": 12,
+        "SMB": 9,
+        "Growth": 9
+      },
+      "canonical_distribution": {
+        "Enterprise": 12,
+        "SMB": 9,
+        "Growth": 9
+      },
+      "comparison": {
+        "source_values": [
+          "Enterprise",
+          "Growth",
+          "SMB"
+        ],
+        "canonical_values": [
+          "Enterprise",
+          "Growth",
+          "SMB"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
+    },
+    "time": {
+      "source_record_count": 30,
+      "canonical_lead_record_count": 30,
+      "source_parseable_dates": 30,
+      "canonical_parseable_dates": 30,
+      "source_earliest": "2026-01-05",
+      "source_latest": "2026-03-20",
+      "canonical_earliest": "2026-01-05",
+      "canonical_latest": "2026-03-20",
+      "source_unique_dates": 30,
+      "canonical_unique_dates": 30,
+      "source_unique_months": 3,
+      "canonical_unique_months": 3
+    }
+  },
+  "numerical_coverage": {
+    "lead_value": {
+      "source_count": 30,
+      "canonical_count": 30,
+      "source_min": 25000.0,
+      "source_max": 132000.0,
+      "canonical_min": 25000.0,
+      "canonical_max": 132000.0
+    },
+    "days_in_stage": {
+      "source_count": 30,
+      "canonical_count": 0,
+      "source_min": 3.0,
+      "source_max": 35.0,
+      "canonical_min": null,
+      "canonical_max": null
+    }
+  },
+  "rare_records": {
+    "rare_stage_values": [],
+    "rare_stage_record_count": 0,
+    "note": "Rare lifecycle stages were retained when present in the source sample."
+  },
+  "not_applicable_dimensions": {
+    "severity": "No dedicated severity field exists in the supplied source data.",
+    "scenario": "No scenario parameter or scenario class exists in the supplied source data.",
+    "network": "The supplied CRM records do not define a node/edge network structure.",
+    "text": "text_value contains structured location and team information rather than decision-relevant free text.",
+    "geographic_coordinates": "The source data does not provide latitude or longitude."
+  },
+  "core_coverage_checks": {
+    "identity_preserved": true,
+    "products_preserved": true,
+    "channels_preserved": true,
+    "stages_preserved": true,
+    "statuses_preserved": true,
+    "locations_preserved": true,
+    "teams_preserved": true,
+    "date_range_preserved": true
+  },
+  "underrepresented_areas": [],
+  "missing_case_study_behaviour": [],
+  "sampling_bias": "The representativeness assessment confirms preservation of the supplied 30-record source sample. It does not establish representativeness of a larger CRM population because no larger source population was supplied.",
+  "impact_on_future_analysis": "Analytical work should use the canonical dataset as the single source of truth. Conclusions should be interpreted within the observed sample and available coverage.",
+  "required_correction": null,
+  "representativeness_result": "PASS"
+}
