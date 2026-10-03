@@ -1,5 +1,5 @@
 {
-  "validation_version": "phase3-v1",
+  "validation_version": "phase3-v2",
   "status": "PASSED",
   "canonical_record_count": 60,
   "canonical_column_count": 20,

@@ -115,15 +115,17 @@ Every canonical record contains:
 
 - `source_name = phase2_crmData`
 - `source_record_id = original Phase 2 lead ID`
-- `data_version = phase3-v1`
+- `data_version = phase3-v2`
 
 ## 8. Synthetic Data Status
 
-The Phase 2 repository does not document whether the CRM records are synthetic, anonymized, or derived from real operational data.
+The Phase 2 repository documents the CRM dataset as synthetic data.
 
-Therefore, `is_synthetic` is not assigned a value at this stage.
+The Phase 3 canonical records therefore carry:
 
-This requires confirmation before final validation and package approval.
+`is_synthetic = true`
+
+The package provenance is confirmed and does not require further confirmation.
 
 ## 9. Transformation Summary
 

@@ -1,5 +1,5 @@
 {
-  "profile_version": "phase3-v1",
+  "profile_version": "phase3-v2",
   "source": {
     "path": "src/data/crmData.ts",
     "extracted_path": "data/source-sample/source_sample.csv",
@@ -71,13 +71,13 @@
     "random_seed": null
   },
   "provenance": {
-    "synthetic_status": "not_documented",
-    "requires_confirmation": true
+    "synthetic_status": "confirmed",
+    "requires_confirmation": false
   },
   "quality_notes": [
     "All available Phase 2 source records were retained.",
     "Canonical transformation creates two records per source lead.",
     "Currency for the source value field is not documented.",
-    "Synthetic or real-data status is not documented in the Phase 2 repository."
+    "The Phase 2 repository documents the CRM dataset as synthetic data."
   ]
 }

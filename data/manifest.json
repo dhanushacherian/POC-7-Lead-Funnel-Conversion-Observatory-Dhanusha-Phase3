@@ -1,5 +1,5 @@
 {
-  "manifest_version": "phase3-v1",
+  "manifest_version": "phase3-v2",
   "package_name": "POC-7 Lead Funnel Conversion Observatory - Phase 3 Canonical Data Package",
   "source": {
     "application": "Phase 2 Lead Funnel Conversion Observatory",
@@ -34,10 +34,10 @@
     "validate": "scripts/data_pipeline/validate_data.py",
     "publish": "scripts/data_pipeline/publish_data.py"
   },
-  "data_version": "phase3-v1",
+  "data_version": "phase3-v2",
   "provenance": {
-    "synthetic_status": "not_documented",
-    "confirmation_required": true
+    "synthetic_status": "confirmed",
+    "confirmation_required": false
   },
-  "status": "PENDING_FINAL_VALIDATION"
+  "status": "VALIDATED"
 }

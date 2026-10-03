@@ -58,9 +58,13 @@ def validate_date(value):
         return
 
     try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
+        datetime.fromisoformat(
+            value.replace("Z", "+00:00")
+        )
     except ValueError:
-        fail(f"Invalid observed_at value: {value}")
+        fail(
+            f"Invalid observed_at value: {value}"
+        )
 
 
 def validate_numeric(value, column_name):
@@ -96,11 +100,17 @@ def main():
     for file_path in required_files:
         if not file_path.exists():
             errors.append(
-                f"Missing required file: {file_path.relative_to(PROJECT_ROOT)}"
+                f"Missing required file: "
+                f"{file_path.relative_to(PROJECT_ROOT)}"
             )
 
     if errors:
-        write_report(errors, warnings, 0, 0)
+        write_report(
+            errors,
+            warnings,
+            0,
+            0,
+        )
         fail("\n".join(errors))
 
     with CANONICAL_FILE.open(
@@ -115,7 +125,8 @@ def main():
 
         if actual_columns != EXPECTED_COLUMNS:
             errors.append(
-                "Canonical column order does not match the required schema."
+                "Canonical column order does not match "
+                "the required schema."
             )
 
         rows = list(reader)
@@ -137,7 +148,10 @@ def main():
 
     for index, row in enumerate(rows, start=2):
 
-        record_id = row.get("record_id", "")
+        record_id = row.get(
+            "record_id",
+            ""
+        )
 
         if not record_id:
             errors.append(
@@ -146,32 +160,53 @@ def main():
         else:
             record_ids.append(record_id)
 
-        validate_date(row.get("observed_at", ""))
+        validate_date(
+            row.get(
+                "observed_at",
+                ""
+            )
+        )
 
         for column_name in NUMERIC_COLUMNS:
             validate_numeric(
-                row.get(column_name, ""),
+                row.get(
+                    column_name,
+                    ""
+                ),
                 column_name,
             )
 
         validate_boolean(
-            row.get("is_synthetic", "")
+            row.get(
+                "is_synthetic",
+                ""
+            )
         )
 
-        text_value = row.get("text_value", "")
+        text_value = row.get(
+            "text_value",
+            ""
+        )
 
         if len(text_value) > MAX_TEXT_LENGTH:
             errors.append(
-                f"text_value exceeds {MAX_TEXT_LENGTH} characters "
+                f"text_value exceeds "
+                f"{MAX_TEXT_LENGTH} characters "
                 f"at CSV row {index}"
             )
 
-        if not row.get("source_name", ""):
+        if not row.get(
+            "source_name",
+            ""
+        ):
             errors.append(
                 f"Missing source_name at CSV row {index}"
             )
 
-        if not row.get("data_version", ""):
+        if not row.get(
+            "data_version",
+            ""
+        ):
             errors.append(
                 f"Missing data_version at CSV row {index}"
             )
@@ -206,7 +241,11 @@ def main():
 
         manifest = json.load(file)
 
-    manifest_count = manifest["canonical"]["record_count"]
+    manifest_count = manifest[
+        "canonical"
+    ][
+        "record_count"
+    ]
 
     if manifest_count != row_count:
         errors.append(
@@ -214,7 +253,11 @@ def main():
             f"the CSV: {manifest_count} != {row_count}"
         )
 
-    manifest_columns = manifest["canonical"]["column_count"]
+    manifest_columns = manifest[
+        "canonical"
+    ][
+        "column_count"
+    ]
 
     if manifest_columns != column_count:
         errors.append(
@@ -222,18 +265,26 @@ def main():
             f"the CSV: {manifest_columns} != {column_count}"
         )
 
-    if not manifest.get("data_version"):
+    if not manifest.get(
+        "data_version"
+    ):
         errors.append(
             "Manifest data_version is missing."
         )
 
     if not all(
-        row.get("is_synthetic", "") in {"true", "false"}
+        row.get(
+            "is_synthetic",
+            ""
+        ) in {
+            "true",
+            "false"
+        }
         for row in rows
     ):
         warnings.append(
-            "is_synthetic is not fully populated with confirmed "
-            "boolean provenance values."
+            "is_synthetic is not fully populated with "
+            "confirmed boolean provenance values."
         )
 
     write_report(
@@ -245,21 +296,37 @@ def main():
 
     if errors:
         print("VALIDATION FAILED")
+
         for error in errors:
-            print(f"- {error}")
+            print(
+                f"- {error}"
+            )
+
         raise SystemExit(1)
 
     print("VALIDATION PASSED")
-    print(f"Canonical records: {row_count}")
-    print(f"Canonical columns: {column_count}")
+    print(
+        f"Canonical records: {row_count}"
+    )
+    print(
+        f"Canonical columns: {column_count}"
+    )
 
     if warnings:
         print("Warnings:")
+
         for warning in warnings:
-            print(f"- {warning}")
+            print(
+                f"- {warning}"
+            )
 
 
-def write_report(errors, warnings, row_count, column_count):
+def write_report(
+    errors,
+    warnings,
+    row_count,
+    column_count,
+):
 
     REPORT_FILE.parent.mkdir(
         parents=True,
@@ -267,8 +334,12 @@ def write_report(errors, warnings, row_count, column_count):
     )
 
     report = {
-        "validation_version": "phase3-v1",
-        "status": "PASSED" if not errors else "FAILED",
+        "validation_version": "phase3-v2",
+        "status": (
+            "PASSED"
+            if not errors
+            else "FAILED"
+        ),
         "canonical_record_count": row_count,
         "canonical_column_count": column_count,
         "errors": errors,

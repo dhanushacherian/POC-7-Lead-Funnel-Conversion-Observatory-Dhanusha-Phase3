@@ -276,15 +276,6 @@
     }
   },
   "numerical_coverage": {
-    "latitude": {
-      "non_null_count": 0,
-      "minimum": null,
-      "maximum": null,
-      "mean": null,
-      "median": null,
-      "standard_deviation": null,
-      "invalid_count": 0
-    },
     "longitude": {
       "non_null_count": 0,
       "minimum": null,
@@ -301,6 +292,15 @@
       "mean": 33723.21666666667,
       "median": 12517.5,
       "standard_deviation": 41199.326686571425,
+      "invalid_count": 0
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "minimum": null,
+      "maximum": null,
+      "mean": null,
+      "median": null,
+      "standard_deviation": null,
       "invalid_count": 0
     }
   },
