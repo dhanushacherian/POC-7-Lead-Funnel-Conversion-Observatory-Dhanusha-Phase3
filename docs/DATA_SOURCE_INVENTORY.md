@@ -13,10 +13,10 @@
 | Raw source format | TypeScript object array |
 | Phase 3 target format | CSV canonical data package |
 | Update pattern | Static data; no automated update mechanism documented |
-| Data provenance | Not documented in the repository |
-| Synthetic / real status | Not documented in the repository; requires confirmation |
+| Data provenance | Synthetic dataset documented in the Phase 2 repository |
+| Synthetic / real status | Confirmed synthetic |
 | Sensitivity | Not documented in the repository; requires confirmation |
-| Phase 3 decision | Use as the project-provided source dataset, subject to provenance and sensitivity confirmation |
+| Phase 3 decision | Use as the project-provided synthetic source dataset; sensitivity classification remains undocumented |
 
 ## 2. Current Source Structure
 
@@ -102,11 +102,13 @@ The source contains two numeric measures:
 
 ## 6. Data Provenance and Sensitivity Note
 
-The repository does not currently document whether the CRM records are synthetic, anonymized, or derived from a real operational source.
+The Phase 2 repository documents the CRM dataset as synthetic data.
 
-Therefore, Phase 3 does **not** assume a provenance classification that is not supported by the repository.
+Therefore, Phase 3 records use the confirmed synthetic-data classification:
 
-Before final canonical-package approval, provenance and sensitivity should be confirmed.
+`is_synthetic = true`
+
+The sensitivity classification is not documented in the repository and remains a separate item requiring confirmation if needed.
 
 ## 7. Phase 3 Data Foundation Decision
 
@@ -117,6 +119,7 @@ The Phase 2 static CRM dataset is suitable as the starting source for the Phase 
 - Structured as individual records
 - Already used by the existing Phase 2 application
 - Available without dependence on a live external API
+- Documented as synthetic data
 
 The dataset will be extracted from the existing Phase 2 source and transformed into the required Phase 3 canonical schema.
 
@@ -131,10 +134,9 @@ After approval, future Phase 3 analysis will use the canonical dataset as the si
 The current source has the following limitations:
 
 1. The dataset contains only 30 records.
-2. Data provenance is not documented in the repository.
-3. Synthetic/real status is not documented.
+2. The source is embedded directly in application code rather than maintained as a standalone data file.
+3. No live data update mechanism is documented.
 4. Data sensitivity classification is not documented.
-5. The source is embedded directly in application code rather than maintained as a standalone data file.
-6. No live data update mechanism is documented.
+5. The source value field does not document a specific currency.
 
-These limitations will be recorded and addressed where applicable during the Phase 3 canonical data preparation and validation process.
+The synthetic-data status is confirmed from the Phase 2 repository and is represented in the Phase 3 canonical records through `is_synthetic = true`.

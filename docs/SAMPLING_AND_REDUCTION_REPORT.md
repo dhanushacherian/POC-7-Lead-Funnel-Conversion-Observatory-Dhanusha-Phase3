@@ -20,6 +20,7 @@ The Phase 2 source contains:
 - Source fields: 9
 - Source format: Static TypeScript application data
 - Source application: Phase 2 Lead Funnel Conversion Observatory
+- Synthetic-data status: Confirmed synthetic
 
 The source fields are:
 
@@ -132,19 +133,17 @@ The source dataset is below the Phase 3 default limits for:
 - Number of columns
 - Controlled local data-package size
 
-The exact generated file sizes will be checked during final package validation.
+The exact generated file sizes are checked during package validation.
 
-## 11. Provenance Limitation
+## 11. Provenance
 
-The Phase 2 repository does not document whether the CRM records are:
+The Phase 2 repository documents the CRM dataset as synthetic data.
 
-- Synthetic
-- Anonymized
-- Derived from real operational data
+Therefore, the Phase 3 canonical records carry:
 
-Therefore, the synthetic-data status has not been inferred.
+`is_synthetic = true`
 
-This provenance point requires confirmation before final package approval.
+The synthetic-data status is confirmed and does not require further provenance confirmation.
 
 ## 12. Sampling Status
 
