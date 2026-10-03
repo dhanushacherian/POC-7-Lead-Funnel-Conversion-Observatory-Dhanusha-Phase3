@@ -556,281 +556,6 @@ data/
 }
 </file>
 
-<file path="data-science/outputs/representativeness_assessment.json">
-{
-  "project": "POC-7 Lead Funnel Conversion Observatory",
-  "canonical_data_version": [
-    "phase3-v2"
-  ],
-  "source_name": [
-    "phase2_crmData"
-  ],
-  "contains_synthetic_data": [
-    "True"
-  ],
-  "source_sample": {
-    "record_count": 30,
-    "column_count": 9,
-    "file_size_bytes": 2061
-  },
-  "canonical_dataset": {
-    "record_count": 60,
-    "column_count": 20,
-    "lead_record_count": 30,
-    "file_size_bytes": 10578
-  },
-  "sampling_information": {
-    "is_sampled": null,
-    "sampling_method": null,
-    "random_seed": null,
-    "original_record_count": null,
-    "sample_record_count": null
-  },
-  "identity_assessment": {
-    "source_unique_ids": 30,
-    "canonical_unique_source_ids": 30,
-    "missing_source_ids": [],
-    "unexpected_canonical_ids": [],
-    "all_source_ids_preserved": true
-  },
-  "coverage_assessment": {
-    "products": {
-      "source_distribution": {
-        "Payments": 12,
-        "Analytics": 9,
-        "Security": 9
-      },
-      "canonical_distribution": {
-        "Payments": 12,
-        "Analytics": 9,
-        "Security": 9
-      },
-      "comparison": {
-        "source_values": [
-          "Analytics",
-          "Payments",
-          "Security"
-        ],
-        "canonical_values": [
-          "Analytics",
-          "Payments",
-          "Security"
-        ],
-        "missing_from_canonical": [],
-        "unexpected_in_canonical": []
-      }
-    },
-    "acquisition_sources": {
-      "source_distribution": {
-        "Website": 11,
-        "Referral": 7,
-        "Campaign": 7,
-        "Partner": 5
-      },
-      "canonical_distribution": {
-        "Website": 11,
-        "Referral": 7,
-        "Campaign": 7,
-        "Partner": 5
-      },
-      "comparison": {
-        "source_values": [
-          "Campaign",
-          "Partner",
-          "Referral",
-          "Website"
-        ],
-        "canonical_values": [
-          "Campaign",
-          "Partner",
-          "Referral",
-          "Website"
-        ],
-        "missing_from_canonical": [],
-        "unexpected_in_canonical": []
-      }
-    },
-    "stages": {
-      "source": {
-        "Won": 10,
-        "Opportunity": 5,
-        "Qualified": 5,
-        "Proposal": 4,
-        "Lead": 3,
-        "Lost": 3
-      },
-      "canonical": {
-        "Won": 10,
-        "Opportunity": 5,
-        "Qualified": 5,
-        "Proposal": 4,
-        "Lead": 3,
-        "Lost": 3
-      },
-      "all_source_stages_preserved": true
-    },
-    "statuses": {
-      "source_distribution": {
-        "Won": 10,
-        "Opportunity": 5,
-        "Qualified": 5,
-        "Proposal": 4,
-        "Lead": 3,
-        "Lost": 3
-      },
-      "canonical_distribution": {
-        "Won": 10,
-        "Opportunity": 5,
-        "Qualified": 5,
-        "Proposal": 4,
-        "Lead": 3,
-        "Lost": 3
-      },
-      "comparison": {
-        "source_values": [
-          "Lead",
-          "Lost",
-          "Opportunity",
-          "Proposal",
-          "Qualified",
-          "Won"
-        ],
-        "canonical_values": [
-          "Lead",
-          "Lost",
-          "Opportunity",
-          "Proposal",
-          "Qualified",
-          "Won"
-        ],
-        "missing_from_canonical": [],
-        "unexpected_in_canonical": []
-      }
-    },
-    "locations": {
-      "source_distribution": {
-        "Bangalore": 7,
-        "Mumbai": 6,
-        "Delhi": 6,
-        "Chennai": 6,
-        "Hyderabad": 5
-      },
-      "canonical_distribution": {
-        "Bangalore": 7,
-        "Mumbai": 6,
-        "Delhi": 6,
-        "Chennai": 6,
-        "Hyderabad": 5
-      },
-      "comparison": {
-        "source_values": [
-          "Bangalore",
-          "Chennai",
-          "Delhi",
-          "Hyderabad",
-          "Mumbai"
-        ],
-        "canonical_values": [
-          "Bangalore",
-          "Chennai",
-          "Delhi",
-          "Hyderabad",
-          "Mumbai"
-        ],
-        "missing_from_canonical": [],
-        "unexpected_in_canonical": []
-      }
-    },
-    "teams": {
-      "source_distribution": {
-        "Enterprise": 12,
-        "SMB": 9,
-        "Growth": 9
-      },
-      "canonical_distribution": {
-        "Enterprise": 12,
-        "SMB": 9,
-        "Growth": 9
-      },
-      "comparison": {
-        "source_values": [
-          "Enterprise",
-          "Growth",
-          "SMB"
-        ],
-        "canonical_values": [
-          "Enterprise",
-          "Growth",
-          "SMB"
-        ],
-        "missing_from_canonical": [],
-        "unexpected_in_canonical": []
-      }
-    },
-    "time": {
-      "source_record_count": 30,
-      "canonical_lead_record_count": 30,
-      "source_parseable_dates": 30,
-      "canonical_parseable_dates": 30,
-      "source_earliest": "2026-01-05",
-      "source_latest": "2026-03-20",
-      "canonical_earliest": "2026-01-05",
-      "canonical_latest": "2026-03-20",
-      "source_unique_dates": 30,
-      "canonical_unique_dates": 30,
-      "source_unique_months": 3,
-      "canonical_unique_months": 3
-    }
-  },
-  "numerical_coverage": {
-    "lead_value": {
-      "source_count": 30,
-      "canonical_count": 30,
-      "source_min": 25000.0,
-      "source_max": 132000.0,
-      "canonical_min": 25000.0,
-      "canonical_max": 132000.0
-    },
-    "days_in_stage": {
-      "source_count": 30,
-      "canonical_count": 0,
-      "source_min": 3.0,
-      "source_max": 35.0,
-      "canonical_min": null,
-      "canonical_max": null
-    }
-  },
-  "rare_records": {
-    "rare_stage_values": [],
-    "rare_stage_record_count": 0,
-    "note": "Rare lifecycle stages were retained when present in the source sample."
-  },
-  "not_applicable_dimensions": {
-    "severity": "No dedicated severity field exists in the supplied source data.",
-    "scenario": "No scenario parameter or scenario class exists in the supplied source data.",
-    "network": "The supplied CRM records do not define a node/edge network structure.",
-    "text": "text_value contains structured location and team information rather than decision-relevant free text.",
-    "geographic_coordinates": "The source data does not provide latitude or longitude."
-  },
-  "core_coverage_checks": {
-    "identity_preserved": true,
-    "products_preserved": true,
-    "channels_preserved": true,
-    "stages_preserved": true,
-    "statuses_preserved": true,
-    "locations_preserved": true,
-    "teams_preserved": true,
-    "date_range_preserved": true
-  },
-  "underrepresented_areas": [],
-  "missing_case_study_behaviour": [],
-  "sampling_bias": "The representativeness assessment confirms preservation of the supplied 30-record source sample. It does not establish representativeness of a larger CRM population because no larger source population was supplied.",
-  "impact_on_future_analysis": "Analytical work should use the canonical dataset as the single source of truth. Conclusions should be interpreted within the observed sample and available coverage.",
-  "required_correction": null,
-  "representativeness_result": "PASS"
-}
-</file>
-
 <file path="data-science/outputs/track_a_analysis_dataset.csv">
 source_record_id,category,subcategory,status,stage,observed_at,lead_value,is_synthetic,data_version,days_in_stage
 L001,Payments,Website,Won,Won,2026-01-05,85000,True,phase3-v2,8
@@ -2073,685 +1798,6 @@ def main():
     print(f"Canonical columns: {column_count}")
     print(f"Blocking issues: {len(blocking_issues)}")
     print(f"Output: {OUTPUT_FILE}")
-
-
-if __name__ == "__main__":
-    main()
-</file>
-
-<file path="data-science/scripts/assess_representativeness.py">
-from pathlib import Path
-import json
-import pandas as pd
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-CANONICAL_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "canonical"
-    / "intelligence_data.csv"
-)
-
-SOURCE_SAMPLE_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "source-sample"
-    / "source_sample.csv"
-)
-
-MANIFEST_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "manifest.json"
-)
-
-OUTPUT_FILE = (
-    PROJECT_ROOT
-    / "data-science"
-    / "outputs"
-    / "representativeness_assessment.json"
-)
-
-
-def distribution(series):
-    """Return a simple value-count distribution."""
-    return {
-        str(key): int(value)
-        for key, value in (
-            series.fillna("<missing>")
-            .value_counts(dropna=False)
-            .to_dict()
-            .items()
-        )
-    }
-
-
-def extract_location(text):
-    """Extract location from canonical text_value."""
-    if pd.isna(text):
-        return None
-
-    for item in str(text).split(";"):
-        if item.startswith("location="):
-            return item.split("=", 1)[1]
-
-    return None
-
-
-def extract_team(text):
-    """Extract team from canonical text_value."""
-    if pd.isna(text):
-        return None
-
-    for item in str(text).split(";"):
-        if item.startswith("team="):
-            return item.split("=", 1)[1]
-
-    return None
-
-
-def compare_distributions(source_dist, canonical_dist):
-    """
-    Compare the presence of categories rather than requiring identical
-    proportions, because the canonical dataset expands each source lead
-    into two canonical records.
-    """
-    source_values = set(source_dist.keys())
-    canonical_values = set(canonical_dist.keys())
-
-    return {
-        "source_values": sorted(source_values),
-        "canonical_values": sorted(canonical_values),
-        "missing_from_canonical": sorted(
-            source_values - canonical_values
-        ),
-        "unexpected_in_canonical": sorted(
-            canonical_values - source_values
-        ),
-    }
-
-
-def main():
-    # ---------------------------------------------------------
-    # Required files
-    # ---------------------------------------------------------
-
-    if not CANONICAL_FILE.exists():
-        raise FileNotFoundError(
-            f"Canonical file not found: {CANONICAL_FILE}"
-        )
-
-    if not SOURCE_SAMPLE_FILE.exists():
-        raise FileNotFoundError(
-            f"Source sample not found: {SOURCE_SAMPLE_FILE}"
-        )
-
-    if not MANIFEST_FILE.exists():
-        raise FileNotFoundError(
-            f"Manifest not found: {MANIFEST_FILE}"
-        )
-
-    # ---------------------------------------------------------
-    # Load data
-    # ---------------------------------------------------------
-
-    canonical = pd.read_csv(CANONICAL_FILE)
-    source = pd.read_csv(SOURCE_SAMPLE_FILE)
-
-    with MANIFEST_FILE.open(
-        "r",
-        encoding="utf-8",
-    ) as file:
-        manifest = json.load(file)
-
-    # Only source-level lead records are used for representativeness.
-    # The canonical pipeline creates two records for each source lead.
-    lead_records = canonical[
-        canonical["record_type"] == "crm_lead"
-    ].copy()
-
-    # ---------------------------------------------------------
-    # Source and canonical identity checks
-    # ---------------------------------------------------------
-
-    source_ids = set(
-        source["id"]
-        .dropna()
-        .astype(str)
-    )
-
-    canonical_ids = set(
-        lead_records["source_record_id"]
-        .dropna()
-        .astype(str)
-    )
-
-    missing_ids = sorted(
-        source_ids - canonical_ids
-    )
-
-    unexpected_ids = sorted(
-        canonical_ids - source_ids
-    )
-
-    identity_preserved = (
-        len(missing_ids) == 0
-        and len(unexpected_ids) == 0
-        and len(source_ids) == len(canonical_ids)
-    )
-
-    # ---------------------------------------------------------
-    # Category coverage
-    # ---------------------------------------------------------
-
-    source_product = distribution(
-        source["product"]
-    )
-
-    canonical_product = distribution(
-        lead_records["category"]
-    )
-
-    product_comparison = compare_distributions(
-        source_product,
-        canonical_product,
-    )
-
-    # ---------------------------------------------------------
-    # Acquisition-source coverage
-    # ---------------------------------------------------------
-
-    source_channel = distribution(
-        source["source"]
-    )
-
-    canonical_channel = distribution(
-        lead_records["subcategory"]
-    )
-
-    channel_comparison = compare_distributions(
-        source_channel,
-        canonical_channel,
-    )
-
-    # ---------------------------------------------------------
-    # Stage coverage
-    # ---------------------------------------------------------
-
-    source_stage = distribution(
-        source["stage"]
-    )
-
-    canonical_stage = distribution(
-        lead_records["stage"]
-    )
-
-    stage_comparison = compare_distributions(
-        source_stage,
-        canonical_stage,
-    )
-
-    # ---------------------------------------------------------
-    # Status coverage
-    # ---------------------------------------------------------
-
-    source_status = distribution(
-        source["stage"]
-    )
-
-    canonical_status = distribution(
-        lead_records["status"]
-    )
-
-    status_comparison = compare_distributions(
-        source_status,
-        canonical_status,
-    )
-
-    # ---------------------------------------------------------
-    # Location coverage
-    # ---------------------------------------------------------
-
-    source_location = distribution(
-        source["location"]
-    )
-
-    canonical_location = distribution(
-        lead_records["text_value"].map(
-            extract_location
-        )
-    )
-
-    location_comparison = compare_distributions(
-        source_location,
-        canonical_location,
-    )
-
-    # ---------------------------------------------------------
-    # Team coverage
-    # ---------------------------------------------------------
-
-    source_team = distribution(
-        source["team"]
-    )
-
-    canonical_team = distribution(
-        lead_records["text_value"].map(
-            extract_team
-        )
-    )
-
-    team_comparison = compare_distributions(
-        source_team,
-        canonical_team,
-    )
-
-    # ---------------------------------------------------------
-    # Time coverage
-    # ---------------------------------------------------------
-
-    source_dates = pd.to_datetime(
-        source["date"],
-        errors="coerce",
-    )
-
-    canonical_dates = pd.to_datetime(
-        lead_records["observed_at"],
-        errors="coerce",
-    )
-
-    time_coverage = {
-        "source_record_count": int(len(source)),
-        "canonical_lead_record_count": int(len(lead_records)),
-        "source_parseable_dates": int(
-            source_dates.notna().sum()
-        ),
-        "canonical_parseable_dates": int(
-            canonical_dates.notna().sum()
-        ),
-        "source_earliest": (
-            source_dates.min().date().isoformat()
-            if source_dates.notna().any()
-            else None
-        ),
-        "source_latest": (
-            source_dates.max().date().isoformat()
-            if source_dates.notna().any()
-            else None
-        ),
-        "canonical_earliest": (
-            canonical_dates.min().date().isoformat()
-            if canonical_dates.notna().any()
-            else None
-        ),
-        "canonical_latest": (
-            canonical_dates.max().date().isoformat()
-            if canonical_dates.notna().any()
-            else None
-        ),
-        "source_unique_dates": int(
-            source_dates.dt.date.nunique()
-        ),
-        "canonical_unique_dates": int(
-            canonical_dates.dt.date.nunique()
-        ),
-        "source_unique_months": int(
-            source_dates.dt.to_period("M").nunique()
-            if source_dates.notna().any()
-            else 0
-        ),
-        "canonical_unique_months": int(
-            canonical_dates.dt.to_period("M").nunique()
-            if canonical_dates.notna().any()
-            else 0
-        ),
-    }
-
-    # ---------------------------------------------------------
-    # Stage / outcome coverage
-    # ---------------------------------------------------------
-
-    stage_coverage = {
-        "source": source_stage,
-        "canonical": canonical_stage,
-        "all_source_stages_preserved": (
-            len(stage_comparison["missing_from_canonical"]) == 0
-        ),
-    }
-
-    # ---------------------------------------------------------
-    # Numerical range checks
-    # ---------------------------------------------------------
-
-    source_value = pd.to_numeric(
-        source["value"],
-        errors="coerce",
-    )
-
-    source_days = pd.to_numeric(
-        source["daysInStage"],
-        errors="coerce",
-    )
-
-    canonical_value_records = lead_records[
-        lead_records["metric_name"] == "lead_value"
-    ].copy()
-
-    canonical_days_records = lead_records[
-        lead_records["metric_name"] == "days_in_stage"
-    ].copy()
-
-    canonical_value = pd.to_numeric(
-        canonical_value_records["metric_value"],
-        errors="coerce",
-    )
-
-    canonical_days = pd.to_numeric(
-        canonical_days_records["metric_value"],
-        errors="coerce",
-    )
-
-    numerical_coverage = {
-        "lead_value": {
-            "source_count": int(source_value.notna().sum()),
-            "canonical_count": int(canonical_value.notna().sum()),
-            "source_min": (
-                float(source_value.min())
-                if source_value.notna().any()
-                else None
-            ),
-            "source_max": (
-                float(source_value.max())
-                if source_value.notna().any()
-                else None
-            ),
-            "canonical_min": (
-                float(canonical_value.min())
-                if canonical_value.notna().any()
-                else None
-            ),
-            "canonical_max": (
-                float(canonical_value.max())
-                if canonical_value.notna().any()
-                else None
-            ),
-        },
-        "days_in_stage": {
-            "source_count": int(source_days.notna().sum()),
-            "canonical_count": int(canonical_days.notna().sum()),
-            "source_min": (
-                float(source_days.min())
-                if source_days.notna().any()
-                else None
-            ),
-            "source_max": (
-                float(source_days.max())
-                if source_days.notna().any()
-                else None
-            ),
-            "canonical_min": (
-                float(canonical_days.min())
-                if canonical_days.notna().any()
-                else None
-            ),
-            "canonical_max": (
-                float(canonical_days.max())
-                if canonical_days.notna().any()
-                else None
-            ),
-        },
-    }
-
-    # ---------------------------------------------------------
-    # Rare records
-    # ---------------------------------------------------------
-
-    rare_stage_values = [
-        value
-        for value, count in source_stage.items()
-        if count <= 2
-    ]
-
-    rare_records = {
-        "rare_stage_values": sorted(rare_stage_values),
-        "rare_stage_record_count": int(
-            source["stage"].isin(rare_stage_values).sum()
-        )
-        if rare_stage_values
-        else 0,
-        "note": (
-            "Rare lifecycle stages were retained when present "
-            "in the source sample."
-        ),
-    }
-
-    # ---------------------------------------------------------
-    # Not-applicable dimensions
-    # ---------------------------------------------------------
-
-    not_applicable = {
-        "severity": (
-            "No dedicated severity field exists in the supplied "
-            "source data."
-        ),
-        "scenario": (
-            "No scenario parameter or scenario class exists "
-            "in the supplied source data."
-        ),
-        "network": (
-            "The supplied CRM records do not define a node/edge "
-            "network structure."
-        ),
-        "text": (
-            "text_value contains structured location and team "
-            "information rather than decision-relevant free text."
-        ),
-        "geographic_coordinates": (
-            "The source data does not provide latitude or longitude."
-        ),
-    }
-
-    # ---------------------------------------------------------
-    # Determine representativeness result
-    # ---------------------------------------------------------
-
-    coverage_checks = {
-        "identity_preserved": identity_preserved,
-        "products_preserved": (
-            len(product_comparison["missing_from_canonical"]) == 0
-        ),
-        "channels_preserved": (
-            len(channel_comparison["missing_from_canonical"]) == 0
-        ),
-        "stages_preserved": (
-            len(stage_comparison["missing_from_canonical"]) == 0
-        ),
-        "statuses_preserved": (
-            len(status_comparison["missing_from_canonical"]) == 0
-        ),
-        "locations_preserved": (
-            len(location_comparison["missing_from_canonical"]) == 0
-        ),
-        "teams_preserved": (
-            len(team_comparison["missing_from_canonical"]) == 0
-        ),
-        "date_range_preserved": (
-            time_coverage["source_earliest"]
-            == time_coverage["canonical_earliest"]
-            and
-            time_coverage["source_latest"]
-            == time_coverage["canonical_latest"]
-        ),
-    }
-
-    all_core_checks_pass = all(
-        coverage_checks.values()
-    )
-
-    if all_core_checks_pass:
-        representativeness_result = "PASS"
-    else:
-        representativeness_result = "CHANGES_REQUIRED"
-
-    # ---------------------------------------------------------
-    # Final report
-    # ---------------------------------------------------------
-
-    result = {
-        "project": "POC-7 Lead Funnel Conversion Observatory",
-        "canonical_data_version": sorted(
-            canonical["data_version"]
-            .dropna()
-            .astype(str)
-            .unique()
-            .tolist()
-        ),
-        "source_name": sorted(
-            canonical["source_name"]
-            .dropna()
-            .astype(str)
-            .unique()
-            .tolist()
-        ),
-        "contains_synthetic_data": sorted(
-            canonical["is_synthetic"]
-            .dropna()
-            .astype(str)
-            .unique()
-            .tolist()
-        ),
-        "source_sample": {
-            "record_count": int(len(source)),
-            "column_count": int(len(source.columns)),
-            "file_size_bytes": int(
-                SOURCE_SAMPLE_FILE.stat().st_size
-            ),
-        },
-        "canonical_dataset": {
-            "record_count": int(len(canonical)),
-            "column_count": int(len(canonical.columns)),
-            "lead_record_count": int(len(lead_records)),
-            "file_size_bytes": int(
-                CANONICAL_FILE.stat().st_size
-            ),
-        },
-        "sampling_information": {
-            "is_sampled": manifest.get(
-                "is_sampled"
-            ),
-            "sampling_method": manifest.get(
-                "sampling_method"
-            ),
-            "random_seed": manifest.get(
-                "random_seed"
-            ),
-            "original_record_count": manifest.get(
-                "original_record_count"
-            ),
-            "sample_record_count": manifest.get(
-                "sample_record_count"
-            ),
-        },
-        "identity_assessment": {
-            "source_unique_ids": int(len(source_ids)),
-            "canonical_unique_source_ids": int(
-                len(canonical_ids)
-            ),
-            "missing_source_ids": missing_ids,
-            "unexpected_canonical_ids": unexpected_ids,
-            "all_source_ids_preserved": identity_preserved,
-        },
-        "coverage_assessment": {
-            "products": {
-                "source_distribution": source_product,
-                "canonical_distribution": canonical_product,
-                "comparison": product_comparison,
-            },
-            "acquisition_sources": {
-                "source_distribution": source_channel,
-                "canonical_distribution": canonical_channel,
-                "comparison": channel_comparison,
-            },
-            "stages": stage_coverage,
-            "statuses": {
-                "source_distribution": source_status,
-                "canonical_distribution": canonical_status,
-                "comparison": status_comparison,
-            },
-            "locations": {
-                "source_distribution": source_location,
-                "canonical_distribution": canonical_location,
-                "comparison": location_comparison,
-            },
-            "teams": {
-                "source_distribution": source_team,
-                "canonical_distribution": canonical_team,
-                "comparison": team_comparison,
-            },
-            "time": time_coverage,
-        },
-        "numerical_coverage": numerical_coverage,
-        "rare_records": rare_records,
-        "not_applicable_dimensions": not_applicable,
-        "core_coverage_checks": coverage_checks,
-        "underrepresented_areas": [],
-        "missing_case_study_behaviour": [],
-        "sampling_bias": (
-            "The representativeness assessment confirms preservation "
-            "of the supplied 30-record source sample. It does not "
-            "establish representativeness of a larger CRM population "
-            "because no larger source population was supplied."
-        ),
-        "impact_on_future_analysis": (
-            "Analytical work should use the canonical dataset as the "
-            "single source of truth. Conclusions should be interpreted "
-            "within the observed sample and available coverage."
-        ),
-        "required_correction": (
-            None
-            if representativeness_result == "PASS"
-            else "Review source-to-canonical coverage and correct the "
-                 "pipeline before proceeding."
-        ),
-        "representativeness_result": representativeness_result,
-    }
-
-    OUTPUT_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    OUTPUT_FILE.write_text(
-        json.dumps(
-            result,
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
-
-    print("REPRESENTATIVENESS ASSESSMENT GENERATED")
-    print(
-        f"Result: {representativeness_result}"
-    )
-    print(
-        f"Source records: {len(source)}"
-    )
-    print(
-        f"Canonical records: {len(canonical)}"
-    )
-    print(
-        f"Canonical lead records assessed: {len(lead_records)}"
-    )
-    print(
-        f"Core coverage checks passed: "
-        f"{sum(coverage_checks.values())}/"
-        f"{len(coverage_checks)}"
-    )
-    print(
-        f"Output: {OUTPUT_FILE}"
-    )
 
 
 if __name__ == "__main__":
@@ -4699,40 +3745,6 @@ team and location coverage while respecting the limitations of the available
 sample.
 </file>
 
-<file path="docs/DATA_QUALITY_ASSESSMENT.md">
-\# Data Quality Assessment
-
-
-
-\## Project
-
-
-
-\*\*POC-7 — Lead Funnel Conversion Observatory\*\*
-
-
-
-\## Canonical Data Version
-
-
-
-\*\*phase3-v2\*\*
-
-
-
-\## Validation Command and Result
-
-
-
-Post #1 structural validation command:
-
-
-
-```text
-
-python .\\scripts\\data\_pipeline\\validate\_data.py
-</file>
-
 <file path="docs/REPRESENTATIVENESS_ASSESSMENT.md">
 \# Representativeness Assessment
 
@@ -5927,128 +4939,6 @@ The analysis provides descriptive comparisons of lead value and days in stage ac
 
 
 The findings provide a documented analytical foundation for the next Phase 3 development stage while preserving the limitations of the synthetic dataset.
-</file>
-
-<file path="notebooks/01_canonical_data_validation_and_readiness.ipynb">
-{
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
-        "# Canonical Data Validation and Analytical Readiness\n",
-        "\n",
-        "**Project:** Lead Funnel Conversion Observatory  \n",
-        "**Phase:** Phase 3  \n",
-        "**Data version:** phase3-v2  \n",
-        "\n",
-        "This notebook records the final canonical-data validation and analytical-readiness checks."
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {},
-      "outputs": [],
-      "source": [
-        "from pathlib import Path\n",
-        "import json\n",
-        "import pandas as pd\n",
-        "\n",
-        "ROOT = Path.cwd().parent if Path.cwd().name == 'notebooks' else Path.cwd()\n",
-        "CANONICAL = ROOT / 'data' / 'canonical' / 'intelligence_data.csv'\n",
-        "OUTPUTS = ROOT / 'data-science' / 'outputs'\n",
-        "\n",
-        "df = pd.read_csv(CANONICAL)\n",
-        "print('Canonical records:', len(df))\n",
-        "print('Canonical columns:', len(df.columns))"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {},
-      "outputs": [],
-      "source": [
-        "required_columns = [\n",
-        "    'record_id', 'source_name', 'record_type', 'metric_name',\n",
-        "    'metric_value', 'metric_unit', 'stage', 'location', 'team',\n",
-        "    'product', 'source', 'date', 'is_synthetic', 'data_version'\n",
-        "]\n",
-        "\n",
-        "missing_columns = [c for c in required_columns if c not in df.columns]\n",
-        "assert not missing_columns, f'Missing required columns: {missing_columns}'\n",
-        "\n",
-        "assert len(df) == 60, f'Expected 60 canonical records, found {len(df)}'\n",
-        "assert df['is_synthetic'].astype(str).str.lower().eq('true').all()\n",
-        "assert df['data_version'].astype(str).eq('phase3-v2').all()\n",
-        "\n",
-        "print('STRUCTURAL VALIDATION: PASS')\n",
-        "print('Synthetic flag: true')\n",
-        "print('Data version: phase3-v2')"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {},
-      "outputs": [],
-      "source": [
-        "quality = json.loads((OUTPUTS / 'quality_assessment.json').read_text(encoding='utf-8'))\n",
-        "representativeness = json.loads((OUTPUTS / 'representativeness_assessment.json').read_text(encoding='utf-8'))\n",
-        "readiness = json.loads((OUTPUTS / 'analytical_readiness.json').read_text(encoding='utf-8'))\n",
-        "\n",
-        "print('QUALITY RESULT:', quality.get('result'))\n",
-        "print('REPRESENTATIVENESS RESULT:', representativeness.get('result'))\n",
-        "print('ANALYTICAL READINESS:', readiness.get('final_result'))\n",
-        "print('PRIMARY ARCHETYPE:', readiness.get('primary_archetype'))\n",
-        "print('PRIMARY TRACK:', readiness.get('primary_track'))"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {},
-      "outputs": [],
-      "source": [
-        "print('Final validation summary')\n",
-        "print('-------------------------')\n",
-        "print('Canonical records:', len(df))\n",
-        "print('Canonical columns:', len(df.columns))\n",
-        "print('Source leads:', df[df['record_type'].astype(str).eq('crm_lead')]['record_id'].nunique())\n",
-        "print('Stages:', ', '.join(sorted(df['stage'].dropna().astype(str).unique())))\n",
-        "print('Locations:', ', '.join(sorted(df['location'].dropna().astype(str).unique())))\n",
-        "print('Teams:', ', '.join(sorted(df['team'].dropna().astype(str).unique())))\n",
-        "print('Products:', ', '.join(sorted(df['product'].dropna().astype(str).unique())))\n",
-        "print('Sources:', ', '.join(sorted(df['source'].dropna().astype(str).unique())))"
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
-        "## Final Result\n",
-        "\n",
-        "The canonical dataset passes the structural, quality, and representativeness checks used for Phase 3 readiness. The analytical-readiness assessment identifies **Process Lifecycle** as the primary archetype and **Track A — Comparative** as the primary supported analytical track.\n",
-        "\n",
-        "The dataset is synthetic and contains 30 source CRM leads represented as 60 canonical analytical records."
-      ]
-    }
-  ],
-  "metadata": {
-    "kernelspec": {
-      "display_name": "Python 3",
-      "language": "python",
-      "name": "python3"
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3"
-    }
-  },
-  "nbformat": 4,
-  "nbformat_minor": 5
-}
 </file>
 
 <file path="public/file.svg">
@@ -9857,252 +8747,958 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
 }
 </file>
 
-<file path="data-science/outputs/quality_assessment.json">
+<file path="data-science/outputs/representativeness_assessment.json">
 {
-  "assessment_version": "post2-v1",
-  "source_of_truth": "data\\canonical\\intelligence_data.csv",
-  "result": "PASS",
-  "dataset": {
+  "project": "POC-7 Lead Funnel Conversion Observatory",
+  "canonical_data_version": [
+    "phase3-v2"
+  ],
+  "source_name": [
+    "phase2_crmData"
+  ],
+  "contains_synthetic_data": [
+    "True"
+  ],
+  "source_sample": {
+    "record_count": 30,
+    "column_count": 9,
+    "file_size_bytes": 2061
+  },
+  "canonical_dataset": {
     "record_count": 60,
     "column_count": 20,
-    "file_size_bytes": 10578,
-    "file_size_mb": 0.0101
+    "lead_record_count": 30,
+    "file_size_bytes": 10578
   },
-  "completeness": {
-    "record_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 60
+  "sampling_information": {
+    "is_sampled": null,
+    "sampling_method": null,
+    "random_seed": null,
+    "original_record_count": null,
+    "sample_record_count": null
+  },
+  "identity_assessment": {
+    "source_unique_ids": 30,
+    "canonical_unique_source_ids": 30,
+    "missing_source_ids": [],
+    "unexpected_canonical_ids": [],
+    "all_source_ids_preserved": true
+  },
+  "coverage_assessment": {
+    "products": {
+      "source_distribution": {
+        "Payments": 12,
+        "Analytics": 9,
+        "Security": 9
+      },
+      "canonical_distribution": {
+        "Payments": 12,
+        "Analytics": 9,
+        "Security": 9
+      },
+      "comparison": {
+        "source_values": [
+          "Analytics",
+          "Payments",
+          "Security"
+        ],
+        "canonical_values": [
+          "Analytics",
+          "Payments",
+          "Security"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
     },
-    "record_type": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
+    "acquisition_sources": {
+      "source_distribution": {
+        "Website": 11,
+        "Referral": 7,
+        "Campaign": 7,
+        "Partner": 5
+      },
+      "canonical_distribution": {
+        "Website": 11,
+        "Referral": 7,
+        "Campaign": 7,
+        "Partner": 5
+      },
+      "comparison": {
+        "source_values": [
+          "Campaign",
+          "Partner",
+          "Referral",
+          "Website"
+        ],
+        "canonical_values": [
+          "Campaign",
+          "Partner",
+          "Referral",
+          "Website"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
     },
-    "observed_at": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
+    "stages": {
+      "source": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "canonical": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "all_source_stages_preserved": true
     },
-    "entity_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
+    "statuses": {
+      "source_distribution": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "canonical_distribution": {
+        "Won": 10,
+        "Opportunity": 5,
+        "Qualified": 5,
+        "Proposal": 4,
+        "Lead": 3,
+        "Lost": 3
+      },
+      "comparison": {
+        "source_values": [
+          "Lead",
+          "Lost",
+          "Opportunity",
+          "Proposal",
+          "Qualified",
+          "Won"
+        ],
+        "canonical_values": [
+          "Lead",
+          "Lost",
+          "Opportunity",
+          "Proposal",
+          "Qualified",
+          "Won"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
     },
-    "related_entity_id": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
+    "locations": {
+      "source_distribution": {
+        "Bangalore": 7,
+        "Mumbai": 6,
+        "Delhi": 6,
+        "Chennai": 6,
+        "Hyderabad": 5
+      },
+      "canonical_distribution": {
+        "Bangalore": 7,
+        "Mumbai": 6,
+        "Delhi": 6,
+        "Chennai": 6,
+        "Hyderabad": 5
+      },
+      "comparison": {
+        "source_values": [
+          "Bangalore",
+          "Chennai",
+          "Delhi",
+          "Hyderabad",
+          "Mumbai"
+        ],
+        "canonical_values": [
+          "Bangalore",
+          "Chennai",
+          "Delhi",
+          "Hyderabad",
+          "Mumbai"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
     },
-    "entity_name": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
+    "teams": {
+      "source_distribution": {
+        "Enterprise": 12,
+        "SMB": 9,
+        "Growth": 9
+      },
+      "canonical_distribution": {
+        "Enterprise": 12,
+        "SMB": 9,
+        "Growth": 9
+      },
+      "comparison": {
+        "source_values": [
+          "Enterprise",
+          "Growth",
+          "SMB"
+        ],
+        "canonical_values": [
+          "Enterprise",
+          "Growth",
+          "SMB"
+        ],
+        "missing_from_canonical": [],
+        "unexpected_in_canonical": []
+      }
     },
-    "category": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 3
-    },
-    "subcategory": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 4
-    },
-    "status": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6
-    },
-    "stage": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6
-    },
-    "metric_name": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
-    },
-    "metric_value": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 52
-    },
-    "metric_unit": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
-    },
-    "text_value": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 15
-    },
-    "latitude": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "longitude": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "source_name": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
-    },
-    "source_record_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
-    },
-    "is_synthetic": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
-    },
-    "data_version": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
+    "time": {
+      "source_record_count": 30,
+      "canonical_lead_record_count": 30,
+      "source_parseable_dates": 30,
+      "canonical_parseable_dates": 30,
+      "source_earliest": "2026-01-05",
+      "source_latest": "2026-03-20",
+      "canonical_earliest": "2026-01-05",
+      "canonical_latest": "2026-03-20",
+      "source_unique_dates": 30,
+      "canonical_unique_dates": 30,
+      "source_unique_months": 3,
+      "canonical_unique_months": 3
     }
   },
-  "uniqueness": {
-    "total_record_ids": 60,
-    "unique_record_ids": 60,
-    "empty_record_ids": 0,
-    "duplicate_record_ids": 0
-  },
-  "temporal": {
-    "non_null_date_count": 60,
-    "parseable_date_count": 60,
-    "invalid_date_count": 0,
-    "parse_success_rate": 100.0
-  },
-  "numeric": {
-    "metric_value": {
-      "non_null_count": 60,
-      "invalid_count": 0
+  "numerical_coverage": {
+    "lead_value": {
+      "source_count": 30,
+      "canonical_count": 30,
+      "source_min": 25000.0,
+      "source_max": 132000.0,
+      "canonical_min": 25000.0,
+      "canonical_max": 132000.0
     },
-    "longitude": {
-      "non_null_count": 0,
-      "invalid_count": 0
-    },
-    "latitude": {
-      "non_null_count": 0,
-      "invalid_count": 0
+    "days_in_stage": {
+      "source_count": 30,
+      "canonical_count": 30,
+      "source_min": 3.0,
+      "source_max": 35.0,
+      "canonical_min": 3.0,
+      "canonical_max": 35.0
     }
   },
-  "coordinates": {
-    "latitude": {
-      "minimum": -90,
-      "maximum": 90,
-      "invalid_count": 0
-    },
-    "longitude": {
-      "minimum": -180,
-      "maximum": 180,
-      "invalid_count": 0
-    }
+  "rare_records": {
+    "rare_stage_values": [],
+    "rare_stage_record_count": 0,
+    "note": "Rare lifecycle stages were retained when present in the source sample."
   },
-  "metric_units": {
-    "lead_value": [
-      "currency_unspecified"
-    ],
-    "days_in_stage": [
-      "days"
-    ]
+  "not_applicable_dimensions": {
+    "severity": "No dedicated severity field exists in the supplied source data.",
+    "scenario": "No scenario parameter or scenario class exists in the supplied source data.",
+    "network": "The supplied CRM records do not define a node/edge network structure.",
+    "text": "text_value contains structured location and team information rather than decision-relevant free text.",
+    "geographic_coordinates": "The source data does not provide latitude or longitude."
   },
-  "mixed_metric_units": {},
-  "categories": {
-    "category": {
-      "Payments": 24,
-      "Analytics": 18,
-      "Security": 18
-    },
-    "subcategory": {
-      "Website": 22,
-      "Campaign": 14,
-      "Referral": 14,
-      "Partner": 10
-    },
-    "status": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "stage": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "record_type": {
-      "crm_lead": 30,
-      "crm_lead_metric": 30
-    },
-    "metric_name": {
-      "days_in_stage": 30,
-      "lead_value": 30
-    },
-    "metric_unit": {
-      "currency_unspecified": 30,
-      "days": 30
-    }
+  "core_coverage_checks": {
+    "identity_preserved": true,
+    "products_preserved": true,
+    "channels_preserved": true,
+    "stages_preserved": true,
+    "statuses_preserved": true,
+    "locations_preserved": true,
+    "teams_preserved": true,
+    "date_range_preserved": true
   },
-  "synthetic_distribution": {
-    "true": 60
-  },
-  "text": {
-    "non_empty_count": 60,
-    "empty_count": 0,
-    "average_length": 28.9,
-    "maximum_length": 34,
-    "over_500_characters": 0
-  },
-  "source_accuracy_check": {
-    "source_sample_available": true,
-    "source_sample_record_count": 30,
-    "canonical_source_record_count": 30,
-    "all_source_ids_present_in_canonical": true,
-    "source_ids_missing_from_canonical": []
-  },
-  "blocking_issues": [],
-  "warnings": [],
-  "notes": [
-    "Post #2 uses only the approved canonical CSV as the analytical source.",
-    "The source repository does not document whether the CRM records are synthetic.",
-    "Latitude and longitude are empty because the Phase 2 source does not provide coordinates."
-  ]
+  "underrepresented_areas": [],
+  "missing_case_study_behaviour": [],
+  "sampling_bias": "The representativeness assessment confirms preservation of the supplied 30-record source sample. It does not establish representativeness of a larger CRM population because no larger source population was supplied.",
+  "impact_on_future_analysis": "Analytical work should use the canonical dataset as the single source of truth. Conclusions should be interpreted within the observed sample and available coverage.",
+  "required_correction": null,
+  "representativeness_result": "PASS"
 }
+</file>
+
+<file path="data-science/scripts/assess_representativeness.py">
+from pathlib import Path
+import json
+import pandas as pd
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+CANONICAL_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "canonical"
+    / "intelligence_data.csv"
+)
+
+SOURCE_SAMPLE_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "source-sample"
+    / "source_sample.csv"
+)
+
+MANIFEST_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "manifest.json"
+)
+
+OUTPUT_FILE = (
+    PROJECT_ROOT
+    / "data-science"
+    / "outputs"
+    / "representativeness_assessment.json"
+)
+
+
+def distribution(series):
+    """Return a simple value-count distribution."""
+    return {
+        str(key): int(value)
+        for key, value in (
+            series.fillna("<missing>")
+            .value_counts(dropna=False)
+            .to_dict()
+            .items()
+        )
+    }
+
+
+def extract_location(text):
+    """Extract location from canonical text_value."""
+    if pd.isna(text):
+        return None
+
+    for item in str(text).split(";"):
+        if item.startswith("location="):
+            return item.split("=", 1)[1]
+
+    return None
+
+
+def extract_team(text):
+    """Extract team from canonical text_value."""
+    if pd.isna(text):
+        return None
+
+    for item in str(text).split(";"):
+        if item.startswith("team="):
+            return item.split("=", 1)[1]
+
+    return None
+
+
+def compare_distributions(source_dist, canonical_dist):
+    """
+    Compare the presence of categories rather than requiring identical
+    proportions, because the canonical dataset expands each source lead
+    into two canonical records.
+    """
+    source_values = set(source_dist.keys())
+    canonical_values = set(canonical_dist.keys())
+
+    return {
+        "source_values": sorted(source_values),
+        "canonical_values": sorted(canonical_values),
+        "missing_from_canonical": sorted(
+            source_values - canonical_values
+        ),
+        "unexpected_in_canonical": sorted(
+            canonical_values - source_values
+        ),
+    }
+
+
+def main():
+    # ---------------------------------------------------------
+    # Required files
+    # ---------------------------------------------------------
+
+    if not CANONICAL_FILE.exists():
+        raise FileNotFoundError(
+            f"Canonical file not found: {CANONICAL_FILE}"
+        )
+
+    if not SOURCE_SAMPLE_FILE.exists():
+        raise FileNotFoundError(
+            f"Source sample not found: {SOURCE_SAMPLE_FILE}"
+        )
+
+    if not MANIFEST_FILE.exists():
+        raise FileNotFoundError(
+            f"Manifest not found: {MANIFEST_FILE}"
+        )
+
+    # ---------------------------------------------------------
+    # Load data
+    # ---------------------------------------------------------
+
+    canonical = pd.read_csv(CANONICAL_FILE)
+    source = pd.read_csv(SOURCE_SAMPLE_FILE)
+
+    with MANIFEST_FILE.open(
+        "r",
+        encoding="utf-8",
+    ) as file:
+        manifest = json.load(file)
+
+    # Only source-level lead records are used for representativeness.
+    # The canonical pipeline creates two records for each source lead.
+    lead_records = canonical[
+        canonical["record_type"] == "crm_lead"
+    ].copy()
+
+    # ---------------------------------------------------------
+    # Source and canonical identity checks
+    # ---------------------------------------------------------
+
+    source_ids = set(
+        source["id"]
+        .dropna()
+        .astype(str)
+    )
+
+    canonical_ids = set(
+        lead_records["source_record_id"]
+        .dropna()
+        .astype(str)
+    )
+
+    missing_ids = sorted(
+        source_ids - canonical_ids
+    )
+
+    unexpected_ids = sorted(
+        canonical_ids - source_ids
+    )
+
+    identity_preserved = (
+        len(missing_ids) == 0
+        and len(unexpected_ids) == 0
+        and len(source_ids) == len(canonical_ids)
+    )
+
+    # ---------------------------------------------------------
+    # Category coverage
+    # ---------------------------------------------------------
+
+    source_product = distribution(
+        source["product"]
+    )
+
+    canonical_product = distribution(
+        lead_records["category"]
+    )
+
+    product_comparison = compare_distributions(
+        source_product,
+        canonical_product,
+    )
+
+    # ---------------------------------------------------------
+    # Acquisition-source coverage
+    # ---------------------------------------------------------
+
+    source_channel = distribution(
+        source["source"]
+    )
+
+    canonical_channel = distribution(
+        lead_records["subcategory"]
+    )
+
+    channel_comparison = compare_distributions(
+        source_channel,
+        canonical_channel,
+    )
+
+    # ---------------------------------------------------------
+    # Stage coverage
+    # ---------------------------------------------------------
+
+    source_stage = distribution(
+        source["stage"]
+    )
+
+    canonical_stage = distribution(
+        lead_records["stage"]
+    )
+
+    stage_comparison = compare_distributions(
+        source_stage,
+        canonical_stage,
+    )
+
+    # ---------------------------------------------------------
+    # Status coverage
+    # ---------------------------------------------------------
+
+    source_status = distribution(
+        source["stage"]
+    )
+
+    canonical_status = distribution(
+        lead_records["status"]
+    )
+
+    status_comparison = compare_distributions(
+        source_status,
+        canonical_status,
+    )
+
+    # ---------------------------------------------------------
+    # Location coverage
+    # ---------------------------------------------------------
+
+    source_location = distribution(
+        source["location"]
+    )
+
+    canonical_location = distribution(
+        lead_records["text_value"].map(
+            extract_location
+        )
+    )
+
+    location_comparison = compare_distributions(
+        source_location,
+        canonical_location,
+    )
+
+    # ---------------------------------------------------------
+    # Team coverage
+    # ---------------------------------------------------------
+
+    source_team = distribution(
+        source["team"]
+    )
+
+    canonical_team = distribution(
+        lead_records["text_value"].map(
+            extract_team
+        )
+    )
+
+    team_comparison = compare_distributions(
+        source_team,
+        canonical_team,
+    )
+
+    # ---------------------------------------------------------
+    # Time coverage
+    # ---------------------------------------------------------
+
+    source_dates = pd.to_datetime(
+        source["date"],
+        errors="coerce",
+    )
+
+    canonical_dates = pd.to_datetime(
+        lead_records["observed_at"],
+        errors="coerce",
+    )
+
+    time_coverage = {
+        "source_record_count": int(len(source)),
+        "canonical_lead_record_count": int(len(lead_records)),
+        "source_parseable_dates": int(
+            source_dates.notna().sum()
+        ),
+        "canonical_parseable_dates": int(
+            canonical_dates.notna().sum()
+        ),
+        "source_earliest": (
+            source_dates.min().date().isoformat()
+            if source_dates.notna().any()
+            else None
+        ),
+        "source_latest": (
+            source_dates.max().date().isoformat()
+            if source_dates.notna().any()
+            else None
+        ),
+        "canonical_earliest": (
+            canonical_dates.min().date().isoformat()
+            if canonical_dates.notna().any()
+            else None
+        ),
+        "canonical_latest": (
+            canonical_dates.max().date().isoformat()
+            if canonical_dates.notna().any()
+            else None
+        ),
+        "source_unique_dates": int(
+            source_dates.dt.date.nunique()
+        ),
+        "canonical_unique_dates": int(
+            canonical_dates.dt.date.nunique()
+        ),
+        "source_unique_months": int(
+            source_dates.dt.to_period("M").nunique()
+            if source_dates.notna().any()
+            else 0
+        ),
+        "canonical_unique_months": int(
+            canonical_dates.dt.to_period("M").nunique()
+            if canonical_dates.notna().any()
+            else 0
+        ),
+    }
+
+    # ---------------------------------------------------------
+    # Stage / outcome coverage
+    # ---------------------------------------------------------
+
+    stage_coverage = {
+        "source": source_stage,
+        "canonical": canonical_stage,
+        "all_source_stages_preserved": (
+            len(stage_comparison["missing_from_canonical"]) == 0
+        ),
+    }
+
+    # ---------------------------------------------------------
+    # Numerical range checks
+    # ---------------------------------------------------------
+
+    source_value = pd.to_numeric(
+        source["value"],
+        errors="coerce",
+    )
+
+    source_days = pd.to_numeric(
+        source["daysInStage"],
+        errors="coerce",
+    )
+
+    canonical_value_records = canonical[
+        canonical["metric_name"] == "lead_value"
+    ].copy()
+
+    canonical_days_records = canonical[
+        canonical["metric_name"] == "days_in_stage"
+    ].copy()
+
+    canonical_value = pd.to_numeric(
+        canonical_value_records["metric_value"],
+        errors="coerce",
+    )
+
+    canonical_days = pd.to_numeric(
+        canonical_days_records["metric_value"],
+        errors="coerce",
+    )
+
+    numerical_coverage = {
+        "lead_value": {
+            "source_count": int(source_value.notna().sum()),
+            "canonical_count": int(canonical_value.notna().sum()),
+            "source_min": (
+                float(source_value.min())
+                if source_value.notna().any()
+                else None
+            ),
+            "source_max": (
+                float(source_value.max())
+                if source_value.notna().any()
+                else None
+            ),
+            "canonical_min": (
+                float(canonical_value.min())
+                if canonical_value.notna().any()
+                else None
+            ),
+            "canonical_max": (
+                float(canonical_value.max())
+                if canonical_value.notna().any()
+                else None
+            ),
+        },
+        "days_in_stage": {
+            "source_count": int(source_days.notna().sum()),
+            "canonical_count": int(canonical_days.notna().sum()),
+            "source_min": (
+                float(source_days.min())
+                if source_days.notna().any()
+                else None
+            ),
+            "source_max": (
+                float(source_days.max())
+                if source_days.notna().any()
+                else None
+            ),
+            "canonical_min": (
+                float(canonical_days.min())
+                if canonical_days.notna().any()
+                else None
+            ),
+            "canonical_max": (
+                float(canonical_days.max())
+                if canonical_days.notna().any()
+                else None
+            ),
+        },
+    }
+
+    # ---------------------------------------------------------
+    # Rare records
+    # ---------------------------------------------------------
+
+    rare_stage_values = [
+        value
+        for value, count in source_stage.items()
+        if count <= 2
+    ]
+
+    rare_records = {
+        "rare_stage_values": sorted(rare_stage_values),
+        "rare_stage_record_count": int(
+            source["stage"].isin(rare_stage_values).sum()
+        )
+        if rare_stage_values
+        else 0,
+        "note": (
+            "Rare lifecycle stages were retained when present "
+            "in the source sample."
+        ),
+    }
+
+    # ---------------------------------------------------------
+    # Not-applicable dimensions
+    # ---------------------------------------------------------
+
+    not_applicable = {
+        "severity": (
+            "No dedicated severity field exists in the supplied "
+            "source data."
+        ),
+        "scenario": (
+            "No scenario parameter or scenario class exists "
+            "in the supplied source data."
+        ),
+        "network": (
+            "The supplied CRM records do not define a node/edge "
+            "network structure."
+        ),
+        "text": (
+            "text_value contains structured location and team "
+            "information rather than decision-relevant free text."
+        ),
+        "geographic_coordinates": (
+            "The source data does not provide latitude or longitude."
+        ),
+    }
+
+    # ---------------------------------------------------------
+    # Determine representativeness result
+    # ---------------------------------------------------------
+
+    coverage_checks = {
+        "identity_preserved": identity_preserved,
+        "products_preserved": (
+            len(product_comparison["missing_from_canonical"]) == 0
+        ),
+        "channels_preserved": (
+            len(channel_comparison["missing_from_canonical"]) == 0
+        ),
+        "stages_preserved": (
+            len(stage_comparison["missing_from_canonical"]) == 0
+        ),
+        "statuses_preserved": (
+            len(status_comparison["missing_from_canonical"]) == 0
+        ),
+        "locations_preserved": (
+            len(location_comparison["missing_from_canonical"]) == 0
+        ),
+        "teams_preserved": (
+            len(team_comparison["missing_from_canonical"]) == 0
+        ),
+        "date_range_preserved": (
+            time_coverage["source_earliest"]
+            == time_coverage["canonical_earliest"]
+            and
+            time_coverage["source_latest"]
+            == time_coverage["canonical_latest"]
+        ),
+    }
+
+    all_core_checks_pass = all(
+        coverage_checks.values()
+    )
+
+    if all_core_checks_pass:
+        representativeness_result = "PASS"
+    else:
+        representativeness_result = "CHANGES_REQUIRED"
+
+    # ---------------------------------------------------------
+    # Final report
+    # ---------------------------------------------------------
+
+    result = {
+        "project": "POC-7 Lead Funnel Conversion Observatory",
+        "canonical_data_version": sorted(
+            canonical["data_version"]
+            .dropna()
+            .astype(str)
+            .unique()
+            .tolist()
+        ),
+        "source_name": sorted(
+            canonical["source_name"]
+            .dropna()
+            .astype(str)
+            .unique()
+            .tolist()
+        ),
+        "contains_synthetic_data": sorted(
+            canonical["is_synthetic"]
+            .dropna()
+            .astype(str)
+            .unique()
+            .tolist()
+        ),
+        "source_sample": {
+            "record_count": int(len(source)),
+            "column_count": int(len(source.columns)),
+            "file_size_bytes": int(
+                SOURCE_SAMPLE_FILE.stat().st_size
+            ),
+        },
+        "canonical_dataset": {
+            "record_count": int(len(canonical)),
+            "column_count": int(len(canonical.columns)),
+            "lead_record_count": int(len(lead_records)),
+            "file_size_bytes": int(
+                CANONICAL_FILE.stat().st_size
+            ),
+        },
+        "sampling_information": {
+            "is_sampled": manifest.get(
+                "is_sampled"
+            ),
+            "sampling_method": manifest.get(
+                "sampling_method"
+            ),
+            "random_seed": manifest.get(
+                "random_seed"
+            ),
+            "original_record_count": manifest.get(
+                "original_record_count"
+            ),
+            "sample_record_count": manifest.get(
+                "sample_record_count"
+            ),
+        },
+        "identity_assessment": {
+            "source_unique_ids": int(len(source_ids)),
+            "canonical_unique_source_ids": int(
+                len(canonical_ids)
+            ),
+            "missing_source_ids": missing_ids,
+            "unexpected_canonical_ids": unexpected_ids,
+            "all_source_ids_preserved": identity_preserved,
+        },
+        "coverage_assessment": {
+            "products": {
+                "source_distribution": source_product,
+                "canonical_distribution": canonical_product,
+                "comparison": product_comparison,
+            },
+            "acquisition_sources": {
+                "source_distribution": source_channel,
+                "canonical_distribution": canonical_channel,
+                "comparison": channel_comparison,
+            },
+            "stages": stage_coverage,
+            "statuses": {
+                "source_distribution": source_status,
+                "canonical_distribution": canonical_status,
+                "comparison": status_comparison,
+            },
+            "locations": {
+                "source_distribution": source_location,
+                "canonical_distribution": canonical_location,
+                "comparison": location_comparison,
+            },
+            "teams": {
+                "source_distribution": source_team,
+                "canonical_distribution": canonical_team,
+                "comparison": team_comparison,
+            },
+            "time": time_coverage,
+        },
+        "numerical_coverage": numerical_coverage,
+        "rare_records": rare_records,
+        "not_applicable_dimensions": not_applicable,
+        "core_coverage_checks": coverage_checks,
+        "underrepresented_areas": [],
+        "missing_case_study_behaviour": [],
+        "sampling_bias": (
+            "The representativeness assessment confirms preservation "
+            "of the supplied 30-record source sample. It does not "
+            "establish representativeness of a larger CRM population "
+            "because no larger source population was supplied."
+        ),
+        "impact_on_future_analysis": (
+            "Analytical work should use the canonical dataset as the "
+            "single source of truth. Conclusions should be interpreted "
+            "within the observed sample and available coverage."
+        ),
+        "required_correction": (
+            None
+            if representativeness_result == "PASS"
+            else "Review source-to-canonical coverage and correct the "
+                 "pipeline before proceeding."
+        ),
+        "representativeness_result": representativeness_result,
+    }
+
+    OUTPUT_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    OUTPUT_FILE.write_text(
+        json.dumps(
+            result,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    print("REPRESENTATIVENESS ASSESSMENT GENERATED")
+    print(
+        f"Result: {representativeness_result}"
+    )
+    print(
+        f"Source records: {len(source)}"
+    )
+    print(
+        f"Canonical records: {len(canonical)}"
+    )
+    print(
+        f"Canonical lead records assessed: {len(lead_records)}"
+    )
+    print(
+        f"Core coverage checks passed: "
+        f"{sum(coverage_checks.values())}/"
+        f"{len(coverage_checks)}"
+    )
+    print(
+        f"Output: {OUTPUT_FILE}"
+    )
+
+
+if __name__ == "__main__":
+    main()
 </file>
 
 <file path="docs/CANONICAL_DATA_MAPPING.md">
@@ -10260,6 +9856,44 @@ Canonical transformation
         |
         v
 data/canonical/intelligence_data.csv
+</file>
+
+<file path="docs/DATA_QUALITY_ASSESSMENT.md">
+# Data Quality Assessment
+
+## Project
+
+**POC-7 — Lead Funnel Conversion Observatory**
+
+## Canonical Data Version
+
+**phase3-v2**
+
+## Validation Result
+
+**PASS**
+
+The canonical dataset passed structural validation with **60 records and 20 columns**.
+
+## Synthetic Data Provenance
+
+**Confirmed**
+
+All **60 canonical records** have `is_synthetic=true`.
+
+The synthetic-data provenance was confirmed from the Phase 2 source history and is now explicitly preserved in the Phase 3 canonical dataset.
+
+## Blocking Issues
+
+**0**
+
+The initial missing synthetic-provenance metadata issue was corrected in the canonical pipeline. The dataset was regenerated with `is_synthetic=true` and `data_version=phase3-v2`, and the quality assessment was rerun successfully.
+
+## Quality Assessment Status
+
+**PASS — no blocking quality issues remain.**
+
+The canonical dataset is therefore suitable to proceed to analytical track development, subject to the documented sampling and dataset limitations.
 </file>
 
 <file path="docs/DATA_SOURCE_INVENTORY.md">
@@ -11612,6 +11246,482 @@ export default function SankeyChart({ data }: SankeyChartProps) {
   "canonical_column_count": 20,
   "errors": [],
   "warnings": []
+}
+</file>
+
+<file path="data-science/outputs/quality_assessment.json">
+{
+  "assessment_version": "post2-v1",
+  "source_of_truth": "data\\canonical\\intelligence_data.csv",
+  "result": "PASS",
+  "dataset": {
+    "record_count": 60,
+    "column_count": 20,
+    "file_size_bytes": 10578,
+    "file_size_mb": 0.0101
+  },
+  "completeness": {
+    "record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 60
+    },
+    "record_type": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "observed_at": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "entity_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "related_entity_id": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "entity_name": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "category": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 3
+    },
+    "subcategory": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 4
+    },
+    "status": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "stage": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "metric_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 52
+    },
+    "metric_unit": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "text_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 15
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "longitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "source_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "source_record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "is_synthetic": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "data_version": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    }
+  },
+  "uniqueness": {
+    "total_record_ids": 60,
+    "unique_record_ids": 60,
+    "empty_record_ids": 0,
+    "duplicate_record_ids": 0
+  },
+  "temporal": {
+    "non_null_date_count": 60,
+    "parseable_date_count": 60,
+    "invalid_date_count": 0,
+    "parse_success_rate": 100.0
+  },
+  "numeric": {
+    "longitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "invalid_count": 0
+    }
+  },
+  "coordinates": {
+    "latitude": {
+      "minimum": -90,
+      "maximum": 90,
+      "invalid_count": 0
+    },
+    "longitude": {
+      "minimum": -180,
+      "maximum": 180,
+      "invalid_count": 0
+    }
+  },
+  "metric_units": {
+    "lead_value": [
+      "currency_unspecified"
+    ],
+    "days_in_stage": [
+      "days"
+    ]
+  },
+  "mixed_metric_units": {},
+  "categories": {
+    "category": {
+      "Payments": 24,
+      "Analytics": 18,
+      "Security": 18
+    },
+    "subcategory": {
+      "Website": 22,
+      "Campaign": 14,
+      "Referral": 14,
+      "Partner": 10
+    },
+    "status": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "stage": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "record_type": {
+      "crm_lead": 30,
+      "crm_lead_metric": 30
+    },
+    "metric_name": {
+      "days_in_stage": 30,
+      "lead_value": 30
+    },
+    "metric_unit": {
+      "currency_unspecified": 30,
+      "days": 30
+    }
+  },
+  "synthetic_distribution": {
+    "true": 60
+  },
+  "text": {
+    "non_empty_count": 60,
+    "empty_count": 0,
+    "average_length": 28.9,
+    "maximum_length": 34,
+    "over_500_characters": 0
+  },
+  "source_accuracy_check": {
+    "source_sample_available": true,
+    "source_sample_record_count": 30,
+    "canonical_source_record_count": 30,
+    "all_source_ids_present_in_canonical": true,
+    "source_ids_missing_from_canonical": []
+  },
+  "blocking_issues": [],
+  "warnings": [],
+  "notes": [
+    "Post #2 uses only the approved canonical CSV as the analytical source.",
+    "The source repository does not document whether the CRM records are synthetic.",
+    "Latitude and longitude are empty because the Phase 2 source does not provide coordinates."
+  ]
+}
+</file>
+
+<file path="notebooks/01_canonical_data_validation_and_readiness.ipynb">
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "256c4c24",
+   "metadata": {},
+   "source": [
+    "# Canonical Data Validation and Analytical Readiness\n",
+    "\n",
+    "**Project:** Lead Funnel Conversion Observatory  \n",
+    "**Phase:** Phase 3  \n",
+    "**Data version:** phase3-v2  \n",
+    "\n",
+    "This notebook validates the approved canonical schema and records the final Phase 3 analytical-readiness evidence."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "44e952e2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-03T12:17:35.275980Z",
+     "iopub.status.busy": "2026-10-03T12:17:35.275396Z",
+     "iopub.status.idle": "2026-10-03T12:17:35.972248Z",
+     "shell.execute_reply": "2026-10-03T12:17:35.970163Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Canonical records: 60\n",
+      "Canonical columns: 20\n"
+     ]
+    }
+   ],
+   "source": [
+    "from pathlib import Path\n",
+    "import json\n",
+    "import pandas as pd\n",
+    "\n",
+    "ROOT = Path.cwd().parent if Path.cwd().name == 'notebooks' else Path.cwd()\n",
+    "CANONICAL = ROOT / 'data' / 'canonical' / 'intelligence_data.csv'\n",
+    "OUTPUTS = ROOT / 'data-science' / 'outputs'\n",
+    "\n",
+    "df = pd.read_csv(CANONICAL)\n",
+    "print('Canonical records:', len(df))\n",
+    "print('Canonical columns:', len(df.columns))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "1d24a901",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-03T12:17:35.977409Z",
+     "iopub.status.busy": "2026-10-03T12:17:35.976855Z",
+     "iopub.status.idle": "2026-10-03T12:17:35.992740Z",
+     "shell.execute_reply": "2026-10-03T12:17:35.990179Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "STRUCTURAL VALIDATION: PASS\n",
+      "Canonical schema columns: PASS\n",
+      "Synthetic flag: true\n",
+      "Data version: phase3-v2\n"
+     ]
+    }
+   ],
+   "source": [
+    "required_columns = [\n",
+    "    'record_id', 'record_type', 'observed_at', 'entity_id',\n",
+    "    'related_entity_id', 'entity_name', 'category', 'subcategory',\n",
+    "    'status', 'stage', 'metric_name', 'metric_value', 'metric_unit',\n",
+    "    'text_value', 'latitude', 'longitude', 'source_name',\n",
+    "    'source_record_id', 'is_synthetic', 'data_version'\n",
+    "]\n",
+    "\n",
+    "missing_columns = [c for c in required_columns if c not in df.columns]\n",
+    "assert not missing_columns, f'Missing required canonical columns: {missing_columns}'\n",
+    "assert len(df) == 60, f'Expected 60 canonical records, found {len(df)}'\n",
+    "assert len(df.columns) == 20, f'Expected 20 canonical columns, found {len(df.columns)}'\n",
+    "assert df['is_synthetic'].astype(str).str.lower().eq('true').all()\n",
+    "assert df['data_version'].astype(str).eq('phase3-v2').all()\n",
+    "\n",
+    "print('STRUCTURAL VALIDATION: PASS')\n",
+    "print('Canonical schema columns: PASS')\n",
+    "print('Synthetic flag: true')\n",
+    "print('Data version: phase3-v2')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "a7a00b69",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-03T12:17:35.998679Z",
+     "iopub.status.busy": "2026-10-03T12:17:35.997886Z",
+     "iopub.status.idle": "2026-10-03T12:17:36.048862Z",
+     "shell.execute_reply": "2026-10-03T12:17:36.046441Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "QUALITY RESULT: PASS\n",
+      "REPRESENTATIVENESS RESULT: PASS\n",
+      "ANALYTICAL READINESS: DATA READY FOR ANALYTICAL TRACK DEVELOPMENT\n",
+      "PRIMARY ARCHETYPE: Process Lifecycle\n",
+      "PRIMARY TRACK: Track A — Comparative\n"
+     ]
+    }
+   ],
+   "source": [
+    "quality = json.loads((OUTPUTS / 'quality_assessment.json').read_text(encoding='utf-8'))\n",
+    "representativeness = json.loads((OUTPUTS / 'representativeness_assessment.json').read_text(encoding='utf-8'))\n",
+    "readiness = json.loads((OUTPUTS / 'analytical_readiness.json').read_text(encoding='utf-8'))\n",
+    "\n",
+    "print('QUALITY RESULT:', quality.get('result'))\n",
+    "print('REPRESENTATIVENESS RESULT:', representativeness.get('representativeness_result'))\n",
+    "print('ANALYTICAL READINESS:', readiness.get('final_result'))\n",
+    "print('PRIMARY ARCHETYPE:', readiness.get('primary_archetype'))\n",
+    "print('PRIMARY TRACK:', readiness.get('primary_track'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "5ed2827a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-03T12:17:36.053561Z",
+     "iopub.status.busy": "2026-10-03T12:17:36.053032Z",
+     "iopub.status.idle": "2026-10-03T12:17:36.084104Z",
+     "shell.execute_reply": "2026-10-03T12:17:36.081728Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Final validation summary\n",
+      "-------------------------\n",
+      "Canonical records: 60\n",
+      "Canonical columns: 20\n",
+      "Source leads: 30\n",
+      "Observed date coverage: 2026-01-05T00:00:00 to 2026-03-20T00:00:00\n",
+      "Categories: Analytics, Payments, Security\n",
+      "Subcategories: Campaign, Partner, Referral, Website\n",
+      "Statuses: Lead, Lost, Opportunity, Proposal, Qualified, Won\n",
+      "Stages: Lead, Lost, Opportunity, Proposal, Qualified, Won\n",
+      "Metric names: days_in_stage, lead_value\n",
+      "Structured text_value non-null: 60\n",
+      "Latitude non-null: 0\n",
+      "Longitude non-null: 0\n"
+     ]
+    }
+   ],
+   "source": [
+    "observed = pd.to_datetime(df['observed_at'], errors='coerce')\n",
+    "lead_records = df[df['record_type'].astype(str).eq('crm_lead')]\n",
+    "text_count = df['text_value'].notna().sum()\n",
+    "\n",
+    "print('Final validation summary')\n",
+    "print('-------------------------')\n",
+    "print('Canonical records:', len(df))\n",
+    "print('Canonical columns:', len(df.columns))\n",
+    "print('Source leads:', lead_records['source_record_id'].nunique())\n",
+    "print('Observed date coverage:', observed.min().isoformat(), 'to', observed.max().isoformat())\n",
+    "print('Categories:', ', '.join(sorted(df['category'].dropna().astype(str).unique())))\n",
+    "print('Subcategories:', ', '.join(sorted(df['subcategory'].dropna().astype(str).unique())))\n",
+    "print('Statuses:', ', '.join(sorted(df['status'].dropna().astype(str).unique())))\n",
+    "print('Stages:', ', '.join(sorted(df['stage'].dropna().astype(str).unique())))\n",
+    "print('Metric names:', ', '.join(sorted(df['metric_name'].dropna().astype(str).unique())))\n",
+    "print('Structured text_value non-null:', text_count)\n",
+    "print('Latitude non-null:', df['latitude'].notna().sum())\n",
+    "print('Longitude non-null:', df['longitude'].notna().sum())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "723c88de",
+   "metadata": {},
+   "source": [
+    "## Final Result\n",
+    "\n",
+    "The approved canonical dataset passes structural, quality and representativeness checks. The primary data archetype is **Process Lifecycle** and the primary supported analytical track is **Track A ? Comparative**.\n",
+    "\n",
+    "The dataset is synthetic and contains 30 source CRM leads represented as 60 canonical analytical records. The canonical schema uses `category`, `subcategory`, `observed_at` and `text_value`; source-level fields such as location and team are not treated as canonical columns."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
 }
 </file>
 
