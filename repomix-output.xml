@@ -141,92 +141,6 @@ tsconfig.json
 <files>
 This section contains the contents of the repository's files.
 
-<file path="data/quality/data_profile.json">
-{
-  "profile_version": "phase3-v2",
-  "source": {
-    "path": "src/data/crmData.ts",
-    "extracted_path": "data/source-sample/source_sample.csv",
-    "record_count": 30,
-    "column_count": 9
-  },
-  "source_columns": [
-    "id",
-    "date",
-    "location",
-    "team",
-    "product",
-    "source",
-    "stage",
-    "daysInStage",
-    "value"
-  ],
-  "date_range": {
-    "minimum": "2026-01-05",
-    "maximum": "2026-03-20"
-  },
-  "categorical_fields": {
-    "location": [
-      "Bangalore",
-      "Mumbai",
-      "Delhi",
-      "Chennai",
-      "Hyderabad"
-    ],
-    "team": [
-      "Enterprise",
-      "SMB",
-      "Growth"
-    ],
-    "product": [
-      "Payments",
-      "Analytics",
-      "Security"
-    ],
-    "source": [
-      "Website",
-      "Referral",
-      "Campaign",
-      "Partner"
-    ],
-    "stage": [
-      "Lead",
-      "Qualified",
-      "Opportunity",
-      "Proposal",
-      "Won",
-      "Lost"
-    ]
-  },
-  "numeric_fields": [
-    "daysInStage",
-    "value"
-  ],
-  "canonical": {
-    "path": "data/canonical/intelligence_data.csv",
-    "record_count": 60,
-    "column_count": 20
-  },
-  "sampling": {
-    "method": "full_retention",
-    "source_records_retained": 30,
-    "source_records_removed": 0,
-    "random_sampling": false,
-    "random_seed": null
-  },
-  "provenance": {
-    "synthetic_status": "confirmed",
-    "requires_confirmation": false
-  },
-  "quality_notes": [
-    "All available Phase 2 source records were retained.",
-    "Canonical transformation creates two records per source lead.",
-    "Currency for the source value field is not documented.",
-    "The Phase 2 repository documents the CRM dataset as synthetic data."
-  ]
-}
-</file>
-
 <file path="data/quality/sampling_report.md">
 # Sampling and Reduction Report
 
@@ -370,52 +284,6 @@ L027,2026-03-12,Mumbai,Enterprise,Payments,Campaign,Won,7,118000
 L028,2026-03-15,Delhi,SMB,Analytics,Website,Lost,35,33000
 L029,2026-03-17,Bangalore,Growth,Payments,Referral,Qualified,5,41000
 L030,2026-03-20,Chennai,Enterprise,Security,Partner,Won,13,101000
-</file>
-
-<file path="data/manifest.json">
-{
-  "manifest_version": "phase3-v2",
-  "package_name": "POC-7 Lead Funnel Conversion Observatory - Phase 3 Canonical Data Package",
-  "source": {
-    "application": "Phase 2 Lead Funnel Conversion Observatory",
-    "source_path": "src/data/crmData.ts",
-    "source_sample": "data/source-sample/source_sample.csv",
-    "source_record_count": 30
-  },
-  "sampling": {
-    "method": "full_retention",
-    "records_retained": 30,
-    "records_removed": 0,
-    "random_sampling": false
-  },
-  "canonical": {
-    "path": "data/canonical/intelligence_data.csv",
-    "record_count": 60,
-    "column_count": 20,
-    "schema_path": "data/schema.json"
-  },
-  "published": {
-    "path": "data/published/intelligence_data.json",
-    "generated_from": "data/canonical/intelligence_data.csv"
-  },
-  "quality": {
-    "data_profile": "data/quality/data_profile.json",
-    "validation_report": "data/quality/validation_report.json"
-  },
-  "pipeline": {
-    "extract": "scripts/data_pipeline/extract_data.py",
-    "sample": "scripts/data_pipeline/sample_data.py",
-    "standardize": "scripts/data_pipeline/standardize_data.py",
-    "validate": "scripts/data_pipeline/validate_data.py",
-    "publish": "scripts/data_pipeline/publish_data.py"
-  },
-  "data_version": "phase3-v2",
-  "provenance": {
-    "synthetic_status": "confirmed",
-    "confirmation_required": false
-  },
-  "status": "VALIDATED"
-}
 </file>
 
 <file path="data/README.md">
@@ -685,700 +553,6 @@ data/
     "The sample should not be interpreted as representative of a larger real-world CRM population without additional evidence."
   ],
   "final_result": "DATA READY FOR ANALYTICAL TRACK DEVELOPMENT"
-}
-</file>
-
-<file path="data-science/outputs/canonical_profile.json">
-{
-  "profile_version": "post2-v1",
-  "source_of_truth": "data\\canonical\\intelligence_data.csv",
-  "dataset_structure": {
-    "record_count": 60,
-    "column_count": 20,
-    "file_size_bytes": 10578,
-    "file_size_mb": 0.0101,
-    "data_versions": [
-      "phase3-v2"
-    ],
-    "source_record_count": 30
-  },
-  "record_type_distribution": {
-    "crm_lead": 30,
-    "crm_lead_metric": 30
-  },
-  "source_distribution": {
-    "phase2_crmData": 60
-  },
-  "synthetic_distribution": {
-    "true": 60
-  },
-  "columns": {
-    "record_id": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 60,
-      "example_values": [
-        "L001",
-        "L001_days_in_stage",
-        "L002",
-        "L002_days_in_stage",
-        "L003"
-      ],
-      "expected_role": "Unique canonical record identifier"
-    },
-    "record_type": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2,
-      "example_values": [
-        "crm_lead",
-        "crm_lead_metric"
-      ],
-      "expected_role": "Canonical record type"
-    },
-    "observed_at": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30,
-      "example_values": [
-        "2026-01-05",
-        "2026-01-08",
-        "2026-01-10",
-        "2026-01-12",
-        "2026-01-15"
-      ],
-      "expected_role": "Observation date or timestamp"
-    },
-    "entity_id": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30,
-      "example_values": [
-        "L001",
-        "L002",
-        "L003",
-        "L004",
-        "L005"
-      ],
-      "expected_role": "Primary entity identifier"
-    },
-    "related_entity_id": {
-      "dtype_observed": "string",
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0,
-      "example_values": [],
-      "expected_role": "Related entity identifier"
-    },
-    "entity_name": {
-      "dtype_observed": "string",
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0,
-      "example_values": [],
-      "expected_role": "Human-readable entity name"
-    },
-    "category": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 3,
-      "example_values": [
-        "Analytics",
-        "Payments",
-        "Security"
-      ],
-      "expected_role": "Primary category"
-    },
-    "subcategory": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 4,
-      "example_values": [
-        "Campaign",
-        "Partner",
-        "Referral",
-        "Website"
-      ],
-      "expected_role": "Secondary category"
-    },
-    "status": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6,
-      "example_values": [
-        "Lead",
-        "Lost",
-        "Opportunity",
-        "Proposal",
-        "Qualified"
-      ],
-      "expected_role": "Operational status"
-    },
-    "stage": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6,
-      "example_values": [
-        "Lead",
-        "Lost",
-        "Opportunity",
-        "Proposal",
-        "Qualified"
-      ],
-      "expected_role": "Lifecycle or funnel stage"
-    },
-    "metric_name": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2,
-      "example_values": [
-        "days_in_stage",
-        "lead_value"
-      ],
-      "expected_role": "Metric definition"
-    },
-    "metric_value": {
-      "dtype_observed": "numeric",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 52,
-      "example_values": [
-        "10",
-        "101000",
-        "105000",
-        "11",
-        "110000"
-      ],
-      "expected_role": "Numeric metric value"
-    },
-    "metric_unit": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2,
-      "example_values": [
-        "currency_unspecified",
-        "days"
-      ],
-      "expected_role": "Metric unit"
-    },
-    "text_value": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 15,
-      "example_values": [
-        "location=Bangalore;team=Enterprise",
-        "location=Bangalore;team=Growth",
-        "location=Bangalore;team=SMB",
-        "location=Chennai;team=Enterprise",
-        "location=Chennai;team=Growth"
-      ],
-      "expected_role": "Contextual text value"
-    },
-    "latitude": {
-      "dtype_observed": "numeric",
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0,
-      "example_values": [],
-      "expected_role": "Geographic latitude"
-    },
-    "longitude": {
-      "dtype_observed": "numeric",
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0,
-      "example_values": [],
-      "expected_role": "Geographic longitude"
-    },
-    "source_name": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1,
-      "example_values": [
-        "phase2_crmData"
-      ],
-      "expected_role": "Source system identifier"
-    },
-    "source_record_id": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30,
-      "example_values": [
-        "L001",
-        "L002",
-        "L003",
-        "L004",
-        "L005"
-      ],
-      "expected_role": "Original source record identifier"
-    },
-    "is_synthetic": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1,
-      "example_values": [
-        "true"
-      ],
-      "expected_role": "Synthetic-data provenance flag"
-    },
-    "data_version": {
-      "dtype_observed": "string",
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1,
-      "example_values": [
-        "phase3-v2"
-      ],
-      "expected_role": "Canonical data version"
-    }
-  },
-  "numerical_coverage": {
-    "longitude": {
-      "non_null_count": 0,
-      "minimum": null,
-      "maximum": null,
-      "mean": null,
-      "median": null,
-      "standard_deviation": null,
-      "invalid_count": 0
-    },
-    "metric_value": {
-      "non_null_count": 60,
-      "minimum": 3.0,
-      "maximum": 132000.0,
-      "mean": 33723.21666666667,
-      "median": 12517.5,
-      "standard_deviation": 41199.326686571425,
-      "invalid_count": 0
-    },
-    "latitude": {
-      "non_null_count": 0,
-      "minimum": null,
-      "maximum": null,
-      "mean": null,
-      "median": null,
-      "standard_deviation": null,
-      "invalid_count": 0
-    }
-  },
-  "date_time_coverage": {
-    "non_null_date_count": 60,
-    "parseable_date_count": 60,
-    "parse_success_rate": 100.0,
-    "earliest": "2026-01-05T00:00:00",
-    "latest": "2026-03-20T00:00:00",
-    "unique_dates": 30,
-    "unique_months": 3,
-    "unique_date_values": [
-      "2026-01-05",
-      "2026-01-08",
-      "2026-01-10",
-      "2026-01-12",
-      "2026-01-15",
-      "2026-01-18",
-      "2026-01-20",
-      "2026-01-22",
-      "2026-01-25",
-      "2026-01-27",
-      "2026-02-01",
-      "2026-02-03",
-      "2026-02-05",
-      "2026-02-08",
-      "2026-02-10",
-      "2026-02-12",
-      "2026-02-15",
-      "2026-02-18",
-      "2026-02-20",
-      "2026-02-22",
-      "2026-02-25",
-      "2026-03-01",
-      "2026-03-04",
-      "2026-03-06",
-      "2026-03-08",
-      "2026-03-10",
-      "2026-03-12",
-      "2026-03-15",
-      "2026-03-17",
-      "2026-03-20"
-    ],
-    "unique_month_values": [
-      "2026-01",
-      "2026-02",
-      "2026-03"
-    ],
-    "timezone_consistency_note": "Source dates are date-only values; no timezone is explicitly documented."
-  },
-  "categorical_coverage": {
-    "category": {
-      "Payments": 24,
-      "Analytics": 18,
-      "Security": 18
-    },
-    "subcategory": {
-      "Website": 22,
-      "Campaign": 14,
-      "Referral": 14,
-      "Partner": 10
-    },
-    "status": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "stage": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "metric_name": {
-      "days_in_stage": 30,
-      "lead_value": 30
-    },
-    "metric_unit": {
-      "currency_unspecified": 30,
-      "days": 30
-    },
-    "record_type": {
-      "crm_lead": 30,
-      "crm_lead_metric": 30
-    }
-  },
-  "geographic_coverage": {
-    "valid_latitude_count": 0,
-    "invalid_latitude_count": 0,
-    "valid_longitude_count": 0,
-    "invalid_longitude_count": 0,
-    "latitude_range": null,
-    "longitude_range": null,
-    "coordinate_pair_count": 0
-  },
-  "text_coverage": {
-    "non_null_count": 60,
-    "empty_count": 0,
-    "average_length": 28.9,
-    "maximum_length": 34,
-    "possible_truncation_count": 0
-  },
-  "observations": [
-    "The canonical dataset contains 60 records across 20 columns.",
-    "The record-type distribution contains {'crm_lead': 30, 'crm_lead_metric': 30}.",
-    "The dataset spans 2026-01-05T00:00:00 to 2026-03-20T00:00:00.",
-    "Latitude and longitude are blank for the available canonical records because the Phase 2 source does not provide coordinate data.",
-    "Synthetic-data status is undocumented in the available Phase 2 repository."
-  ],
-  "uniqueness": {
-    "record_id_count": 60,
-    "unique_record_id_count": 60,
-    "duplicate_record_id_count": 0,
-    "empty_record_id_count": 0,
-    "unique_entity_id_count": 30,
-    "unique_related_entity_id_count": 0
-  },
-  "metric_unit_consistency": {
-    "lead_value": [
-      "currency_unspecified"
-    ],
-    "days_in_stage": [
-      "days"
-    ]
-  },
-  "provenance": {
-    "synthetic_record_count": 60,
-    "non_synthetic_record_count": 0,
-    "undocumented_or_missing_provenance_count": 0,
-    "source_names": [
-      "phase2_crmData"
-    ],
-    "provenance_note": "The Phase 2 repository does not document whether the CRM records are synthetic, anonymized, or derived from real operational data."
-  }
-}
-</file>
-
-<file path="data-science/outputs/quality_assessment.json">
-{
-  "assessment_version": "post2-v1",
-  "source_of_truth": "data\\canonical\\intelligence_data.csv",
-  "result": "PASS",
-  "dataset": {
-    "record_count": 60,
-    "column_count": 20,
-    "file_size_bytes": 10578,
-    "file_size_mb": 0.0101
-  },
-  "completeness": {
-    "record_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 60
-    },
-    "record_type": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
-    },
-    "observed_at": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
-    },
-    "entity_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
-    },
-    "related_entity_id": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "entity_name": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "category": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 3
-    },
-    "subcategory": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 4
-    },
-    "status": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6
-    },
-    "stage": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 6
-    },
-    "metric_name": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
-    },
-    "metric_value": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 52
-    },
-    "metric_unit": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 2
-    },
-    "text_value": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 15
-    },
-    "latitude": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "longitude": {
-      "non_null_count": 0,
-      "null_count": 60,
-      "null_percentage": 100.0,
-      "unique_count": 0
-    },
-    "source_name": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
-    },
-    "source_record_id": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 30
-    },
-    "is_synthetic": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
-    },
-    "data_version": {
-      "non_null_count": 60,
-      "null_count": 0,
-      "null_percentage": 0.0,
-      "unique_count": 1
-    }
-  },
-  "uniqueness": {
-    "total_record_ids": 60,
-    "unique_record_ids": 60,
-    "empty_record_ids": 0,
-    "duplicate_record_ids": 0
-  },
-  "temporal": {
-    "non_null_date_count": 60,
-    "parseable_date_count": 60,
-    "invalid_date_count": 0,
-    "parse_success_rate": 100.0
-  },
-  "numeric": {
-    "longitude": {
-      "non_null_count": 0,
-      "invalid_count": 0
-    },
-    "metric_value": {
-      "non_null_count": 60,
-      "invalid_count": 0
-    },
-    "latitude": {
-      "non_null_count": 0,
-      "invalid_count": 0
-    }
-  },
-  "coordinates": {
-    "latitude": {
-      "minimum": -90,
-      "maximum": 90,
-      "invalid_count": 0
-    },
-    "longitude": {
-      "minimum": -180,
-      "maximum": 180,
-      "invalid_count": 0
-    }
-  },
-  "metric_units": {
-    "lead_value": [
-      "currency_unspecified"
-    ],
-    "days_in_stage": [
-      "days"
-    ]
-  },
-  "mixed_metric_units": {},
-  "categories": {
-    "category": {
-      "Payments": 24,
-      "Analytics": 18,
-      "Security": 18
-    },
-    "subcategory": {
-      "Website": 22,
-      "Campaign": 14,
-      "Referral": 14,
-      "Partner": 10
-    },
-    "status": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "stage": {
-      "Won": 20,
-      "Opportunity": 10,
-      "Qualified": 10,
-      "Proposal": 8,
-      "Lead": 6,
-      "Lost": 6
-    },
-    "record_type": {
-      "crm_lead": 30,
-      "crm_lead_metric": 30
-    },
-    "metric_name": {
-      "days_in_stage": 30,
-      "lead_value": 30
-    },
-    "metric_unit": {
-      "currency_unspecified": 30,
-      "days": 30
-    }
-  },
-  "synthetic_distribution": {
-    "true": 60
-  },
-  "text": {
-    "non_empty_count": 60,
-    "empty_count": 0,
-    "average_length": 28.9,
-    "maximum_length": 34,
-    "over_500_characters": 0
-  },
-  "source_accuracy_check": {
-    "source_sample_available": true,
-    "source_sample_record_count": 30,
-    "canonical_source_record_count": 30,
-    "all_source_ids_present_in_canonical": true,
-    "source_ids_missing_from_canonical": []
-  },
-  "blocking_issues": [],
-  "warnings": [],
-  "notes": [
-    "Post #2 uses only the approved canonical CSV as the analytical source.",
-    "The source repository does not document whether the CRM records are synthetic.",
-    "Latitude and longitude are empty because the Phase 2 source does not provide coordinates."
-  ]
 }
 </file>
 
@@ -4717,163 +3891,6 @@ Command:
 python .\\scripts\\data\_pipeline\\validate\_data.py
 </file>
 
-<file path="docs/CANONICAL_DATA_MAPPING.md">
-# Canonical Data Mapping
-
-## 1. Purpose
-
-This document describes how the Phase 2 CRM source fields are mapped into the Phase 3 canonical schema.
-
-Source:
-
-`src/data/crmData.ts`
-
-Extracted source:
-
-`data/source-sample/source_sample.csv`
-
-Canonical source of truth:
-
-`data/canonical/intelligence_data.csv`
-
-## 2. Source Fields
-
-The Phase 2 CRM source contains these fields:
-
-| Source Field | Description |
-|---|---|
-| `id` | Unique lead identifier |
-| `date` | Lead observation date |
-| `location` | Lead location |
-| `team` | Responsible team |
-| `product` | Product associated with the lead |
-| `source` | Lead acquisition source |
-| `stage` | Current funnel stage |
-| `daysInStage` | Number of days in the current stage |
-| `value` | Lead value |
-
-## 3. Canonical Mapping
-
-| Source Field | Canonical Field | Transformation |
-|---|---|---|
-| `id` | `entity_id` | Preserved as the lead identifier |
-| `id` | `source_record_id` | Preserved as the source record identifier |
-| `date` | `observed_at` | Converted to ISO date representation |
-| `product` | `category` | Product value preserved |
-| `source` | `subcategory` | Lead source preserved |
-| `stage` | `status` | Funnel stage preserved |
-| `stage` | `stage` | Funnel stage preserved |
-| `value` | `metric_value` | Stored as numeric lead value |
-| `daysInStage` | `metric_value` | Stored as numeric duration in a separate metric record |
-| `location` | `text_value` | Preserved as part of the source context |
-| `team` | `text_value` | Preserved as part of the source context |
-
-## 4. Canonical Record Types
-
-Each source lead generates two canonical records.
-
-### 4.1 Lead Value Record
-
-Record type:
-
-`crm_lead`
-
-This record represents the lead and its associated value.
-
-The `metric_name` is:
-
-`lead_value`
-
-The `metric_unit` is:
-
-`currency_unspecified`
-
-The currency is not documented in the Phase 2 source, so no specific currency is inferred.
-
-### 4.2 Days-in-Stage Record
-
-Record type:
-
-`crm_lead_metric`
-
-This record represents the number of days the lead has been in its current stage.
-
-The `metric_name` is:
-
-`days_in_stage`
-
-The `metric_unit` is:
-
-`days`
-
-## 5. Context Preservation
-
-The canonical schema does not contain separate fields for `location` and `team`.
-
-Therefore, these source values are preserved in `text_value` using the following format:
-
-`location=<location>;team=<team>`
-
-Example:
-
-`location=Bangalore;team=Enterprise`
-
-## 6. Canonical Fields Without Direct Source Values
-
-The following canonical fields do not have direct values in the Phase 2 CRM source and therefore remain blank where appropriate:
-
-- `related_entity_id`
-- `entity_name`
-- `latitude`
-- `longitude`
-
-No values are invented for these fields.
-
-## 7. Source and Version Tracking
-
-Every canonical record contains:
-
-- `source_name = phase2_crmData`
-- `source_record_id = original Phase 2 lead ID`
-- `data_version = phase3-v2`
-
-## 8. Synthetic Data Status
-
-The Phase 2 repository documents the CRM dataset as synthetic data.
-
-The Phase 3 canonical records therefore carry:
-
-`is_synthetic = true`
-
-The package provenance is confirmed and does not require further confirmation.
-
-## 9. Transformation Summary
-
-The transformation is:
-
-```text
-Phase 2 crmData.ts
-        |
-        v
-source_sample.csv
-        |
-        v
-30 retained source records
-        |
-        v
-Canonical transformation
-        |
-        +--> crm_lead record
-        |
-        +--> crm_lead_metric record
-        |
-        v
-60 canonical records
-        |
-        v
-data/canonical/intelligence_data.csv
-</file>
-
 <file path="docs/CANONICAL_DATA_PACKAGE_VALIDATION.md">
 # Canonical Data Package Validation
 
@@ -5716,149 +4733,6 @@ Post #1 structural validation command:
 python .\\scripts\\data\_pipeline\\validate\_data.py
 </file>
 
-<file path="docs/DATA_SOURCE_INVENTORY.md">
-# Data Source Inventory
-
-## 1. Source Overview
-
-| Field | Details |
-|---|---|
-| Source name | Phase 2 CRM Lead Data |
-| Source type | Static TypeScript application data |
-| Current location | `src/data/crmData.ts` |
-| Access method | Local repository source file |
-| Current application usage | Used by the Phase 2 Lead Funnel Conversion Observatory dashboard |
-| Record count | 30 lead records |
-| Raw source format | TypeScript object array |
-| Phase 3 target format | CSV canonical data package |
-| Update pattern | Static data; no automated update mechanism documented |
-| Data provenance | Not documented in the repository |
-| Synthetic / real status | Not documented in the repository; requires confirmation |
-| Sensitivity | Not documented in the repository; requires confirmation |
-| Phase 3 decision | Use as the project-provided source dataset, subject to provenance and sensitivity confirmation |
-
-## 2. Current Source Structure
-
-The Phase 2 application stores CRM lead records in:
-
-`src/data/crmData.ts`
-
-The source contains the following fields for each lead:
-
-- `id`
-- `date`
-- `location`
-- `team`
-- `product`
-- `source`
-- `stage`
-- `daysInStage`
-- `value`
-
-The current dataset contains 30 records, identified from `L001` through `L030`.
-
-## 3. Observed Data Coverage
-
-The current source contains:
-
-- Lead identifiers
-- Observation dates
-- Geographic locations
-- Teams
-- Products
-- Lead sources
-- Funnel stages
-- Days spent in stage
-- Lead value
-
-Observed categorical values include:
-
-### Locations
-- Bangalore
-- Mumbai
-- Delhi
-- Chennai
-- Hyderabad
-
-### Teams
-- Enterprise
-- SMB
-- Growth
-
-### Products
-- Payments
-- Analytics
-- Security
-
-### Sources
-- Website
-- Referral
-- Campaign
-- Partner
-
-### Funnel stages
-- Lead
-- Qualified
-- Opportunity
-- Proposal
-- Won
-- Lost
-
-## 4. Date Coverage
-
-The currently observed source records span:
-
-**2026-01-05 to 2026-03-20**
-
-This range is based on the records currently present in `src/data/crmData.ts`.
-
-## 5. Numeric Measures
-
-The source contains two numeric measures:
-
-- `daysInStage` — number of days associated with the current funnel stage
-- `value` — numeric lead value
-
-## 6. Data Provenance and Sensitivity Note
-
-The repository does not currently document whether the CRM records are synthetic, anonymized, or derived from a real operational source.
-
-Therefore, Phase 3 does **not** assume a provenance classification that is not supported by the repository.
-
-Before final canonical-package approval, provenance and sensitivity should be confirmed.
-
-## 7. Phase 3 Data Foundation Decision
-
-The Phase 2 static CRM dataset is suitable as the starting source for the Phase 3 canonical data foundation because it is:
-
-- Local to the repository
-- Small and controlled
-- Structured as individual records
-- Already used by the existing Phase 2 application
-- Available without dependence on a live external API
-
-The dataset will be extracted from the existing Phase 2 source and transformed into the required Phase 3 canonical schema.
-
-The canonical dataset will become:
-
-`data/canonical/intelligence_data.csv`
-
-After approval, future Phase 3 analysis will use the canonical dataset as the single source of truth.
-
-## 8. Source Limitations
-
-The current source has the following limitations:
-
-1. The dataset contains only 30 records.
-2. Data provenance is not documented in the repository.
-3. Synthetic/real status is not documented.
-4. Data sensitivity classification is not documented.
-5. The source is embedded directly in application code rather than maintained as a standalone data file.
-6. No live data update mechanism is documented.
-
-These limitations will be recorded and addressed where applicable during the Phase 3 canonical data preparation and validation process.
-</file>
-
 <file path="docs/REPRESENTATIVENESS_ASSESSMENT.md">
 \# Representativeness Assessment
 
@@ -6655,164 +5529,6 @@ Command:
 python .\\data-science\\scripts\\assess\_representativeness.py
 </file>
 
-<file path="docs/SAMPLING_AND_REDUCTION_REPORT.md">
-# Sampling and Reduction Report
-
-## 1. Purpose
-
-This document records the sampling and reduction decision used to create the Phase 3 controlled data package.
-
-The source data is the Phase 2 CRM dataset located at:
-
-`src/data/crmData.ts`
-
-The extracted source sample is:
-
-`data/source-sample/source_sample.csv`
-
-## 2. Source Dataset
-
-The Phase 2 source contains:
-
-- Records: 30
-- Source fields: 9
-- Source format: Static TypeScript application data
-- Source application: Phase 2 Lead Funnel Conversion Observatory
-
-The source fields are:
-
-- `id`
-- `date`
-- `location`
-- `team`
-- `product`
-- `source`
-- `stage`
-- `daysInStage`
-- `value`
-
-## 3. Sampling Decision
-
-All available source records were retained.
-
-No random sampling was required because the source contains only 30 records and is already substantially below the Phase 3 default limit of 10,000 rows.
-
-### Sampling result
-
-| Measure | Result |
-|---|---:|
-| Source records | 30 |
-| Records retained | 30 |
-| Records removed | 0 |
-| Sampling method | Full retention |
-| Random sampling | No |
-| Random seed | Not applicable |
-
-## 4. Reason for Retention
-
-The complete source dataset was retained to avoid unnecessary loss of information.
-
-Keeping all 30 records preserves the available:
-
-- Lead identifiers
-- Dates
-- Locations
-- Teams
-- Products
-- Lead sources
-- Funnel stages
-- Days in stage
-- Lead values
-
-## 5. Category and Funnel Coverage
-
-The retained dataset preserves the funnel stages present in the Phase 2 source:
-
-- Lead
-- Qualified
-- Opportunity
-- Proposal
-- Won
-- Lost
-
-The available source also contains multiple locations, teams, products, and lead sources.
-
-No category-based records were intentionally removed.
-
-## 6. Date Coverage
-
-The source records span:
-
-`2026-01-05` to `2026-03-20`
-
-The complete available date range is retained.
-
-## 7. Reduction
-
-No source-record reduction was performed.
-
-The source sample therefore remains a complete representation of the available Phase 2 application dataset.
-
-The Phase 3 standardization step transforms these retained source records into the canonical schema.
-
-## 8. Canonical Transformation
-
-The 30 retained source records produce 60 canonical records.
-
-Each source lead produces:
-
-1. One `crm_lead` record representing the lead value.
-2. One `crm_lead_metric` record representing `days_in_stage`.
-
-Therefore:
-
-`30 source records -> 60 canonical records`
-
-The additional canonical records are transformation outputs and do not represent additional source records.
-
-## 9. Reproducibility
-
-The sampling process is deterministic.
-
-No random selection is performed.
-
-The controlled source sample is read by:
-
-`scripts/data_pipeline/sample_data.py`
-
-The same source sample therefore produces the same retention decision.
-
-## 10. Data Limits
-
-The source dataset is below the Phase 3 default limits for:
-
-- Number of rows
-- Number of columns
-- Controlled local data-package size
-
-The exact generated file sizes will be checked during final package validation.
-
-## 11. Provenance Limitation
-
-The Phase 2 repository does not document whether the CRM records are:
-
-- Synthetic
-- Anonymized
-- Derived from real operational data
-
-Therefore, the synthetic-data status has not been inferred.
-
-This provenance point requires confirmation before final package approval.
-
-## 12. Sampling Status
-
-**SAMPLING COMPLETE**
-
-All 30 available source records were retained.
-
-No source records were discarded during sampling or reduction.
-</file>
-
 <file path="docs/TRACK_A_COMPARATIVE_ANALYSIS.md">
 \# Track A — Comparative Analysis
 
@@ -7562,371 +6278,6 @@ def main():
     print("Sampling decision: RETAIN ALL SOURCE RECORDS")
     print(f"Records retained: {len(rows)}")
     print(f"Source sample: {SOURCE_FILE}")
-
-
-if __name__ == "__main__":
-    main()
-</file>
-
-<file path="scripts/data_pipeline/validate_data.py">
-from pathlib import Path
-import csv
-import json
-from datetime import datetime
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-CANONICAL_FILE = PROJECT_ROOT / "data" / "canonical" / "intelligence_data.csv"
-SCHEMA_FILE = PROJECT_ROOT / "data" / "schema.json"
-MANIFEST_FILE = PROJECT_ROOT / "data" / "manifest.json"
-REPORT_FILE = PROJECT_ROOT / "data" / "quality" / "validation_report.json"
-
-MAX_ROWS = 10000
-MAX_COLUMNS = 50
-MAX_TEXT_LENGTH = 500
-
-EXPECTED_COLUMNS = [
-    "record_id",
-    "record_type",
-    "observed_at",
-    "entity_id",
-    "related_entity_id",
-    "entity_name",
-    "category",
-    "subcategory",
-    "status",
-    "stage",
-    "metric_name",
-    "metric_value",
-    "metric_unit",
-    "text_value",
-    "latitude",
-    "longitude",
-    "source_name",
-    "source_record_id",
-    "is_synthetic",
-    "data_version",
-]
-
-NUMERIC_COLUMNS = {
-    "metric_value",
-    "latitude",
-    "longitude",
-}
-
-BOOLEAN_COLUMNS = {
-    "is_synthetic",
-}
-
-
-def fail(message):
-    raise ValueError(message)
-
-
-def validate_date(value):
-    if not value:
-        return
-
-    try:
-        datetime.fromisoformat(
-            value.replace("Z", "+00:00")
-        )
-    except ValueError:
-        fail(
-            f"Invalid observed_at value: {value}"
-        )
-
-
-def validate_numeric(value, column_name):
-    if not value:
-        return
-
-    try:
-        float(value)
-    except ValueError:
-        fail(
-            f"Invalid numeric value in {column_name}: {value}"
-        )
-
-
-def validate_boolean(value):
-    if value not in {"true", "false", ""}:
-        fail(
-            f"Invalid boolean value for is_synthetic: {value}"
-        )
-
-
-def main():
-
-    errors = []
-    warnings = []
-
-    required_files = [
-        CANONICAL_FILE,
-        SCHEMA_FILE,
-        MANIFEST_FILE,
-    ]
-
-    for file_path in required_files:
-        if not file_path.exists():
-            errors.append(
-                f"Missing required file: "
-                f"{file_path.relative_to(PROJECT_ROOT)}"
-            )
-
-    if errors:
-        write_report(
-            errors,
-            warnings,
-            0,
-            0,
-        )
-        fail("\n".join(errors))
-
-    with CANONICAL_FILE.open(
-        "r",
-        newline="",
-        encoding="utf-8",
-    ) as file:
-
-        reader = csv.DictReader(file)
-
-        actual_columns = reader.fieldnames or []
-
-        if actual_columns != EXPECTED_COLUMNS:
-            errors.append(
-                "Canonical column order does not match "
-                "the required schema."
-            )
-
-        rows = list(reader)
-
-    row_count = len(rows)
-    column_count = len(actual_columns)
-
-    if row_count > MAX_ROWS:
-        errors.append(
-            f"Row limit exceeded: {row_count} > {MAX_ROWS}"
-        )
-
-    if column_count > MAX_COLUMNS:
-        errors.append(
-            f"Column limit exceeded: {column_count} > {MAX_COLUMNS}"
-        )
-
-    record_ids = []
-
-    for index, row in enumerate(rows, start=2):
-
-        record_id = row.get(
-            "record_id",
-            ""
-        )
-
-        if not record_id:
-            errors.append(
-                f"Empty record_id at CSV row {index}"
-            )
-        else:
-            record_ids.append(record_id)
-
-        validate_date(
-            row.get(
-                "observed_at",
-                ""
-            )
-        )
-
-        for column_name in NUMERIC_COLUMNS:
-            validate_numeric(
-                row.get(
-                    column_name,
-                    ""
-                ),
-                column_name,
-            )
-
-        validate_boolean(
-            row.get(
-                "is_synthetic",
-                ""
-            )
-        )
-
-        text_value = row.get(
-            "text_value",
-            ""
-        )
-
-        if len(text_value) > MAX_TEXT_LENGTH:
-            errors.append(
-                f"text_value exceeds "
-                f"{MAX_TEXT_LENGTH} characters "
-                f"at CSV row {index}"
-            )
-
-        if not row.get(
-            "source_name",
-            ""
-        ):
-            errors.append(
-                f"Missing source_name at CSV row {index}"
-            )
-
-        if not row.get(
-            "data_version",
-            ""
-        ):
-            errors.append(
-                f"Missing data_version at CSV row {index}"
-            )
-
-    if len(record_ids) != len(set(record_ids)):
-        errors.append(
-            "Duplicate record_id values detected."
-        )
-
-    with SCHEMA_FILE.open(
-        "r",
-        encoding="utf-8",
-    ) as file:
-
-        schema = json.load(file)
-
-    schema_columns = [
-        item["name"]
-        for item in schema["columns"]
-    ]
-
-    if schema_columns != EXPECTED_COLUMNS:
-        errors.append(
-            "schema.json column definition does not match "
-            "the required canonical column order."
-        )
-
-    with MANIFEST_FILE.open(
-        "r",
-        encoding="utf-8",
-    ) as file:
-
-        manifest = json.load(file)
-
-    manifest_count = manifest[
-        "canonical"
-    ][
-        "record_count"
-    ]
-
-    if manifest_count != row_count:
-        errors.append(
-            "Manifest canonical record count does not match "
-            f"the CSV: {manifest_count} != {row_count}"
-        )
-
-    manifest_columns = manifest[
-        "canonical"
-    ][
-        "column_count"
-    ]
-
-    if manifest_columns != column_count:
-        errors.append(
-            "Manifest canonical column count does not match "
-            f"the CSV: {manifest_columns} != {column_count}"
-        )
-
-    if not manifest.get(
-        "data_version"
-    ):
-        errors.append(
-            "Manifest data_version is missing."
-        )
-
-    if not all(
-        row.get(
-            "is_synthetic",
-            ""
-        ) in {
-            "true",
-            "false"
-        }
-        for row in rows
-    ):
-        warnings.append(
-            "is_synthetic is not fully populated with "
-            "confirmed boolean provenance values."
-        )
-
-    write_report(
-        errors,
-        warnings,
-        row_count,
-        column_count,
-    )
-
-    if errors:
-        print("VALIDATION FAILED")
-
-        for error in errors:
-            print(
-                f"- {error}"
-            )
-
-        raise SystemExit(1)
-
-    print("VALIDATION PASSED")
-    print(
-        f"Canonical records: {row_count}"
-    )
-    print(
-        f"Canonical columns: {column_count}"
-    )
-
-    if warnings:
-        print("Warnings:")
-
-        for warning in warnings:
-            print(
-                f"- {warning}"
-            )
-
-
-def write_report(
-    errors,
-    warnings,
-    row_count,
-    column_count,
-):
-
-    REPORT_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    report = {
-        "validation_version": "phase3-v2",
-        "status": (
-            "PASSED"
-            if not errors
-            else "FAILED"
-        ),
-        "canonical_record_count": row_count,
-        "canonical_column_count": column_count,
-        "errors": errors,
-        "warnings": warnings,
-    }
-
-    with REPORT_FILE.open(
-        "w",
-        encoding="utf-8",
-    ) as file:
-
-        json.dump(
-            report,
-            file,
-            indent=2,
-        )
 
 
 if __name__ == "__main__":
@@ -10928,15 +9279,1289 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
 ]
 </file>
 
-<file path="data/quality/validation_report.json">
+<file path="data/quality/data_profile.json">
 {
-  "validation_version": "phase3-v2",
-  "status": "PASSED",
-  "canonical_record_count": 60,
-  "canonical_column_count": 20,
-  "errors": [],
-  "warnings": []
+  "profile_version": "phase3-v2",
+  "source": {
+    "path": "src/data/crmData.ts",
+    "extracted_path": "data/source-sample/source_sample.csv",
+    "record_count": 30,
+    "column_count": 9
+  },
+  "source_columns": [
+    "id",
+    "date",
+    "location",
+    "team",
+    "product",
+    "source",
+    "stage",
+    "daysInStage",
+    "value"
+  ],
+  "date_range": {
+    "minimum": "2026-01-05",
+    "maximum": "2026-03-20"
+  },
+  "categorical_fields": {
+    "location": [
+      "Bangalore",
+      "Mumbai",
+      "Delhi",
+      "Chennai",
+      "Hyderabad"
+    ],
+    "team": [
+      "Enterprise",
+      "SMB",
+      "Growth"
+    ],
+    "product": [
+      "Payments",
+      "Analytics",
+      "Security"
+    ],
+    "source": [
+      "Website",
+      "Referral",
+      "Campaign",
+      "Partner"
+    ],
+    "stage": [
+      "Lead",
+      "Qualified",
+      "Opportunity",
+      "Proposal",
+      "Won",
+      "Lost"
+    ]
+  },
+  "numeric_fields": [
+    "daysInStage",
+    "value"
+  ],
+  "canonical": {
+    "path": "data/canonical/intelligence_data.csv",
+    "record_count": 60,
+    "column_count": 20
+  },
+  "sampling": {
+    "method": "full_retention",
+    "source_records_retained": 30,
+    "source_records_removed": 0,
+    "random_sampling": false,
+    "random_seed": null
+  },
+  "provenance": {
+    "synthetic_status": "confirmed",
+    "requires_confirmation": false
+  },
+  "quality_notes": [
+    "All available Phase 2 source records were retained.",
+    "Canonical transformation creates two records per source lead.",
+    "Currency for the source value field is not documented.",
+    "The Phase 2 repository documents the CRM dataset as synthetic data."
+  ]
 }
+</file>
+
+<file path="data/manifest.json">
+{
+  "manifest_version": "phase3-v2",
+  "package_name": "POC-7 Lead Funnel Conversion Observatory - Phase 3 Canonical Data Package",
+  "source": {
+    "application": "Phase 2 Lead Funnel Conversion Observatory",
+    "source_path": "src/data/crmData.ts",
+    "source_sample": "data/source-sample/source_sample.csv",
+    "source_record_count": 30
+  },
+  "sampling": {
+    "method": "full_retention",
+    "records_retained": 30,
+    "records_removed": 0,
+    "random_sampling": false
+  },
+  "canonical": {
+    "path": "data/canonical/intelligence_data.csv",
+    "record_count": 60,
+    "column_count": 20,
+    "schema_path": "data/schema.json"
+  },
+  "published": {
+    "path": "data/published/intelligence_data.json",
+    "generated_from": "data/canonical/intelligence_data.csv"
+  },
+  "quality": {
+    "data_profile": "data/quality/data_profile.json",
+    "validation_report": "data/quality/validation_report.json"
+  },
+  "pipeline": {
+    "extract": "scripts/data_pipeline/extract_data.py",
+    "sample": "scripts/data_pipeline/sample_data.py",
+    "standardize": "scripts/data_pipeline/standardize_data.py",
+    "validate": "scripts/data_pipeline/validate_data.py",
+    "publish": "scripts/data_pipeline/publish_data.py"
+  },
+  "data_version": "phase3-v2",
+  "provenance": {
+    "synthetic_status": "confirmed",
+    "confirmation_required": false
+  },
+  "status": "VALIDATED"
+}
+</file>
+
+<file path="data-science/outputs/canonical_profile.json">
+{
+  "profile_version": "post2-v1",
+  "source_of_truth": "data\\canonical\\intelligence_data.csv",
+  "dataset_structure": {
+    "record_count": 60,
+    "column_count": 20,
+    "file_size_bytes": 10578,
+    "file_size_mb": 0.0101,
+    "data_versions": [
+      "phase3-v2"
+    ],
+    "source_record_count": 30
+  },
+  "record_type_distribution": {
+    "crm_lead": 30,
+    "crm_lead_metric": 30
+  },
+  "source_distribution": {
+    "phase2_crmData": 60
+  },
+  "synthetic_distribution": {
+    "true": 60
+  },
+  "columns": {
+    "record_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 60,
+      "example_values": [
+        "L001",
+        "L001_days_in_stage",
+        "L002",
+        "L002_days_in_stage",
+        "L003"
+      ],
+      "expected_role": "Unique canonical record identifier"
+    },
+    "record_type": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "crm_lead",
+        "crm_lead_metric"
+      ],
+      "expected_role": "Canonical record type"
+    },
+    "observed_at": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "2026-01-05",
+        "2026-01-08",
+        "2026-01-10",
+        "2026-01-12",
+        "2026-01-15"
+      ],
+      "expected_role": "Observation date or timestamp"
+    },
+    "entity_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "L001",
+        "L002",
+        "L003",
+        "L004",
+        "L005"
+      ],
+      "expected_role": "Primary entity identifier"
+    },
+    "related_entity_id": {
+      "dtype_observed": "string",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Related entity identifier"
+    },
+    "entity_name": {
+      "dtype_observed": "string",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Human-readable entity name"
+    },
+    "category": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 3,
+      "example_values": [
+        "Analytics",
+        "Payments",
+        "Security"
+      ],
+      "expected_role": "Primary category"
+    },
+    "subcategory": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 4,
+      "example_values": [
+        "Campaign",
+        "Partner",
+        "Referral",
+        "Website"
+      ],
+      "expected_role": "Secondary category"
+    },
+    "status": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6,
+      "example_values": [
+        "Lead",
+        "Lost",
+        "Opportunity",
+        "Proposal",
+        "Qualified"
+      ],
+      "expected_role": "Operational status"
+    },
+    "stage": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6,
+      "example_values": [
+        "Lead",
+        "Lost",
+        "Opportunity",
+        "Proposal",
+        "Qualified"
+      ],
+      "expected_role": "Lifecycle or funnel stage"
+    },
+    "metric_name": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "days_in_stage",
+        "lead_value"
+      ],
+      "expected_role": "Metric definition"
+    },
+    "metric_value": {
+      "dtype_observed": "numeric",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 52,
+      "example_values": [
+        "10",
+        "101000",
+        "105000",
+        "11",
+        "110000"
+      ],
+      "expected_role": "Numeric metric value"
+    },
+    "metric_unit": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2,
+      "example_values": [
+        "currency_unspecified",
+        "days"
+      ],
+      "expected_role": "Metric unit"
+    },
+    "text_value": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 15,
+      "example_values": [
+        "location=Bangalore;team=Enterprise",
+        "location=Bangalore;team=Growth",
+        "location=Bangalore;team=SMB",
+        "location=Chennai;team=Enterprise",
+        "location=Chennai;team=Growth"
+      ],
+      "expected_role": "Contextual text value"
+    },
+    "latitude": {
+      "dtype_observed": "numeric",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Geographic latitude"
+    },
+    "longitude": {
+      "dtype_observed": "numeric",
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0,
+      "example_values": [],
+      "expected_role": "Geographic longitude"
+    },
+    "source_name": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "phase2_crmData"
+      ],
+      "expected_role": "Source system identifier"
+    },
+    "source_record_id": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30,
+      "example_values": [
+        "L001",
+        "L002",
+        "L003",
+        "L004",
+        "L005"
+      ],
+      "expected_role": "Original source record identifier"
+    },
+    "is_synthetic": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "true"
+      ],
+      "expected_role": "Synthetic-data provenance flag"
+    },
+    "data_version": {
+      "dtype_observed": "string",
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1,
+      "example_values": [
+        "phase3-v2"
+      ],
+      "expected_role": "Canonical data version"
+    }
+  },
+  "numerical_coverage": {
+    "longitude": {
+      "non_null_count": 0,
+      "minimum": null,
+      "maximum": null,
+      "mean": null,
+      "median": null,
+      "standard_deviation": null,
+      "invalid_count": 0
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "minimum": 3.0,
+      "maximum": 132000.0,
+      "mean": 33723.21666666667,
+      "median": 12517.5,
+      "standard_deviation": 41199.326686571425,
+      "invalid_count": 0
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "minimum": null,
+      "maximum": null,
+      "mean": null,
+      "median": null,
+      "standard_deviation": null,
+      "invalid_count": 0
+    }
+  },
+  "date_time_coverage": {
+    "non_null_date_count": 60,
+    "parseable_date_count": 60,
+    "parse_success_rate": 100.0,
+    "earliest": "2026-01-05T00:00:00",
+    "latest": "2026-03-20T00:00:00",
+    "unique_dates": 30,
+    "unique_months": 3,
+    "unique_date_values": [
+      "2026-01-05",
+      "2026-01-08",
+      "2026-01-10",
+      "2026-01-12",
+      "2026-01-15",
+      "2026-01-18",
+      "2026-01-20",
+      "2026-01-22",
+      "2026-01-25",
+      "2026-01-27",
+      "2026-02-01",
+      "2026-02-03",
+      "2026-02-05",
+      "2026-02-08",
+      "2026-02-10",
+      "2026-02-12",
+      "2026-02-15",
+      "2026-02-18",
+      "2026-02-20",
+      "2026-02-22",
+      "2026-02-25",
+      "2026-03-01",
+      "2026-03-04",
+      "2026-03-06",
+      "2026-03-08",
+      "2026-03-10",
+      "2026-03-12",
+      "2026-03-15",
+      "2026-03-17",
+      "2026-03-20"
+    ],
+    "unique_month_values": [
+      "2026-01",
+      "2026-02",
+      "2026-03"
+    ],
+    "timezone_consistency_note": "Source dates are date-only values; no timezone is explicitly documented."
+  },
+  "categorical_coverage": {
+    "category": {
+      "Payments": 24,
+      "Analytics": 18,
+      "Security": 18
+    },
+    "subcategory": {
+      "Website": 22,
+      "Campaign": 14,
+      "Referral": 14,
+      "Partner": 10
+    },
+    "status": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "stage": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "metric_name": {
+      "days_in_stage": 30,
+      "lead_value": 30
+    },
+    "metric_unit": {
+      "currency_unspecified": 30,
+      "days": 30
+    },
+    "record_type": {
+      "crm_lead": 30,
+      "crm_lead_metric": 30
+    }
+  },
+  "geographic_coverage": {
+    "valid_latitude_count": 0,
+    "invalid_latitude_count": 0,
+    "valid_longitude_count": 0,
+    "invalid_longitude_count": 0,
+    "latitude_range": null,
+    "longitude_range": null,
+    "coordinate_pair_count": 0
+  },
+  "text_coverage": {
+    "non_null_count": 60,
+    "empty_count": 0,
+    "average_length": 28.9,
+    "maximum_length": 34,
+    "possible_truncation_count": 0
+  },
+  "observations": [
+    "The canonical dataset contains 60 records across 20 columns.",
+    "The record-type distribution contains {'crm_lead': 30, 'crm_lead_metric': 30}.",
+    "The dataset spans 2026-01-05T00:00:00 to 2026-03-20T00:00:00.",
+    "Latitude and longitude are blank for the available canonical records because the Phase 2 source does not provide coordinate data.",
+    "Synthetic-data status is undocumented in the available Phase 2 repository."
+  ],
+  "uniqueness": {
+    "record_id_count": 60,
+    "unique_record_id_count": 60,
+    "duplicate_record_id_count": 0,
+    "empty_record_id_count": 0,
+    "unique_entity_id_count": 30,
+    "unique_related_entity_id_count": 0
+  },
+  "metric_unit_consistency": {
+    "lead_value": [
+      "currency_unspecified"
+    ],
+    "days_in_stage": [
+      "days"
+    ]
+  },
+  "provenance": {
+    "synthetic_record_count": 60,
+    "non_synthetic_record_count": 0,
+    "undocumented_or_missing_provenance_count": 0,
+    "source_names": [
+      "phase2_crmData"
+    ],
+    "provenance_note": "The Phase 2 repository does not document whether the CRM records are synthetic, anonymized, or derived from real operational data."
+  }
+}
+</file>
+
+<file path="data-science/outputs/quality_assessment.json">
+{
+  "assessment_version": "post2-v1",
+  "source_of_truth": "data\\canonical\\intelligence_data.csv",
+  "result": "PASS",
+  "dataset": {
+    "record_count": 60,
+    "column_count": 20,
+    "file_size_bytes": 10578,
+    "file_size_mb": 0.0101
+  },
+  "completeness": {
+    "record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 60
+    },
+    "record_type": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "observed_at": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "entity_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "related_entity_id": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "entity_name": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "category": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 3
+    },
+    "subcategory": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 4
+    },
+    "status": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "stage": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 6
+    },
+    "metric_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "metric_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 52
+    },
+    "metric_unit": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 2
+    },
+    "text_value": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 15
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "longitude": {
+      "non_null_count": 0,
+      "null_count": 60,
+      "null_percentage": 100.0,
+      "unique_count": 0
+    },
+    "source_name": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "source_record_id": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 30
+    },
+    "is_synthetic": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    },
+    "data_version": {
+      "non_null_count": 60,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_count": 1
+    }
+  },
+  "uniqueness": {
+    "total_record_ids": 60,
+    "unique_record_ids": 60,
+    "empty_record_ids": 0,
+    "duplicate_record_ids": 0
+  },
+  "temporal": {
+    "non_null_date_count": 60,
+    "parseable_date_count": 60,
+    "invalid_date_count": 0,
+    "parse_success_rate": 100.0
+  },
+  "numeric": {
+    "metric_value": {
+      "non_null_count": 60,
+      "invalid_count": 0
+    },
+    "longitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    },
+    "latitude": {
+      "non_null_count": 0,
+      "invalid_count": 0
+    }
+  },
+  "coordinates": {
+    "latitude": {
+      "minimum": -90,
+      "maximum": 90,
+      "invalid_count": 0
+    },
+    "longitude": {
+      "minimum": -180,
+      "maximum": 180,
+      "invalid_count": 0
+    }
+  },
+  "metric_units": {
+    "lead_value": [
+      "currency_unspecified"
+    ],
+    "days_in_stage": [
+      "days"
+    ]
+  },
+  "mixed_metric_units": {},
+  "categories": {
+    "category": {
+      "Payments": 24,
+      "Analytics": 18,
+      "Security": 18
+    },
+    "subcategory": {
+      "Website": 22,
+      "Campaign": 14,
+      "Referral": 14,
+      "Partner": 10
+    },
+    "status": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "stage": {
+      "Won": 20,
+      "Opportunity": 10,
+      "Qualified": 10,
+      "Proposal": 8,
+      "Lead": 6,
+      "Lost": 6
+    },
+    "record_type": {
+      "crm_lead": 30,
+      "crm_lead_metric": 30
+    },
+    "metric_name": {
+      "days_in_stage": 30,
+      "lead_value": 30
+    },
+    "metric_unit": {
+      "currency_unspecified": 30,
+      "days": 30
+    }
+  },
+  "synthetic_distribution": {
+    "true": 60
+  },
+  "text": {
+    "non_empty_count": 60,
+    "empty_count": 0,
+    "average_length": 28.9,
+    "maximum_length": 34,
+    "over_500_characters": 0
+  },
+  "source_accuracy_check": {
+    "source_sample_available": true,
+    "source_sample_record_count": 30,
+    "canonical_source_record_count": 30,
+    "all_source_ids_present_in_canonical": true,
+    "source_ids_missing_from_canonical": []
+  },
+  "blocking_issues": [],
+  "warnings": [],
+  "notes": [
+    "Post #2 uses only the approved canonical CSV as the analytical source.",
+    "The source repository does not document whether the CRM records are synthetic.",
+    "Latitude and longitude are empty because the Phase 2 source does not provide coordinates."
+  ]
+}
+</file>
+
+<file path="docs/CANONICAL_DATA_MAPPING.md">
+# Canonical Data Mapping
+
+## 1. Purpose
+
+This document describes how the Phase 2 CRM source fields are mapped into the Phase 3 canonical schema.
+
+Source:
+
+`src/data/crmData.ts`
+
+Extracted source:
+
+`data/source-sample/source_sample.csv`
+
+Canonical source of truth:
+
+`data/canonical/intelligence_data.csv`
+
+## 2. Source Fields
+
+The Phase 2 CRM source contains these fields:
+
+| Source Field | Description |
+|---|---|
+| `id` | Unique lead identifier |
+| `date` | Lead observation date |
+| `location` | Lead location |
+| `team` | Responsible team |
+| `product` | Product associated with the lead |
+| `source` | Lead acquisition source |
+| `stage` | Current funnel stage |
+| `daysInStage` | Number of days in the current stage |
+| `value` | Lead value |
+
+## 3. Canonical Mapping
+
+| Source Field | Canonical Field | Transformation |
+|---|---|---|
+| `id` | `entity_id` | Preserved as the lead identifier |
+| `id` | `source_record_id` | Preserved as the source record identifier |
+| `date` | `observed_at` | Converted to ISO date representation |
+| `product` | `category` | Product value preserved |
+| `source` | `subcategory` | Lead source preserved |
+| `stage` | `status` | Funnel stage preserved |
+| `stage` | `stage` | Funnel stage preserved |
+| `value` | `metric_value` | Stored as numeric lead value |
+| `daysInStage` | `metric_value` | Stored as numeric duration in a separate metric record |
+| `location` | `text_value` | Preserved as part of the source context |
+| `team` | `text_value` | Preserved as part of the source context |
+
+## 4. Canonical Record Types
+
+Each source lead generates two canonical records.
+
+### 4.1 Lead Value Record
+
+Record type:
+
+`crm_lead`
+
+This record represents the lead and its associated value.
+
+The `metric_name` is:
+
+`lead_value`
+
+The `metric_unit` is:
+
+`currency_unspecified`
+
+The currency is not documented in the Phase 2 source, so no specific currency is inferred.
+
+### 4.2 Days-in-Stage Record
+
+Record type:
+
+`crm_lead_metric`
+
+This record represents the number of days the lead has been in its current stage.
+
+The `metric_name` is:
+
+`days_in_stage`
+
+The `metric_unit` is:
+
+`days`
+
+## 5. Context Preservation
+
+The canonical schema does not contain separate fields for `location` and `team`.
+
+Therefore, these source values are preserved in `text_value` using the following format:
+
+`location=<location>;team=<team>`
+
+Example:
+
+`location=Bangalore;team=Enterprise`
+
+## 6. Canonical Fields Without Direct Source Values
+
+The following canonical fields do not have direct values in the Phase 2 CRM source and therefore remain blank where appropriate:
+
+- `related_entity_id`
+- `entity_name`
+- `latitude`
+- `longitude`
+
+No values are invented for these fields.
+
+## 7. Source and Version Tracking
+
+Every canonical record contains:
+
+- `source_name = phase2_crmData`
+- `source_record_id = original Phase 2 lead ID`
+- `data_version = phase3-v2`
+
+## 8. Synthetic Data Status
+
+The Phase 2 repository documents the CRM dataset as synthetic data.
+
+The Phase 3 canonical records therefore carry:
+
+`is_synthetic = true`
+
+The package provenance is confirmed and does not require further confirmation.
+
+## 9. Transformation Summary
+
+The transformation is:
+
+```text
+Phase 2 crmData.ts
+        |
+        v
+source_sample.csv
+        |
+        v
+30 retained source records
+        |
+        v
+Canonical transformation
+        |
+        +--> crm_lead record
+        |
+        +--> crm_lead_metric record
+        |
+        v
+60 canonical records
+        |
+        v
+data/canonical/intelligence_data.csv
+</file>
+
+<file path="docs/DATA_SOURCE_INVENTORY.md">
+# Data Source Inventory
+
+## 1. Source Overview
+
+| Field | Details |
+|---|---|
+| Source name | Phase 2 CRM Lead Data |
+| Source type | Static TypeScript application data |
+| Current location | `src/data/crmData.ts` |
+| Access method | Local repository source file |
+| Current application usage | Used by the Phase 2 Lead Funnel Conversion Observatory dashboard |
+| Record count | 30 lead records |
+| Raw source format | TypeScript object array |
+| Phase 3 target format | CSV canonical data package |
+| Update pattern | Static data; no automated update mechanism documented |
+| Data provenance | Synthetic dataset documented in the Phase 2 repository |
+| Synthetic / real status | Confirmed synthetic |
+| Sensitivity | Not documented in the repository; requires confirmation |
+| Phase 3 decision | Use as the project-provided synthetic source dataset; sensitivity classification remains undocumented |
+
+## 2. Current Source Structure
+
+The Phase 2 application stores CRM lead records in:
+
+`src/data/crmData.ts`
+
+The source contains the following fields for each lead:
+
+- `id`
+- `date`
+- `location`
+- `team`
+- `product`
+- `source`
+- `stage`
+- `daysInStage`
+- `value`
+
+The current dataset contains 30 records, identified from `L001` through `L030`.
+
+## 3. Observed Data Coverage
+
+The current source contains:
+
+- Lead identifiers
+- Observation dates
+- Geographic locations
+- Teams
+- Products
+- Lead sources
+- Funnel stages
+- Days spent in stage
+- Lead value
+
+Observed categorical values include:
+
+### Locations
+- Bangalore
+- Mumbai
+- Delhi
+- Chennai
+- Hyderabad
+
+### Teams
+- Enterprise
+- SMB
+- Growth
+
+### Products
+- Payments
+- Analytics
+- Security
+
+### Sources
+- Website
+- Referral
+- Campaign
+- Partner
+
+### Funnel stages
+- Lead
+- Qualified
+- Opportunity
+- Proposal
+- Won
+- Lost
+
+## 4. Date Coverage
+
+The currently observed source records span:
+
+**2026-01-05 to 2026-03-20**
+
+This range is based on the records currently present in `src/data/crmData.ts`.
+
+## 5. Numeric Measures
+
+The source contains two numeric measures:
+
+- `daysInStage` — number of days associated with the current funnel stage
+- `value` — numeric lead value
+
+## 6. Data Provenance and Sensitivity Note
+
+The Phase 2 repository documents the CRM dataset as synthetic data.
+
+Therefore, Phase 3 records use the confirmed synthetic-data classification:
+
+`is_synthetic = true`
+
+The sensitivity classification is not documented in the repository and remains a separate item requiring confirmation if needed.
+
+## 7. Phase 3 Data Foundation Decision
+
+The Phase 2 static CRM dataset is suitable as the starting source for the Phase 3 canonical data foundation because it is:
+
+- Local to the repository
+- Small and controlled
+- Structured as individual records
+- Already used by the existing Phase 2 application
+- Available without dependence on a live external API
+- Documented as synthetic data
+
+The dataset will be extracted from the existing Phase 2 source and transformed into the required Phase 3 canonical schema.
+
+The canonical dataset will become:
+
+`data/canonical/intelligence_data.csv`
+
+After approval, future Phase 3 analysis will use the canonical dataset as the single source of truth.
+
+## 8. Source Limitations
+
+The current source has the following limitations:
+
+1. The dataset contains only 30 records.
+2. The source is embedded directly in application code rather than maintained as a standalone data file.
+3. No live data update mechanism is documented.
+4. Data sensitivity classification is not documented.
+5. The source value field does not document a specific currency.
+
+The synthetic-data status is confirmed from the Phase 2 repository and is represented in the Phase 3 canonical records through `is_synthetic = true`.
+</file>
+
+<file path="docs/SAMPLING_AND_REDUCTION_REPORT.md">
+# Sampling and Reduction Report
+
+## 1. Purpose
+
+This document records the sampling and reduction decision used to create the Phase 3 controlled data package.
+
+The source data is the Phase 2 CRM dataset located at:
+
+`src/data/crmData.ts`
+
+The extracted source sample is:
+
+`data/source-sample/source_sample.csv`
+
+## 2. Source Dataset
+
+The Phase 2 source contains:
+
+- Records: 30
+- Source fields: 9
+- Source format: Static TypeScript application data
+- Source application: Phase 2 Lead Funnel Conversion Observatory
+- Synthetic-data status: Confirmed synthetic
+
+The source fields are:
+
+- `id`
+- `date`
+- `location`
+- `team`
+- `product`
+- `source`
+- `stage`
+- `daysInStage`
+- `value`
+
+## 3. Sampling Decision
+
+All available source records were retained.
+
+No random sampling was required because the source contains only 30 records and is already substantially below the Phase 3 default limit of 10,000 rows.
+
+### Sampling result
+
+| Measure | Result |
+|---|---:|
+| Source records | 30 |
+| Records retained | 30 |
+| Records removed | 0 |
+| Sampling method | Full retention |
+| Random sampling | No |
+| Random seed | Not applicable |
+
+## 4. Reason for Retention
+
+The complete source dataset was retained to avoid unnecessary loss of information.
+
+Keeping all 30 records preserves the available:
+
+- Lead identifiers
+- Dates
+- Locations
+- Teams
+- Products
+- Lead sources
+- Funnel stages
+- Days in stage
+- Lead values
+
+## 5. Category and Funnel Coverage
+
+The retained dataset preserves the funnel stages present in the Phase 2 source:
+
+- Lead
+- Qualified
+- Opportunity
+- Proposal
+- Won
+- Lost
+
+The available source also contains multiple locations, teams, products, and lead sources.
+
+No category-based records were intentionally removed.
+
+## 6. Date Coverage
+
+The source records span:
+
+`2026-01-05` to `2026-03-20`
+
+The complete available date range is retained.
+
+## 7. Reduction
+
+No source-record reduction was performed.
+
+The source sample therefore remains a complete representation of the available Phase 2 application dataset.
+
+The Phase 3 standardization step transforms these retained source records into the canonical schema.
+
+## 8. Canonical Transformation
+
+The 30 retained source records produce 60 canonical records.
+
+Each source lead produces:
+
+1. One `crm_lead` record representing the lead value.
+2. One `crm_lead_metric` record representing `days_in_stage`.
+
+Therefore:
+
+`30 source records -> 60 canonical records`
+
+The additional canonical records are transformation outputs and do not represent additional source records.
+
+## 9. Reproducibility
+
+The sampling process is deterministic.
+
+No random selection is performed.
+
+The controlled source sample is read by:
+
+`scripts/data_pipeline/sample_data.py`
+
+The same source sample therefore produces the same retention decision.
+
+## 10. Data Limits
+
+The source dataset is below the Phase 3 default limits for:
+
+- Number of rows
+- Number of columns
+- Controlled local data-package size
+
+The exact generated file sizes are checked during package validation.
+
+## 11. Provenance
+
+The Phase 2 repository documents the CRM dataset as synthetic data.
+
+Therefore, the Phase 3 canonical records carry:
+
+`is_synthetic = true`
+
+The synthetic-data status is confirmed and does not require further provenance confirmation.
+
+## 12. Sampling Status
+
+**SAMPLING COMPLETE**
+
+All 30 available source records were retained.
+
+No source records were discarded during sampling or reduction.
 </file>
 
 <file path="scripts/data_pipeline/standardize_data.py">
@@ -11118,6 +10743,371 @@ def main():
     print(
         f"Output: {OUTPUT_FILE}"
     )
+
+
+if __name__ == "__main__":
+    main()
+</file>
+
+<file path="scripts/data_pipeline/validate_data.py">
+from pathlib import Path
+import csv
+import json
+from datetime import datetime
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+CANONICAL_FILE = PROJECT_ROOT / "data" / "canonical" / "intelligence_data.csv"
+SCHEMA_FILE = PROJECT_ROOT / "data" / "schema.json"
+MANIFEST_FILE = PROJECT_ROOT / "data" / "manifest.json"
+REPORT_FILE = PROJECT_ROOT / "data" / "quality" / "validation_report.json"
+
+MAX_ROWS = 10000
+MAX_COLUMNS = 50
+MAX_TEXT_LENGTH = 500
+
+EXPECTED_COLUMNS = [
+    "record_id",
+    "record_type",
+    "observed_at",
+    "entity_id",
+    "related_entity_id",
+    "entity_name",
+    "category",
+    "subcategory",
+    "status",
+    "stage",
+    "metric_name",
+    "metric_value",
+    "metric_unit",
+    "text_value",
+    "latitude",
+    "longitude",
+    "source_name",
+    "source_record_id",
+    "is_synthetic",
+    "data_version",
+]
+
+NUMERIC_COLUMNS = {
+    "metric_value",
+    "latitude",
+    "longitude",
+}
+
+BOOLEAN_COLUMNS = {
+    "is_synthetic",
+}
+
+
+def fail(message):
+    raise ValueError(message)
+
+
+def validate_date(value):
+    if not value:
+        return
+
+    try:
+        datetime.fromisoformat(
+            value.replace("Z", "+00:00")
+        )
+    except ValueError:
+        fail(
+            f"Invalid observed_at value: {value}"
+        )
+
+
+def validate_numeric(value, column_name):
+    if not value:
+        return
+
+    try:
+        float(value)
+    except ValueError:
+        fail(
+            f"Invalid numeric value in {column_name}: {value}"
+        )
+
+
+def validate_boolean(value):
+    if value not in {"true", "false", ""}:
+        fail(
+            f"Invalid boolean value for is_synthetic: {value}"
+        )
+
+
+def main():
+
+    errors = []
+    warnings = []
+
+    required_files = [
+        CANONICAL_FILE,
+        SCHEMA_FILE,
+        MANIFEST_FILE,
+    ]
+
+    for file_path in required_files:
+        if not file_path.exists():
+            errors.append(
+                f"Missing required file: "
+                f"{file_path.relative_to(PROJECT_ROOT)}"
+            )
+
+    if errors:
+        write_report(
+            errors,
+            warnings,
+            0,
+            0,
+        )
+        fail("\n".join(errors))
+
+    with CANONICAL_FILE.open(
+        "r",
+        newline="",
+        encoding="utf-8",
+    ) as file:
+
+        reader = csv.DictReader(file)
+
+        actual_columns = reader.fieldnames or []
+
+        if actual_columns != EXPECTED_COLUMNS:
+            errors.append(
+                "Canonical column order does not match "
+                "the required schema."
+            )
+
+        rows = list(reader)
+
+    row_count = len(rows)
+    column_count = len(actual_columns)
+
+    if row_count > MAX_ROWS:
+        errors.append(
+            f"Row limit exceeded: {row_count} > {MAX_ROWS}"
+        )
+
+    if column_count > MAX_COLUMNS:
+        errors.append(
+            f"Column limit exceeded: {column_count} > {MAX_COLUMNS}"
+        )
+
+    record_ids = []
+
+    for index, row in enumerate(rows, start=2):
+
+        record_id = row.get(
+            "record_id",
+            ""
+        )
+
+        if not record_id:
+            errors.append(
+                f"Empty record_id at CSV row {index}"
+            )
+        else:
+            record_ids.append(record_id)
+
+        validate_date(
+            row.get(
+                "observed_at",
+                ""
+            )
+        )
+
+        for column_name in NUMERIC_COLUMNS:
+            validate_numeric(
+                row.get(
+                    column_name,
+                    ""
+                ),
+                column_name,
+            )
+
+        validate_boolean(
+            row.get(
+                "is_synthetic",
+                ""
+            )
+        )
+
+        text_value = row.get(
+            "text_value",
+            ""
+        )
+
+        if len(text_value) > MAX_TEXT_LENGTH:
+            errors.append(
+                f"text_value exceeds "
+                f"{MAX_TEXT_LENGTH} characters "
+                f"at CSV row {index}"
+            )
+
+        if not row.get(
+            "source_name",
+            ""
+        ):
+            errors.append(
+                f"Missing source_name at CSV row {index}"
+            )
+
+        if not row.get(
+            "data_version",
+            ""
+        ):
+            errors.append(
+                f"Missing data_version at CSV row {index}"
+            )
+
+    if len(record_ids) != len(set(record_ids)):
+        errors.append(
+            "Duplicate record_id values detected."
+        )
+
+    with SCHEMA_FILE.open(
+        "r",
+        encoding="utf-8",
+    ) as file:
+
+        schema = json.load(file)
+
+    schema_columns = [
+        item["name"]
+        for item in schema["columns"]
+    ]
+
+    if schema_columns != EXPECTED_COLUMNS:
+        errors.append(
+            "schema.json column definition does not match "
+            "the required canonical column order."
+        )
+
+    with MANIFEST_FILE.open(
+        "r",
+        encoding="utf-8",
+    ) as file:
+
+        manifest = json.load(file)
+
+    manifest_count = manifest[
+        "canonical"
+    ][
+        "record_count"
+    ]
+
+    if manifest_count != row_count:
+        errors.append(
+            "Manifest canonical record count does not match "
+            f"the CSV: {manifest_count} != {row_count}"
+        )
+
+    manifest_columns = manifest[
+        "canonical"
+    ][
+        "column_count"
+    ]
+
+    if manifest_columns != column_count:
+        errors.append(
+            "Manifest canonical column count does not match "
+            f"the CSV: {manifest_columns} != {column_count}"
+        )
+
+    if not manifest.get(
+        "data_version"
+    ):
+        errors.append(
+            "Manifest data_version is missing."
+        )
+
+    if not all(
+        row.get(
+            "is_synthetic",
+            ""
+        ) in {
+            "true",
+            "false"
+        }
+        for row in rows
+    ):
+        warnings.append(
+            "is_synthetic is not fully populated with "
+            "confirmed boolean provenance values."
+        )
+
+    write_report(
+        errors,
+        warnings,
+        row_count,
+        column_count,
+    )
+
+    if errors:
+        print("VALIDATION FAILED")
+
+        for error in errors:
+            print(
+                f"- {error}"
+            )
+
+        raise SystemExit(1)
+
+    print("VALIDATION PASSED")
+    print(
+        f"Canonical records: {row_count}"
+    )
+    print(
+        f"Canonical columns: {column_count}"
+    )
+
+    if warnings:
+        print("Warnings:")
+
+        for warning in warnings:
+            print(
+                f"- {warning}"
+            )
+
+
+def write_report(
+    errors,
+    warnings,
+    row_count,
+    column_count,
+):
+
+    REPORT_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    report = {
+        "validation_version": "phase3-v2",
+        "status": (
+            "PASSED"
+            if not errors
+            else "FAILED"
+        ),
+        "canonical_record_count": row_count,
+        "canonical_column_count": column_count,
+        "errors": errors,
+        "warnings": warnings,
+    }
+
+    with REPORT_FILE.open(
+        "w",
+        encoding="utf-8",
+    ) as file:
+
+        json.dump(
+            report,
+            file,
+            indent=2,
+        )
 
 
 if __name__ == "__main__":
@@ -11611,6 +11601,17 @@ export default function SankeyChart({ data }: SankeyChartProps) {
       </div>
     </div>
   );
+}
+</file>
+
+<file path="data/quality/validation_report.json">
+{
+  "validation_version": "phase3-v2",
+  "status": "PASSED",
+  "canonical_record_count": 60,
+  "canonical_column_count": 20,
+  "errors": [],
+  "warnings": []
 }
 </file>
 
