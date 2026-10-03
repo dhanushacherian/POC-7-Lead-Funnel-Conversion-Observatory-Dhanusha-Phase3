@@ -21,7 +21,7 @@ const stageInsights: Record<
     investigation:
       "Compare lead sources, locations, teams, and products to identify where new leads are being delayed or lost.",
     nextStep:
-      "Review lead sources and qualification performance, then investigate the records with the longest stage age.",
+      "Review lead sources and qualification performance, then investigate records with the longest stage age.",
   },
 
   Qualified: {
@@ -55,18 +55,18 @@ const stageInsights: Record<
     insight:
       "Won deals represent successful conversion and the realized portion of the pipeline.",
     investigation:
-      "Compare winning patterns across location, team, product, and acquisition source to understand what drives successful conversion.",
+      "Compare winning patterns across location, team, product, and acquisition source to understand successful conversion patterns.",
     nextStep:
-      "Identify the highest-performing segments and investigate whether those patterns can be replicated across the pipeline.",
+      "Review the comparative results and investigate whether useful patterns are visible across the pipeline.",
   },
 
   Pipeline: {
     insight:
-      "Select a funnel stage or visualization to investigate conversion performance.",
+      "The comparative analysis provides a structured view of CRM lead value and stage aging across the funnel.",
     investigation:
-      "Investigate where leads are slowing down or dropping out of the pipeline and compare the affected stage across location, team, product, and date filters.",
+      "Compare lead value and stage aging by stage, product, and acquisition source to identify areas requiring investigation.",
     nextStep:
-      "Review the selected stage, identify the largest leakage or aging signal, and drill into the underlying lead records.",
+      "Use the Track A comparison results together with the existing funnel and aging visualizations.",
   },
 };
 
@@ -122,6 +122,7 @@ export default function IntelligencePanel({
         {/* Scrollable Content */}
         <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-6 pr-4">
           <div className="space-y-5">
+
             {/* Selected Area */}
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
               <p className="text-xs uppercase tracking-wider text-white/40">
@@ -155,6 +156,103 @@ export default function IntelligencePanel({
               </p>
             </div>
 
+            {/* Track A */}
+            <div className="rounded-xl border border-indigo-300/[0.15] bg-indigo-300/[0.04] p-4">
+              <p className="text-xs uppercase tracking-wider text-indigo-200/60">
+                Track A · Comparative Analysis
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-white/70">
+                Comparative analysis of CRM lead value and stage aging across
+                the approved analytical dataset.
+              </p>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-white/35">
+                    Leads
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    30
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-white/35">
+                    Total Value
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    ₹2.023M
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-white/35">
+                    Avg Lead Value
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    ₹67.4K
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-white/10 bg-black/20 p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-white/35">
+                    Avg Stage Age
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-white">
+                    13.1 days
+                  </p>
+                </div>
+
+              </div>
+
+              <div className="mt-4 space-y-2">
+
+                <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+                  <span className="text-xs text-white/40">
+                    Highest-value stage
+                  </span>
+                  <span className="text-xs font-medium text-white">
+                    Won
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+                  <span className="text-xs text-white/40">
+                    Highest-value product
+                  </span>
+                  <span className="text-xs font-medium text-white">
+                    Payments
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
+                  <span className="text-xs text-white/40">
+                    Highest-value source
+                  </span>
+                  <span className="text-xs font-medium text-white">
+                    Website
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-white/40">
+                    Highest average stage age
+                  </span>
+                  <span className="text-xs font-medium text-white">
+                    Lost
+                  </span>
+                </div>
+
+              </div>
+
+              <p className="mt-4 text-[10px] leading-5 text-white/30">
+                Analysis is based on the synthetic CRM dataset and is intended
+                for comparative decision-support investigation, not prediction.
+              </p>
+            </div>
+
             {/* Recommended Next Step */}
             <div className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
               <p className="text-xs uppercase tracking-wider text-white/40">
@@ -165,6 +263,7 @@ export default function IntelligencePanel({
                 {intelligence.nextStep}
               </p>
             </div>
+
           </div>
         </div>
       </aside>
