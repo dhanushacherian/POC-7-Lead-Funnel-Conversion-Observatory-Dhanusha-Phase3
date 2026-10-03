@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 import json
 import pandas as pd
 
@@ -353,12 +353,12 @@ def main():
         errors="coerce",
     )
 
-    canonical_value_records = lead_records[
-        lead_records["metric_name"] == "lead_value"
+    canonical_value_records = canonical[
+        canonical["metric_name"] == "lead_value"
     ].copy()
 
-    canonical_days_records = lead_records[
-        lead_records["metric_name"] == "days_in_stage"
+    canonical_days_records = canonical[
+        canonical["metric_name"] == "days_in_stage"
     ].copy()
 
     canonical_value = pd.to_numeric(

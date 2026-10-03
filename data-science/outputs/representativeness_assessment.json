@@ -234,11 +234,11 @@
     },
     "days_in_stage": {
       "source_count": 30,
-      "canonical_count": 0,
+      "canonical_count": 30,
       "source_min": 3.0,
       "source_max": 35.0,
-      "canonical_min": null,
-      "canonical_max": null
+      "canonical_min": 3.0,
+      "canonical_max": 35.0
     }
   },
   "rare_records": {
