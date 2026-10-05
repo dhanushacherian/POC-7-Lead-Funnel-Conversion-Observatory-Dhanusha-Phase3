@@ -4,7 +4,7 @@
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T12:12:23.283300+00:00",
+  "generated_at": "2026-10-05T14:51:04.757150+00:00",
   "result_count": 16,
   "results": [
     {
@@ -17,17 +17,18 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 2023000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "baseline",
       "priority_rank": 1,
       "finding": "The available sample contains 30 source CRM leads with total observed lead value of 2023000.00.",
       "evidence": {
         "lead_count": 30,
-        "total_lead_value": 2023000.0
+        "total_lead_value": 2023000.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -41,17 +42,18 @@
       "period_end": null,
       "metric_name": "average_lead_value",
       "result_value": 67433.33333333333,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "baseline",
       "priority_rank": 2,
       "finding": "The overall average observed lead value is 67433.33.",
       "evidence": {
         "lead_count": 30,
-        "average_lead_value": 67433.33333333333
+        "average_lead_value": 67433.33333333333,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -75,7 +77,7 @@
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Available temporal information is descriptive and does not constitute a full longitudinal time series."
     },
@@ -89,7 +91,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 949000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 1,
       "finding": "The Won stage has observed total lead value of 949000.00 across 10 leads.",
@@ -98,11 +100,12 @@
         "lead_count": 10,
         "total_lead_value": 949000.0,
         "average_lead_value": 94900.0,
-        "average_days_in_stage": 8.9
+        "average_days_in_stage": 8.9,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -116,7 +119,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 397000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 2,
       "finding": "The Proposal stage has observed total lead value of 397000.00 across 4 leads.",
@@ -125,11 +128,12 @@
         "lead_count": 4,
         "total_lead_value": 397000.0,
         "average_lead_value": 99250.0,
-        "average_days_in_stage": 17.25
+        "average_days_in_stage": 17.25,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -143,7 +147,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 252000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 3,
       "finding": "The Opportunity stage has observed total lead value of 252000.00 across 5 leads.",
@@ -152,11 +156,12 @@
         "lead_count": 5,
         "total_lead_value": 252000.0,
         "average_lead_value": 50400.0,
-        "average_days_in_stage": 19.4
+        "average_days_in_stage": 19.4,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -170,7 +175,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 191000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 4,
       "finding": "The Qualified stage has observed total lead value of 191000.00 across 5 leads.",
@@ -179,11 +184,12 @@
         "lead_count": 5,
         "total_lead_value": 191000.0,
         "average_lead_value": 38200.0,
-        "average_days_in_stage": 7.0
+        "average_days_in_stage": 7.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -197,7 +203,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 147000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 5,
       "finding": "The Lost stage has observed total lead value of 147000.00 across 3 leads.",
@@ -206,11 +212,12 @@
         "lead_count": 3,
         "total_lead_value": 147000.0,
         "average_lead_value": 49000.0,
-        "average_days_in_stage": 30.333333333333332
+        "average_days_in_stage": 30.333333333333332,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -224,7 +231,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 87000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 6,
       "finding": "The Lead stage has observed total lead value of 87000.00 across 3 leads.",
@@ -233,11 +240,12 @@
         "lead_count": 3,
         "total_lead_value": 87000.0,
         "average_lead_value": 29000.0,
-        "average_days_in_stage": 4.0
+        "average_days_in_stage": 4.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -251,7 +259,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 942000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 1,
       "finding": "The Payments product category has observed total lead value of 942000.00 across 12 leads.",
@@ -260,11 +268,12 @@
         "lead_count": 12,
         "total_lead_value": 942000.0,
         "average_lead_value": 78500.0,
-        "average_days_in_stage": 9.166666666666666
+        "average_days_in_stage": 9.166666666666666,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -278,7 +287,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 592000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 2,
       "finding": "The Analytics product category has observed total lead value of 592000.00 across 9 leads.",
@@ -287,11 +296,12 @@
         "lead_count": 9,
         "total_lead_value": 592000.0,
         "average_lead_value": 65777.77777777778,
-        "average_days_in_stage": 14.333333333333334
+        "average_days_in_stage": 14.333333333333334,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -305,7 +315,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 489000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 3,
       "finding": "The Security product category has observed total lead value of 489000.00 across 9 leads.",
@@ -314,11 +324,12 @@
         "lead_count": 9,
         "total_lead_value": 489000.0,
         "average_lead_value": 54333.333333333336,
-        "average_days_in_stage": 17.11111111111111
+        "average_days_in_stage": 17.11111111111111,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -332,7 +343,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 689000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 1,
       "finding": "The Website acquisition source has observed total lead value of 689000.00 across 11 leads.",
@@ -341,11 +352,12 @@
         "lead_count": 11,
         "total_lead_value": 689000.0,
         "average_lead_value": 62636.36363636364,
-        "average_days_in_stage": 14.727272727272727
+        "average_days_in_stage": 14.727272727272727,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -359,7 +371,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 493000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 2,
       "finding": "The Partner acquisition source has observed total lead value of 493000.00 across 5 leads.",
@@ -368,11 +380,12 @@
         "lead_count": 5,
         "total_lead_value": 493000.0,
         "average_lead_value": 98600.0,
-        "average_days_in_stage": 17.0
+        "average_days_in_stage": 17.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -386,7 +399,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 484000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 3,
       "finding": "The Referral acquisition source has observed total lead value of 484000.00 across 7 leads.",
@@ -395,11 +408,12 @@
         "lead_count": 7,
         "total_lead_value": 484000.0,
         "average_lead_value": 69142.85714285714,
-        "average_days_in_stage": 9.857142857142858
+        "average_days_in_stage": 9.857142857142858,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -413,7 +427,7 @@
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 357000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 4,
       "finding": "The Campaign acquisition source has observed total lead value of 357000.00 across 7 leads.",
@@ -422,11 +436,12 @@
         "lead_count": 7,
         "total_lead_value": 357000.0,
         "average_lead_value": 51000.0,
-        "average_days_in_stage": 11.0
+        "average_days_in_stage": 11.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     }

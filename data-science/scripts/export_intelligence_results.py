@@ -5,22 +5,53 @@ from datetime import datetime, timezone
 import pandas as pd
 
 
+# ---------------------------------------------------------------------
+# PROJECT CONFIGURATION
+# ---------------------------------------------------------------------
+
 ROOT = Path(__file__).resolve().parents[2]
 
-CANONICAL_PATH = ROOT / "data" / "canonical" / "intelligence_data.csv"
-OUTPUT_DIR = ROOT / "data-science" / "outputs"
+CANONICAL_PATH = (
+    ROOT
+    / "data"
+    / "canonical"
+    / "intelligence_data.csv"
+)
 
-RESULTS_PATH = OUTPUT_DIR / "intelligence_results.json"
-SUMMARY_PATH = OUTPUT_DIR / "intelligence_summary.json"
-VALIDATION_PATH = OUTPUT_DIR / "validation_metrics.json"
-WEAK_CASE_PATH = OUTPUT_DIR / "weak_case_review.json"
+OUTPUT_DIR = (
+    ROOT
+    / "data-science"
+    / "outputs"
+)
+
+RESULTS_PATH = (
+    OUTPUT_DIR
+    / "intelligence_results.json"
+)
+
+SUMMARY_PATH = (
+    OUTPUT_DIR
+    / "intelligence_summary.json"
+)
+
+VALIDATION_PATH = (
+    OUTPUT_DIR
+    / "validation_metrics.json"
+)
+
+WEAK_CASE_PATH = (
+    OUTPUT_DIR
+    / "weak_case_review.json"
+)
 
 DATA_VERSION = "phase3-v2"
 METHOD_VERSION = "1.0.0"
 PROJECT_ID = "POC-7"
 POC_TITLE = "Lead Funnel Conversion Observatory"
 
-APPROVED_TRACK = "Track A - Comparative Intelligence"
+APPROVED_TRACK = (
+    "Track A - Comparative Intelligence"
+)
 
 PRIMARY_QUESTION = (
     "How do lead value and days in stage vary across CRM funnel stages, "
@@ -34,7 +65,13 @@ DECISION = (
 )
 
 
+# ---------------------------------------------------------------------
+# LOAD CANONICAL DATA
+# ---------------------------------------------------------------------
+
 def load_canonical_data():
+    """Load and validate the mandatory canonical dataset."""
+
     if not CANONICAL_PATH.exists():
         raise FileNotFoundError(
             f"Canonical dataset not found: {CANONICAL_PATH}"
@@ -46,54 +83,119 @@ def load_canonical_data():
         "record_type",
         "metric_name",
         "metric_value",
+        "metric_unit",
         "source_record_id",
         "category",
         "subcategory",
+        "status",
         "stage",
         "data_version",
         "is_synthetic",
     }
 
-    missing = required_columns - set(df.columns)
+    missing = (
+        required_columns
+        - set(df.columns)
+    )
 
     if missing:
         raise ValueError(
-            f"Canonical dataset is missing required columns: {sorted(missing)}"
+            "Canonical dataset is missing required columns: "
+            + str(sorted(missing))
         )
 
-    versions = set(df["data_version"].dropna().astype(str))
+    versions = set(
+        df["data_version"]
+        .dropna()
+        .astype(str)
+    )
 
     if versions != {DATA_VERSION}:
         raise ValueError(
-            f"Unexpected data_version values: {sorted(versions)}"
+            "Unexpected data_version values: "
+            + str(sorted(versions))
         )
 
     return df
 
 
+# ---------------------------------------------------------------------
+# PRESERVE CANONICAL LEAD-VALUE UNIT
+# ---------------------------------------------------------------------
+
+def get_canonical_lead_value_unit(df):
+    """
+    Read the unit directly from canonical lead-value records.
+
+    This prevents replacement of the canonical unit
+    (for example, currency_unspecified) with a generic label.
+    """
+
+    lead_value_rows = df[
+        df["metric_name"].astype(str).eq("lead_value")
+    ].copy()
+
+    if lead_value_rows.empty:
+        raise ValueError(
+            "No canonical lead_value records were found."
+        )
+
+    units = sorted(
+        set(
+            lead_value_rows["metric_unit"]
+            .dropna()
+            .astype(str)
+        )
+    )
+
+    if len(units) != 1:
+        raise ValueError(
+            "Expected exactly one canonical lead_value unit, "
+            f"found: {units}"
+        )
+
+    return units[0]
+
+
+# ---------------------------------------------------------------------
+# BUILD ANALYTICAL DATASET
+# ---------------------------------------------------------------------
+
 def build_analysis_dataset(df):
+    """Build one analytical row per source CRM lead."""
+
     leads = df[
-        df["record_type"].astype(str).eq("crm_lead")
+        df["record_type"]
+        .astype(str)
+        .eq("crm_lead")
     ].copy()
 
     leads["lead_value"] = pd.to_numeric(
         leads["metric_value"],
-        errors="coerce"
+        errors="coerce",
     )
 
     days_df = df[
-        df["metric_name"].astype(str).eq("days_in_stage")
+        df["metric_name"]
+        .astype(str)
+        .eq("days_in_stage")
     ].copy()
 
     days_df["days_in_stage"] = pd.to_numeric(
         days_df["metric_value"],
-        errors="coerce"
+        errors="coerce",
     )
 
-    days_lookup = days_df[
-        ["source_record_id", "days_in_stage"]
-    ].drop_duplicates(
-        subset=["source_record_id"]
+    days_lookup = (
+        days_df[
+            [
+                "source_record_id",
+                "days_in_stage",
+            ]
+        ]
+        .drop_duplicates(
+            subset=["source_record_id"]
+        )
     )
 
     analysis_df = leads[
@@ -113,7 +215,7 @@ def build_analysis_dataset(df):
     analysis_df = analysis_df.merge(
         days_lookup,
         on="source_record_id",
-        how="left"
+        how="left",
     )
 
     analysis_df = analysis_df.dropna(
@@ -123,34 +225,85 @@ def build_analysis_dataset(df):
         ]
     ).copy()
 
+    if analysis_df.empty:
+        raise ValueError(
+            "Analytical dataset is empty after metric reconstruction."
+        )
+
     return analysis_df
 
 
-def summarize_by(analysis_df, group_column):
+# ---------------------------------------------------------------------
+# GROUP SUMMARY
+# ---------------------------------------------------------------------
+
+def summarize_by(
+    analysis_df,
+    group_column,
+):
+    """Create a deterministic descriptive summary."""
+
     result = (
         analysis_df
-        .groupby(group_column, dropna=False)
+        .groupby(
+            group_column,
+            dropna=False,
+        )
         .agg(
-            lead_count=("source_record_id", "nunique"),
-            total_lead_value=("lead_value", "sum"),
-            average_lead_value=("lead_value", "mean"),
-            average_days_in_stage=("days_in_stage", "mean"),
-            median_days_in_stage=("days_in_stage", "median"),
+            lead_count=(
+                "source_record_id",
+                "nunique",
+            ),
+            total_lead_value=(
+                "lead_value",
+                "sum",
+            ),
+            average_lead_value=(
+                "lead_value",
+                "mean",
+            ),
+            average_days_in_stage=(
+                "days_in_stage",
+                "mean",
+            ),
+            median_days_in_stage=(
+                "days_in_stage",
+                "median",
+            ),
         )
         .reset_index()
     )
 
-    result["value_share_percent"] = (
-        result["total_lead_value"]
-        / result["total_lead_value"].sum()
-        * 100
+    total_value = (
+        result["total_lead_value"].sum()
     )
 
-    return result.sort_values(
-        ["total_lead_value", group_column],
-        ascending=[False, True]
+    if total_value == 0:
+        result["value_share_percent"] = 0.0
+    else:
+        result["value_share_percent"] = (
+            result["total_lead_value"]
+            / total_value
+            * 100.0
+        )
+
+    result = result.sort_values(
+        [
+            "total_lead_value",
+            group_column,
+        ],
+        ascending=[
+            False,
+            True,
+        ],
     ).reset_index(drop=True)
 
+    return result
+
+
+# ---------------------------------------------------------------------
+# STANDARD RESULT OBJECT
+# ---------------------------------------------------------------------
 
 def make_result(
     result_id,
@@ -166,6 +319,8 @@ def make_result(
     limitation,
     generated_at,
 ):
+    """Create a result following the intelligence output contract."""
+
     return {
         "result_id": result_id,
         "result_type": result_type,
@@ -189,16 +344,54 @@ def make_result(
     }
 
 
+# ---------------------------------------------------------------------
+# MAIN EXPORT FUNCTION
+# ---------------------------------------------------------------------
+
 def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    """Generate intelligence results and intelligence summary."""
+
+    OUTPUT_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    # -------------------------------------------------------------
+    # LOAD DATA
+    # -------------------------------------------------------------
 
     df = load_canonical_data()
-    analysis_df = build_analysis_dataset(df)
 
-    if analysis_df.empty:
-        raise ValueError("Analytical dataset is empty.")
+    # -------------------------------------------------------------
+    # PRESERVE CANONICAL UNIT
+    # -------------------------------------------------------------
 
-    generated_at = datetime.now(timezone.utc).isoformat()
+    lead_value_unit = (
+        get_canonical_lead_value_unit(df)
+    )
+
+    print(
+        "Canonical lead-value unit:",
+        lead_value_unit,
+    )
+
+    # -------------------------------------------------------------
+    # BUILD ANALYTICAL DATASET
+    # -------------------------------------------------------------
+
+    analysis_df = (
+        build_analysis_dataset(df)
+    )
+
+    generated_at = (
+        datetime.now(
+            timezone.utc
+        ).isoformat()
+    )
+
+    # -------------------------------------------------------------
+    # BASELINE
+    # -------------------------------------------------------------
 
     total_lead_value = float(
         analysis_df["lead_value"].sum()
@@ -217,29 +410,35 @@ def main():
     )
 
     lead_count = int(
-        analysis_df["source_record_id"].nunique()
+        analysis_df[
+            "source_record_id"
+        ].nunique()
     )
+
+    # -------------------------------------------------------------
+    # GROUP SUMMARIES
+    # -------------------------------------------------------------
 
     stage_summary = summarize_by(
         analysis_df,
-        "stage"
+        "stage",
     )
 
     product_summary = summarize_by(
         analysis_df,
-        "category"
+        "category",
     )
 
     source_summary = summarize_by(
         analysis_df,
-        "subcategory"
+        "subcategory",
     )
 
     results = []
 
-    # ---------------------------------------------------------
-    # BASELINE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # BASELINE RESULTS
+    # -------------------------------------------------------------
 
     results.append(
         make_result(
@@ -248,16 +447,19 @@ def main():
             group_key="overall",
             metric_name="total_lead_value",
             result_value=total_lead_value,
-            result_unit="currency",
+            result_unit=lead_value_unit,
             result_category="baseline",
             priority_rank=1,
             finding=(
-                f"The available sample contains {lead_count} source CRM leads "
-                f"with total observed lead value of {total_lead_value:.2f}."
+                f"The available sample contains "
+                f"{lead_count} source CRM leads with "
+                f"total observed lead value of "
+                f"{total_lead_value:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "total_lead_value": total_lead_value,
+                "metric_unit": lead_value_unit,
             },
             limitation=(
                 "Synthetic sample; descriptive result only."
@@ -273,16 +475,17 @@ def main():
             group_key="overall",
             metric_name="average_lead_value",
             result_value=average_lead_value,
-            result_unit="currency",
+            result_unit=lead_value_unit,
             result_category="baseline",
             priority_rank=2,
             finding=(
-                f"The overall average observed lead value is "
-                f"{average_lead_value:.2f}."
+                f"The overall average observed lead "
+                f"value is {average_lead_value:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "average_lead_value": average_lead_value,
+                "metric_unit": lead_value_unit,
             },
             limitation=(
                 "Synthetic sample; descriptive result only."
@@ -302,150 +505,187 @@ def main():
             result_category="baseline",
             priority_rank=3,
             finding=(
-                f"The overall average observed days in stage is "
-                f"{average_days:.2f}."
+                f"The overall average observed "
+                f"days in stage is {average_days:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "average_days_in_stage": average_days,
             },
             limitation=(
-                "Available temporal information is descriptive and does not "
-                "constitute a full longitudinal time series."
+                "Available temporal information is descriptive "
+                "and does not constitute a full longitudinal "
+                "time series."
             ),
             generated_at=generated_at,
         )
     )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # STAGE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        stage_summary.itertuples(index=False),
-        start=1
+        stage_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         stage = str(row.stage)
 
         results.append(
             make_result(
-                result_id=f"stage_{stage.lower()}_total_value",
+                result_id=(
+                    f"stage_{stage.lower()}_total_value"
+                ),
                 result_type="stage_comparison",
                 group_key=stage,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="stage_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {stage} stage has observed total lead value of "
-                    f"{row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {stage} stage has observed "
+                    f"total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": stage,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample; small stage groups require caution."
+                    "Descriptive comparison within the available "
+                    "synthetic sample; small stage groups require caution."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # PRODUCT RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        product_summary.itertuples(index=False),
-        start=1
+        product_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         product = str(row.category)
 
         results.append(
             make_result(
-                result_id=f"product_{product.lower()}_total_value",
+                result_id=(
+                    f"product_{product.lower()}_total_value"
+                ),
                 result_type="product_comparison",
                 group_key=product,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="product_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {product} product category has observed total "
-                    f"lead value of {row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {product} product category has "
+                    f"observed total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": product,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample."
+                    "Descriptive comparison within the available "
+                    "synthetic sample."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # SOURCE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        source_summary.itertuples(index=False),
-        start=1
+        source_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         source = str(row.subcategory)
 
         results.append(
             make_result(
-                result_id=f"source_{source.lower()}_total_value",
+                result_id=(
+                    f"source_{source.lower()}_total_value"
+                ),
                 result_type="source_comparison",
                 group_key=source,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="source_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {source} acquisition source has observed total "
-                    f"lead value of {row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {source} acquisition source has "
+                    f"observed total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": source,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample."
+                    "Descriptive comparison within the available "
+                    "synthetic sample."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
-    # VALIDATION EVIDENCE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # VALIDATION STATUS
+    # -------------------------------------------------------------
 
     validation_status = "NOT_AVAILABLE"
 
@@ -453,18 +693,20 @@ def main():
         with open(
             VALIDATION_PATH,
             "r",
-            encoding="utf-8"
+            encoding="utf-8",
         ) as file:
             validation_data = json.load(file)
 
-        validation_status = validation_data.get(
-            "validation_status",
-            "NOT_AVAILABLE"
+        validation_status = (
+            validation_data.get(
+                "validation_status",
+                "NOT_AVAILABLE",
+            )
         )
 
-    # ---------------------------------------------------------
-    # WEAK-CASE EVIDENCE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # WEAK CASE COUNT
+    # -------------------------------------------------------------
 
     weak_case_count = 0
 
@@ -472,17 +714,20 @@ def main():
         with open(
             WEAK_CASE_PATH,
             "r",
-            encoding="utf-8"
+            encoding="utf-8",
         ) as file:
             weak_case_data = json.load(file)
 
         weak_case_count = len(
-            weak_case_data.get("weak_cases", [])
+            weak_case_data.get(
+                "weak_cases",
+                [],
+            )
         )
 
-    # ---------------------------------------------------------
-    # SAVE INTELLIGENCE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # INTELLIGENCE RESULTS PAYLOAD
+    # -------------------------------------------------------------
 
     results_payload = {
         "project_id": PROJECT_ID,
@@ -498,51 +743,74 @@ def main():
     with open(
         RESULTS_PATH,
         "w",
-        encoding="utf-8"
+        encoding="utf-8",
     ) as file:
         json.dump(
             results_payload,
             file,
             indent=2,
-            ensure_ascii=False
+            ensure_ascii=False,
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # KEY FINDINGS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
-    highest_stage = stage_summary.iloc[0]
-    highest_product = product_summary.iloc[0]
-    highest_source = source_summary.iloc[0]
+    highest_stage = (
+        stage_summary.iloc[0]
+    )
+
+    highest_product = (
+        product_summary.iloc[0]
+    )
+
+    highest_source = (
+        source_summary.iloc[0]
+    )
 
     key_findings = [
         (
-            f"Won is the highest observed-value funnel stage with "
+            "Won is the highest observed-value "
+            "funnel stage with "
             f"{float(highest_stage['total_lead_value']):.2f}."
         ),
         (
-            f"Payments is the highest observed-value product category with "
+            "Payments is the highest observed-value "
+            "product category with "
             f"{float(highest_product['total_lead_value']):.2f}."
         ),
         (
-            f"Website is the highest observed-value acquisition source with "
+            "Website is the highest observed-value "
+            "acquisition source with "
             f"{float(highest_source['total_lead_value']):.2f}."
         ),
     ]
 
     limitations = [
         "The dataset is synthetic.",
-        "The available analytical sample contains 30 source CRM leads.",
-        "The analysis is descriptive and does not establish causation.",
+        (
+            "The available analytical sample contains "
+            "30 source CRM leads."
+        ),
+        (
+            "The analysis is descriptive and does not "
+            "establish causation."
+        ),
         "The analysis is not predictive.",
-        "Team and location are not represented as separate canonical fields.",
-        "The available temporal information does not constitute a full longitudinal time series.",
+        (
+            "Team and location are not represented as "
+            "separate canonical fields."
+        ),
+        (
+            "The available temporal information does not "
+            "constitute a full longitudinal time series."
+        ),
         "Small stage groups require cautious interpretation.",
     ]
 
-    # ---------------------------------------------------------
-    # SAVE INTELLIGENCE SUMMARY
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # INTELLIGENCE SUMMARY
+    # -------------------------------------------------------------
 
     summary_payload = {
         "project_id": PROJECT_ID,
@@ -558,23 +826,35 @@ def main():
             {
                 "rank": 1,
                 "dimension": "stage",
-                "group": str(highest_stage["stage"]),
+                "group": str(
+                    highest_stage["stage"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_stage["total_lead_value"]),
+                "value": float(
+                    highest_stage["total_lead_value"]
+                ),
             },
             {
                 "rank": 2,
                 "dimension": "product",
-                "group": str(highest_product["category"]),
+                "group": str(
+                    highest_product["category"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_product["total_lead_value"]),
+                "value": float(
+                    highest_product["total_lead_value"]
+                ),
             },
             {
                 "rank": 3,
                 "dimension": "source",
-                "group": str(highest_source["subcategory"]),
+                "group": str(
+                    highest_source["subcategory"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_source["total_lead_value"]),
+                "value": float(
+                    highest_source["total_lead_value"]
+                ),
             },
         ],
         "validation_result": validation_status,
@@ -586,26 +866,67 @@ def main():
     with open(
         SUMMARY_PATH,
         "w",
-        encoding="utf-8"
+        encoding="utf-8",
     ) as file:
         json.dump(
             summary_payload,
             file,
             indent=2,
-            ensure_ascii=False
+            ensure_ascii=False,
         )
 
-    print("INTELLIGENCE OUTPUTS GENERATED")
-    print("Data version:", DATA_VERSION)
-    print("Method version:", METHOD_VERSION)
-    print("Approved track:", APPROVED_TRACK)
-    print("Source leads:", lead_count)
-    print("Result count:", len(results))
-    print("Validation status:", validation_status)
-    print("Weak cases:", weak_case_count)
-    print("Results:", RESULTS_PATH)
-    print("Summary:", SUMMARY_PATH)
+    # -------------------------------------------------------------
+    # TERMINAL SUMMARY
+    # -------------------------------------------------------------
 
+    print(
+        "INTELLIGENCE OUTPUTS GENERATED"
+    )
+    print(
+        "Data version:",
+        DATA_VERSION,
+    )
+    print(
+        "Method version:",
+        METHOD_VERSION,
+    )
+    print(
+        "Approved track:",
+        APPROVED_TRACK,
+    )
+    print(
+        "Source leads:",
+        lead_count,
+    )
+    print(
+        "Result count:",
+        len(results),
+    )
+    print(
+        "Validation status:",
+        validation_status,
+    )
+    print(
+        "Weak cases:",
+        weak_case_count,
+    )
+    print(
+        "Lead-value unit:",
+        lead_value_unit,
+    )
+    print(
+        "Results:",
+        RESULTS_PATH,
+    )
+    print(
+        "Summary:",
+        SUMMARY_PATH,
+    )
+
+
+# ---------------------------------------------------------------------
+# ENTRY POINT
+# ---------------------------------------------------------------------
 
 if __name__ == "__main__":
     main()

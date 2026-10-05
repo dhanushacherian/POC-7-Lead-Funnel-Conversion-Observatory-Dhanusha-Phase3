@@ -708,604 +708,6 @@ data/
 }
 </file>
 
-<file path="data-science/notebooks/02_analytical_track_development_and_validation.ipynb">
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "id": "title001",
-   "metadata": {},
-   "source": [
-    "# POC-7 Phase 3 — Analytical Track Development and Validation\n",
-    "\n",
-    "**Approved analytical track:** Track A - Comparative Intelligence  \n",
-    "**Data version:** phase3-v2  \n",
-    "**Method version:** 1.0.0\n",
-    "\n",
-    "This notebook documents and verifies the reproducible analytical workflow using the mandatory canonical dataset."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "scope002",
-   "metadata": {},
-   "source": [
-    "## 1. Analytical scope\n",
-    "\n",
-    "Primary analytical question:\n",
-    "\n",
-    "> How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?\n",
-    "\n",
-    "Decision supported:\n",
-    "\n",
-    "Support descriptive operational review of observed differences across funnel stages, products and acquisition sources within the available synthetic sample."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "load003",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:54.078968Z",
-     "iopub.status.busy": "2026-10-05T14:37:54.078529Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.083389Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.082226Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Working directory: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data-science\\notebooks\n",
-      "Project root: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\n",
-      "Canonical path: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data\\canonical\\intelligence_data.csv\n",
-      "Output directory: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data-science\\outputs\n"
-     ]
-    }
-   ],
-   "source": [
-    "from pathlib import Path\n",
-    "import json\n",
-    "import pandas as pd\n",
-    "\n",
-    "cwd = Path.cwd()\n",
-    "\n",
-    "PROJECT_ROOT = None\n",
-    "\n",
-    "for candidate in [cwd, *cwd.parents]:\n",
-    "    canonical_candidate = candidate / 'data' / 'canonical' / 'intelligence_data.csv'\n",
-    "    if canonical_candidate.exists():\n",
-    "        PROJECT_ROOT = candidate\n",
-    "        break\n",
-    "\n",
-    "if PROJECT_ROOT is None:\n",
-    "    raise FileNotFoundError(\n",
-    "        'Could not locate project root containing data/canonical/intelligence_data.csv'\n",
-    "    )\n",
-    "\n",
-    "CANONICAL_PATH = (\n",
-    "    PROJECT_ROOT\n",
-    "    / 'data'\n",
-    "    / 'canonical'\n",
-    "    / 'intelligence_data.csv'\n",
-    ")\n",
-    "\n",
-    "OUTPUT_DIR = (\n",
-    "    PROJECT_ROOT\n",
-    "    / 'data-science'\n",
-    "    / 'outputs'\n",
-    ")\n",
-    "\n",
-    "print('Working directory:', cwd)\n",
-    "print('Project root:', PROJECT_ROOT)\n",
-    "print('Canonical path:', CANONICAL_PATH)\n",
-    "print('Output directory:', OUTPUT_DIR)\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 2,
-   "id": "data004",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.086894Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.086444Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.109221Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.107760Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Canonical rows: 60\n",
-      "Canonical columns: 20\n",
-      "CANONICAL INPUT CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "df = pd.read_csv(CANONICAL_PATH)\n",
-    "\n",
-    "print(\"Canonical rows:\", len(df))\n",
-    "print(\"Canonical columns:\", len(df.columns))\n",
-    "\n",
-    "assert len(df) == 60\n",
-    "assert len(df.columns) == 20\n",
-    "assert df[\"data_version\"].dropna().astype(str).unique().tolist() == [\"phase3-v2\"]\n",
-    "\n",
-    "print(\"CANONICAL INPUT CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "unit005",
-   "metadata": {},
-   "source": [
-    "## 2. Analytical unit and approved dimensions\n",
-    "\n",
-    "The analytical unit is one source CRM lead.\n",
-    "\n",
-    "Approved comparison dimensions:\n",
-    "- funnel stage\n",
-    "- product category\n",
-    "- acquisition source\n",
-    "\n",
-    "The available canonical structure contains 60 rows representing 30 source leads and their associated metric records."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "id": "dataset006",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.112860Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.112539Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.133056Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.131673Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Analytical rows: 30\n",
-      "ANALYTICAL UNIT CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "source_leads = df[df[\"record_type\"] == \"crm_lead\"].copy()\n",
-    "metric_records = df[df[\"record_type\"] == \"crm_lead_metric\"].copy()\n",
-    "\n",
-    "assert len(source_leads) == 30\n",
-    "assert len(metric_records) == 30\n",
-    "\n",
-    "lead_values = (\n",
-    "    source_leads\n",
-    "    .set_index(\"entity_id\")[\"metric_value\"]\n",
-    "    .astype(float)\n",
-    ")\n",
-    "\n",
-    "days_by_entity = (\n",
-    "    metric_records\n",
-    "    .set_index(\"entity_id\")[\"metric_value\"]\n",
-    "    .astype(float)\n",
-    ")\n",
-    "\n",
-    "analysis = source_leads[\n",
-    "    [\n",
-    "        \"entity_id\",\n",
-    "        \"stage\",\n",
-    "        \"category\",\n",
-    "        \"subcategory\",\n",
-    "        \"metric_value\",\n",
-    "    ]\n",
-    "].copy()\n",
-    "\n",
-    "analysis = analysis.rename(\n",
-    "    columns={\"metric_value\": \"lead_value\"}\n",
-    ")\n",
-    "\n",
-    "analysis[\"days_in_stage\"] = (\n",
-    "    analysis[\"entity_id\"]\n",
-    "    .map(days_by_entity)\n",
-    ")\n",
-    "\n",
-    "assert len(analysis) == 30\n",
-    "assert analysis[\"lead_value\"].notna().all()\n",
-    "assert analysis[\"days_in_stage\"].notna().all()\n",
-    "\n",
-    "print(\"Analytical rows:\", len(analysis))\n",
-    "print(\"ANALYTICAL UNIT CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "baseline007",
-   "metadata": {},
-   "source": [
-    "## 3. Baseline calculation\n",
-    "\n",
-    "Baseline metrics provide the overall descriptive reference against which group-level results are interpreted."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "id": "baseline008",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.136094Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.135797Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.146198Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.144995Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Baseline:\n",
-      "lead_count: 30\n",
-      "total_lead_value: 2023000.0\n",
-      "average_lead_value: 67433.33333333333\n",
-      "average_days_in_stage: 13.1\n",
-      "median_days_in_stage: 10.0\n",
-      "BASELINE CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "baseline = {\n",
-    "    \"lead_count\": int(len(analysis)),\n",
-    "    \"total_lead_value\": float(analysis[\"lead_value\"].sum()),\n",
-    "    \"average_lead_value\": float(analysis[\"lead_value\"].mean()),\n",
-    "    \"average_days_in_stage\": float(analysis[\"days_in_stage\"].mean()),\n",
-    "    \"median_days_in_stage\": float(analysis[\"days_in_stage\"].median()),\n",
-    "}\n",
-    "\n",
-    "print(\"Baseline:\")\n",
-    "for key, value in baseline.items():\n",
-    "    print(f\"{key}: {value}\")\n",
-    "\n",
-    "assert baseline[\"lead_count\"] == 30\n",
-    "assert baseline[\"total_lead_value\"] == 2023000.0\n",
-    "assert round(baseline[\"average_lead_value\"], 2) == 67433.33\n",
-    "assert round(baseline[\"average_days_in_stage\"], 2) == 13.10\n",
-    "assert round(baseline[\"median_days_in_stage\"], 2) == 10.00\n",
-    "\n",
-    "print(\"BASELINE CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "ranking009",
-   "metadata": {},
-   "source": [
-    "## 4. Comparative intelligence calculations\n",
-    "\n",
-    "Track A ranks groups by total observed lead value in descending order. Ties are handled deterministically by group name."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 5,
-   "id": "ranking010",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.149077Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.148800Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.185256Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.184125Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Top stage: Won\n",
-      "Top product: Payments\n",
-      "Top source: Website\n",
-      "COMPARATIVE RANKING CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "stage_summary = (\n",
-    "    analysis\n",
-    "    .groupby(\"stage\", dropna=False)\n",
-    "    .agg(\n",
-    "        lead_count=(\"entity_id\", \"count\"),\n",
-    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
-    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
-    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
-    "    )\n",
-    "    .reset_index()\n",
-    "    .sort_values(\n",
-    "        [\"total_lead_value\", \"stage\"],\n",
-    "        ascending=[False, True],\n",
-    "    )\n",
-    ")\n",
-    "\n",
-    "product_summary = (\n",
-    "    analysis\n",
-    "    .groupby(\"category\", dropna=False)\n",
-    "    .agg(\n",
-    "        lead_count=(\"entity_id\", \"count\"),\n",
-    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
-    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
-    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
-    "    )\n",
-    "    .reset_index()\n",
-    "    .sort_values(\n",
-    "        [\"total_lead_value\", \"category\"],\n",
-    "        ascending=[False, True],\n",
-    "    )\n",
-    ")\n",
-    "\n",
-    "source_summary = (\n",
-    "    analysis\n",
-    "    .groupby(\"subcategory\", dropna=False)\n",
-    "    .agg(\n",
-    "        lead_count=(\"entity_id\", \"count\"),\n",
-    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
-    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
-    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
-    "    )\n",
-    "    .reset_index()\n",
-    "    .sort_values(\n",
-    "        [\"total_lead_value\", \"subcategory\"],\n",
-    "        ascending=[False, True],\n",
-    "    )\n",
-    ")\n",
-    "\n",
-    "print(\"Top stage:\", stage_summary.iloc[0][\"stage\"])\n",
-    "print(\"Top product:\", product_summary.iloc[0][\"category\"])\n",
-    "print(\"Top source:\", source_summary.iloc[0][\"subcategory\"])\n",
-    "\n",
-    "assert stage_summary.iloc[0][\"stage\"] == \"Won\"\n",
-    "assert stage_summary.iloc[0][\"total_lead_value\"] == 949000.0\n",
-    "\n",
-    "assert product_summary.iloc[0][\"category\"] == \"Payments\"\n",
-    "assert product_summary.iloc[0][\"total_lead_value\"] == 942000.0\n",
-    "\n",
-    "assert source_summary.iloc[0][\"subcategory\"] == \"Website\"\n",
-    "assert source_summary.iloc[0][\"total_lead_value\"] == 689000.0\n",
-    "\n",
-    "print(\"COMPARATIVE RANKING CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "validation011",
-   "metadata": {},
-   "source": [
-    "## 5. Validation evidence\n",
-    "\n",
-    "The notebook verifies the machine-generated validation artifacts from the reusable validation script rather than replacing them."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 6,
-   "id": "validation012",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.188098Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.187829Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.197004Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.195826Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Validation status: PASS\n",
-      "Calculation accuracy: PASS\n",
-      "Ranking stability: True\n",
-      "Weak cases: 4\n",
-      "VALIDATION EVIDENCE CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "validation_path = OUTPUT_DIR / \"validation_metrics.json\"\n",
-    "weak_case_path = OUTPUT_DIR / \"weak_case_review.json\"\n",
-    "\n",
-    "with open(validation_path, \"r\", encoding=\"utf-8\") as file:\n",
-    "    validation = json.load(file)\n",
-    "\n",
-    "with open(weak_case_path, \"r\", encoding=\"utf-8\") as file:\n",
-    "    weak_cases = json.load(file)\n",
-    "\n",
-    "print(\"Validation status:\", validation[\"validation_status\"])\n",
-    "print(\"Calculation accuracy:\", validation[\"calculation_accuracy\"][\"status\"])\n",
-    "print(\n",
-    "    \"Ranking stability:\",\n",
-    "    all(\n",
-    "        item[\"common_order_stable\"]\n",
-    "        for item in validation[\"small_group_sensitivity\"].values()\n",
-    "    ),\n",
-    ")\n",
-    "print(\n",
-    "    \"Weak cases:\",\n",
-    "    len(weak_cases.get(\"weak_cases\", [])),\n",
-    ")\n",
-    "\n",
-    "assert validation[\"validation_status\"] == \"PASS\"\n",
-    "assert validation[\"calculation_accuracy\"][\"status\"] == \"PASS\"\n",
-    "assert validation[\"weak_case_count\"] == 4\n",
-    "assert len(weak_cases.get(\"weak_cases\", [])) == 4\n",
-    "\n",
-    "print(\"VALIDATION EVIDENCE CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "outputs013",
-   "metadata": {},
-   "source": [
-    "## 6. Intelligence output verification"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "id": "outputs014",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.200298Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.200010Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.208123Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.206865Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Result count: 16\n",
-      "Validation result: PASS\n",
-      "Weak-case count: 4\n",
-      "INTELLIGENCE OUTPUT CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "results_path = OUTPUT_DIR / \"intelligence_results.json\"\n",
-    "summary_path = OUTPUT_DIR / \"intelligence_summary.json\"\n",
-    "\n",
-    "with open(results_path, \"r\", encoding=\"utf-8\") as file:\n",
-    "    intelligence_results = json.load(file)\n",
-    "\n",
-    "with open(summary_path, \"r\", encoding=\"utf-8\") as file:\n",
-    "    intelligence_summary = json.load(file)\n",
-    "\n",
-    "print(\"Result count:\", intelligence_summary[\"result_count\"])\n",
-    "print(\"Validation result:\", intelligence_summary[\"validation_result\"])\n",
-    "print(\"Weak-case count:\", intelligence_summary[\"weak_case_count\"])\n",
-    "\n",
-    "assert intelligence_summary[\"data_version\"] == \"phase3-v2\"\n",
-    "assert intelligence_summary[\"method_version\"] == \"1.0.0\"\n",
-    "assert intelligence_summary[\"approved_track\"] == (\n",
-    "    \"Track A - Comparative Intelligence\"\n",
-    ")\n",
-    "assert intelligence_summary[\"result_count\"] == 16\n",
-    "assert intelligence_summary[\"validation_result\"] == \"PASS\"\n",
-    "assert intelligence_summary[\"weak_case_count\"] == 4\n",
-    "\n",
-    "assert len(intelligence_results[\"results\"]) == 16\n",
-    "\n",
-    "print(\"INTELLIGENCE OUTPUT CHECK: PASS\")\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "limits015",
-   "metadata": {},
-   "source": [
-    "## 7. Interpretation and limitations\n",
-    "\n",
-    "The approved interpretation is descriptive only. The analysis does not establish causation and is not predictive.\n",
-    "\n",
-    "Important limitations include the synthetic dataset, the 30-lead analytical sample, sparse stage groups, lack of separate team/location fields, and the absence of a full longitudinal time series."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "id": "final016",
-   "metadata": {
-    "execution": {
-     "iopub.execute_input": "2026-10-05T14:37:55.211334Z",
-     "iopub.status.busy": "2026-10-05T14:37:55.211029Z",
-     "iopub.status.idle": "2026-10-05T14:37:55.216792Z",
-     "shell.execute_reply": "2026-10-05T14:37:55.215779Z"
-    }
-   },
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "============================================================\n",
-      "TRACK A NOTEBOOK VALIDATION SUMMARY\n",
-      "============================================================\n",
-      "Data version: phase3-v2\n",
-      "Method version: 1.0.0\n",
-      "Approved track: Track A - Comparative Intelligence\n",
-      "Analytical rows: 30\n",
-      "Baseline total lead value: 2023000.0\n",
-      "Top stage: Won\n",
-      "Top product: Payments\n",
-      "Top source: Website\n",
-      "Validation status: PASS\n",
-      "Weak cases reviewed: 4\n",
-      "Interpretation: DESCRIPTIVE ONLY\n",
-      "Predictive use: NOT SUPPORTED\n",
-      "Causal interpretation: NOT SUPPORTED\n",
-      "============================================================\n",
-      "TRACK A NOTEBOOK CHECK: PASS\n"
-     ]
-    }
-   ],
-   "source": [
-    "print(\"=\" * 60)\n",
-    "print(\"TRACK A NOTEBOOK VALIDATION SUMMARY\")\n",
-    "print(\"=\" * 60)\n",
-    "print(\"Data version: phase3-v2\")\n",
-    "print(\"Method version: 1.0.0\")\n",
-    "print(\"Approved track: Track A - Comparative Intelligence\")\n",
-    "print(\"Analytical rows: 30\")\n",
-    "print(\"Baseline total lead value: 2023000.0\")\n",
-    "print(\"Top stage: Won\")\n",
-    "print(\"Top product: Payments\")\n",
-    "print(\"Top source: Website\")\n",
-    "print(\"Validation status: PASS\")\n",
-    "print(\"Weak cases reviewed: 4\")\n",
-    "print(\"Interpretation: DESCRIPTIVE ONLY\")\n",
-    "print(\"Predictive use: NOT SUPPORTED\")\n",
-    "print(\"Causal interpretation: NOT SUPPORTED\")\n",
-    "print(\"=\" * 60)\n",
-    "print(\"TRACK A NOTEBOOK CHECK: PASS\")\n"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.14.2"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
-</file>
-
 <file path="data-science/outputs/analytical_readiness.json">
 {
   "project": "Lead Funnel Conversion Observatory",
@@ -1405,7 +807,7 @@ data/
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T12:12:23.283300+00:00",
+  "generated_at": "2026-10-05T14:51:04.757150+00:00",
   "result_count": 16,
   "results": [
     {
@@ -1418,17 +820,18 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 2023000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "baseline",
       "priority_rank": 1,
       "finding": "The available sample contains 30 source CRM leads with total observed lead value of 2023000.00.",
       "evidence": {
         "lead_count": 30,
-        "total_lead_value": 2023000.0
+        "total_lead_value": 2023000.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -1442,17 +845,18 @@ data/
       "period_end": null,
       "metric_name": "average_lead_value",
       "result_value": 67433.33333333333,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "baseline",
       "priority_rank": 2,
       "finding": "The overall average observed lead value is 67433.33.",
       "evidence": {
         "lead_count": 30,
-        "average_lead_value": 67433.33333333333
+        "average_lead_value": 67433.33333333333,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -1476,7 +880,7 @@ data/
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Available temporal information is descriptive and does not constitute a full longitudinal time series."
     },
@@ -1490,7 +894,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 949000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 1,
       "finding": "The Won stage has observed total lead value of 949000.00 across 10 leads.",
@@ -1499,11 +903,12 @@ data/
         "lead_count": 10,
         "total_lead_value": 949000.0,
         "average_lead_value": 94900.0,
-        "average_days_in_stage": 8.9
+        "average_days_in_stage": 8.9,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1517,7 +922,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 397000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 2,
       "finding": "The Proposal stage has observed total lead value of 397000.00 across 4 leads.",
@@ -1526,11 +931,12 @@ data/
         "lead_count": 4,
         "total_lead_value": 397000.0,
         "average_lead_value": 99250.0,
-        "average_days_in_stage": 17.25
+        "average_days_in_stage": 17.25,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1544,7 +950,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 252000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 3,
       "finding": "The Opportunity stage has observed total lead value of 252000.00 across 5 leads.",
@@ -1553,11 +959,12 @@ data/
         "lead_count": 5,
         "total_lead_value": 252000.0,
         "average_lead_value": 50400.0,
-        "average_days_in_stage": 19.4
+        "average_days_in_stage": 19.4,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1571,7 +978,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 191000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 4,
       "finding": "The Qualified stage has observed total lead value of 191000.00 across 5 leads.",
@@ -1580,11 +987,12 @@ data/
         "lead_count": 5,
         "total_lead_value": 191000.0,
         "average_lead_value": 38200.0,
-        "average_days_in_stage": 7.0
+        "average_days_in_stage": 7.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1598,7 +1006,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 147000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 5,
       "finding": "The Lost stage has observed total lead value of 147000.00 across 3 leads.",
@@ -1607,11 +1015,12 @@ data/
         "lead_count": 3,
         "total_lead_value": 147000.0,
         "average_lead_value": 49000.0,
-        "average_days_in_stage": 30.333333333333332
+        "average_days_in_stage": 30.333333333333332,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1625,7 +1034,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 87000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "stage_comparison",
       "priority_rank": 6,
       "finding": "The Lead stage has observed total lead value of 87000.00 across 3 leads.",
@@ -1634,11 +1043,12 @@ data/
         "lead_count": 3,
         "total_lead_value": 87000.0,
         "average_lead_value": 29000.0,
-        "average_days_in_stage": 4.0
+        "average_days_in_stage": 4.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -1652,7 +1062,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 942000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 1,
       "finding": "The Payments product category has observed total lead value of 942000.00 across 12 leads.",
@@ -1661,11 +1071,12 @@ data/
         "lead_count": 12,
         "total_lead_value": 942000.0,
         "average_lead_value": 78500.0,
-        "average_days_in_stage": 9.166666666666666
+        "average_days_in_stage": 9.166666666666666,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1679,7 +1090,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 592000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 2,
       "finding": "The Analytics product category has observed total lead value of 592000.00 across 9 leads.",
@@ -1688,11 +1099,12 @@ data/
         "lead_count": 9,
         "total_lead_value": 592000.0,
         "average_lead_value": 65777.77777777778,
-        "average_days_in_stage": 14.333333333333334
+        "average_days_in_stage": 14.333333333333334,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1706,7 +1118,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 489000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "product_comparison",
       "priority_rank": 3,
       "finding": "The Security product category has observed total lead value of 489000.00 across 9 leads.",
@@ -1715,11 +1127,12 @@ data/
         "lead_count": 9,
         "total_lead_value": 489000.0,
         "average_lead_value": 54333.333333333336,
-        "average_days_in_stage": 17.11111111111111
+        "average_days_in_stage": 17.11111111111111,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1733,7 +1146,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 689000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 1,
       "finding": "The Website acquisition source has observed total lead value of 689000.00 across 11 leads.",
@@ -1742,11 +1155,12 @@ data/
         "lead_count": 11,
         "total_lead_value": 689000.0,
         "average_lead_value": 62636.36363636364,
-        "average_days_in_stage": 14.727272727272727
+        "average_days_in_stage": 14.727272727272727,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1760,7 +1174,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 493000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 2,
       "finding": "The Partner acquisition source has observed total lead value of 493000.00 across 5 leads.",
@@ -1769,11 +1183,12 @@ data/
         "lead_count": 5,
         "total_lead_value": 493000.0,
         "average_lead_value": 98600.0,
-        "average_days_in_stage": 17.0
+        "average_days_in_stage": 17.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1787,7 +1202,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 484000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 3,
       "finding": "The Referral acquisition source has observed total lead value of 484000.00 across 7 leads.",
@@ -1796,11 +1211,12 @@ data/
         "lead_count": 7,
         "total_lead_value": 484000.0,
         "average_lead_value": 69142.85714285714,
-        "average_days_in_stage": 9.857142857142858
+        "average_days_in_stage": 9.857142857142858,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -1814,7 +1230,7 @@ data/
       "period_end": null,
       "metric_name": "total_lead_value",
       "result_value": 357000.0,
-      "result_unit": "currency",
+      "result_unit": "currency_unspecified",
       "result_category": "source_comparison",
       "priority_rank": 4,
       "finding": "The Campaign acquisition source has observed total lead value of 357000.00 across 7 leads.",
@@ -1823,11 +1239,12 @@ data/
         "lead_count": 7,
         "total_lead_value": 357000.0,
         "average_lead_value": 51000.0,
-        "average_days_in_stage": 11.0
+        "average_days_in_stage": 11.0,
+        "metric_unit": "currency_unspecified"
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T12:12:23.283300+00:00",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     }
@@ -1884,7 +1301,7 @@ data/
     "The available temporal information does not constitute a full longitudinal time series.",
     "Small stage groups require cautious interpretation."
   ],
-  "generated_at": "2026-10-05T12:12:23.283300+00:00"
+  "generated_at": "2026-10-05T14:51:04.757150+00:00"
 }
 </file>
 
@@ -2014,7 +1431,7 @@ Lead,3,87000,29000.0,4.0,4.0,4.300543746910529
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T12:12:22.678545+00:00",
+  "generated_at": "2026-10-05T14:51:03.669834+00:00",
   "baseline": {
     "lead_count": 30,
     "total_lead_value": 2023000.0,
@@ -2220,7 +1637,7 @@ Lead,3,87000,29000.0,4.0,4.0,4.300543746910529
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T12:12:22.679830+00:00",
+  "generated_at": "2026-10-05T14:51:03.672657+00:00",
   "minimum_group_size_sensitivity": 5,
   "weak_cases": [
     {
@@ -3627,22 +3044,53 @@ from datetime import datetime, timezone
 import pandas as pd
 
 
+# ---------------------------------------------------------------------
+# PROJECT CONFIGURATION
+# ---------------------------------------------------------------------
+
 ROOT = Path(__file__).resolve().parents[2]
 
-CANONICAL_PATH = ROOT / "data" / "canonical" / "intelligence_data.csv"
-OUTPUT_DIR = ROOT / "data-science" / "outputs"
+CANONICAL_PATH = (
+    ROOT
+    / "data"
+    / "canonical"
+    / "intelligence_data.csv"
+)
 
-RESULTS_PATH = OUTPUT_DIR / "intelligence_results.json"
-SUMMARY_PATH = OUTPUT_DIR / "intelligence_summary.json"
-VALIDATION_PATH = OUTPUT_DIR / "validation_metrics.json"
-WEAK_CASE_PATH = OUTPUT_DIR / "weak_case_review.json"
+OUTPUT_DIR = (
+    ROOT
+    / "data-science"
+    / "outputs"
+)
+
+RESULTS_PATH = (
+    OUTPUT_DIR
+    / "intelligence_results.json"
+)
+
+SUMMARY_PATH = (
+    OUTPUT_DIR
+    / "intelligence_summary.json"
+)
+
+VALIDATION_PATH = (
+    OUTPUT_DIR
+    / "validation_metrics.json"
+)
+
+WEAK_CASE_PATH = (
+    OUTPUT_DIR
+    / "weak_case_review.json"
+)
 
 DATA_VERSION = "phase3-v2"
 METHOD_VERSION = "1.0.0"
 PROJECT_ID = "POC-7"
 POC_TITLE = "Lead Funnel Conversion Observatory"
 
-APPROVED_TRACK = "Track A - Comparative Intelligence"
+APPROVED_TRACK = (
+    "Track A - Comparative Intelligence"
+)
 
 PRIMARY_QUESTION = (
     "How do lead value and days in stage vary across CRM funnel stages, "
@@ -3656,7 +3104,13 @@ DECISION = (
 )
 
 
+# ---------------------------------------------------------------------
+# LOAD CANONICAL DATA
+# ---------------------------------------------------------------------
+
 def load_canonical_data():
+    """Load and validate the mandatory canonical dataset."""
+
     if not CANONICAL_PATH.exists():
         raise FileNotFoundError(
             f"Canonical dataset not found: {CANONICAL_PATH}"
@@ -3668,54 +3122,119 @@ def load_canonical_data():
         "record_type",
         "metric_name",
         "metric_value",
+        "metric_unit",
         "source_record_id",
         "category",
         "subcategory",
+        "status",
         "stage",
         "data_version",
         "is_synthetic",
     }
 
-    missing = required_columns - set(df.columns)
+    missing = (
+        required_columns
+        - set(df.columns)
+    )
 
     if missing:
         raise ValueError(
-            f"Canonical dataset is missing required columns: {sorted(missing)}"
+            "Canonical dataset is missing required columns: "
+            + str(sorted(missing))
         )
 
-    versions = set(df["data_version"].dropna().astype(str))
+    versions = set(
+        df["data_version"]
+        .dropna()
+        .astype(str)
+    )
 
     if versions != {DATA_VERSION}:
         raise ValueError(
-            f"Unexpected data_version values: {sorted(versions)}"
+            "Unexpected data_version values: "
+            + str(sorted(versions))
         )
 
     return df
 
 
+# ---------------------------------------------------------------------
+# PRESERVE CANONICAL LEAD-VALUE UNIT
+# ---------------------------------------------------------------------
+
+def get_canonical_lead_value_unit(df):
+    """
+    Read the unit directly from canonical lead-value records.
+
+    This prevents replacement of the canonical unit
+    (for example, currency_unspecified) with a generic label.
+    """
+
+    lead_value_rows = df[
+        df["metric_name"].astype(str).eq("lead_value")
+    ].copy()
+
+    if lead_value_rows.empty:
+        raise ValueError(
+            "No canonical lead_value records were found."
+        )
+
+    units = sorted(
+        set(
+            lead_value_rows["metric_unit"]
+            .dropna()
+            .astype(str)
+        )
+    )
+
+    if len(units) != 1:
+        raise ValueError(
+            "Expected exactly one canonical lead_value unit, "
+            f"found: {units}"
+        )
+
+    return units[0]
+
+
+# ---------------------------------------------------------------------
+# BUILD ANALYTICAL DATASET
+# ---------------------------------------------------------------------
+
 def build_analysis_dataset(df):
+    """Build one analytical row per source CRM lead."""
+
     leads = df[
-        df["record_type"].astype(str).eq("crm_lead")
+        df["record_type"]
+        .astype(str)
+        .eq("crm_lead")
     ].copy()
 
     leads["lead_value"] = pd.to_numeric(
         leads["metric_value"],
-        errors="coerce"
+        errors="coerce",
     )
 
     days_df = df[
-        df["metric_name"].astype(str).eq("days_in_stage")
+        df["metric_name"]
+        .astype(str)
+        .eq("days_in_stage")
     ].copy()
 
     days_df["days_in_stage"] = pd.to_numeric(
         days_df["metric_value"],
-        errors="coerce"
+        errors="coerce",
     )
 
-    days_lookup = days_df[
-        ["source_record_id", "days_in_stage"]
-    ].drop_duplicates(
-        subset=["source_record_id"]
+    days_lookup = (
+        days_df[
+            [
+                "source_record_id",
+                "days_in_stage",
+            ]
+        ]
+        .drop_duplicates(
+            subset=["source_record_id"]
+        )
     )
 
     analysis_df = leads[
@@ -3735,7 +3254,7 @@ def build_analysis_dataset(df):
     analysis_df = analysis_df.merge(
         days_lookup,
         on="source_record_id",
-        how="left"
+        how="left",
     )
 
     analysis_df = analysis_df.dropna(
@@ -3745,34 +3264,85 @@ def build_analysis_dataset(df):
         ]
     ).copy()
 
+    if analysis_df.empty:
+        raise ValueError(
+            "Analytical dataset is empty after metric reconstruction."
+        )
+
     return analysis_df
 
 
-def summarize_by(analysis_df, group_column):
+# ---------------------------------------------------------------------
+# GROUP SUMMARY
+# ---------------------------------------------------------------------
+
+def summarize_by(
+    analysis_df,
+    group_column,
+):
+    """Create a deterministic descriptive summary."""
+
     result = (
         analysis_df
-        .groupby(group_column, dropna=False)
+        .groupby(
+            group_column,
+            dropna=False,
+        )
         .agg(
-            lead_count=("source_record_id", "nunique"),
-            total_lead_value=("lead_value", "sum"),
-            average_lead_value=("lead_value", "mean"),
-            average_days_in_stage=("days_in_stage", "mean"),
-            median_days_in_stage=("days_in_stage", "median"),
+            lead_count=(
+                "source_record_id",
+                "nunique",
+            ),
+            total_lead_value=(
+                "lead_value",
+                "sum",
+            ),
+            average_lead_value=(
+                "lead_value",
+                "mean",
+            ),
+            average_days_in_stage=(
+                "days_in_stage",
+                "mean",
+            ),
+            median_days_in_stage=(
+                "days_in_stage",
+                "median",
+            ),
         )
         .reset_index()
     )
 
-    result["value_share_percent"] = (
-        result["total_lead_value"]
-        / result["total_lead_value"].sum()
-        * 100
+    total_value = (
+        result["total_lead_value"].sum()
     )
 
-    return result.sort_values(
-        ["total_lead_value", group_column],
-        ascending=[False, True]
+    if total_value == 0:
+        result["value_share_percent"] = 0.0
+    else:
+        result["value_share_percent"] = (
+            result["total_lead_value"]
+            / total_value
+            * 100.0
+        )
+
+    result = result.sort_values(
+        [
+            "total_lead_value",
+            group_column,
+        ],
+        ascending=[
+            False,
+            True,
+        ],
     ).reset_index(drop=True)
 
+    return result
+
+
+# ---------------------------------------------------------------------
+# STANDARD RESULT OBJECT
+# ---------------------------------------------------------------------
 
 def make_result(
     result_id,
@@ -3788,6 +3358,8 @@ def make_result(
     limitation,
     generated_at,
 ):
+    """Create a result following the intelligence output contract."""
+
     return {
         "result_id": result_id,
         "result_type": result_type,
@@ -3811,16 +3383,54 @@ def make_result(
     }
 
 
+# ---------------------------------------------------------------------
+# MAIN EXPORT FUNCTION
+# ---------------------------------------------------------------------
+
 def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    """Generate intelligence results and intelligence summary."""
+
+    OUTPUT_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    # -------------------------------------------------------------
+    # LOAD DATA
+    # -------------------------------------------------------------
 
     df = load_canonical_data()
-    analysis_df = build_analysis_dataset(df)
 
-    if analysis_df.empty:
-        raise ValueError("Analytical dataset is empty.")
+    # -------------------------------------------------------------
+    # PRESERVE CANONICAL UNIT
+    # -------------------------------------------------------------
 
-    generated_at = datetime.now(timezone.utc).isoformat()
+    lead_value_unit = (
+        get_canonical_lead_value_unit(df)
+    )
+
+    print(
+        "Canonical lead-value unit:",
+        lead_value_unit,
+    )
+
+    # -------------------------------------------------------------
+    # BUILD ANALYTICAL DATASET
+    # -------------------------------------------------------------
+
+    analysis_df = (
+        build_analysis_dataset(df)
+    )
+
+    generated_at = (
+        datetime.now(
+            timezone.utc
+        ).isoformat()
+    )
+
+    # -------------------------------------------------------------
+    # BASELINE
+    # -------------------------------------------------------------
 
     total_lead_value = float(
         analysis_df["lead_value"].sum()
@@ -3839,29 +3449,35 @@ def main():
     )
 
     lead_count = int(
-        analysis_df["source_record_id"].nunique()
+        analysis_df[
+            "source_record_id"
+        ].nunique()
     )
+
+    # -------------------------------------------------------------
+    # GROUP SUMMARIES
+    # -------------------------------------------------------------
 
     stage_summary = summarize_by(
         analysis_df,
-        "stage"
+        "stage",
     )
 
     product_summary = summarize_by(
         analysis_df,
-        "category"
+        "category",
     )
 
     source_summary = summarize_by(
         analysis_df,
-        "subcategory"
+        "subcategory",
     )
 
     results = []
 
-    # ---------------------------------------------------------
-    # BASELINE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # BASELINE RESULTS
+    # -------------------------------------------------------------
 
     results.append(
         make_result(
@@ -3870,16 +3486,19 @@ def main():
             group_key="overall",
             metric_name="total_lead_value",
             result_value=total_lead_value,
-            result_unit="currency",
+            result_unit=lead_value_unit,
             result_category="baseline",
             priority_rank=1,
             finding=(
-                f"The available sample contains {lead_count} source CRM leads "
-                f"with total observed lead value of {total_lead_value:.2f}."
+                f"The available sample contains "
+                f"{lead_count} source CRM leads with "
+                f"total observed lead value of "
+                f"{total_lead_value:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "total_lead_value": total_lead_value,
+                "metric_unit": lead_value_unit,
             },
             limitation=(
                 "Synthetic sample; descriptive result only."
@@ -3895,16 +3514,17 @@ def main():
             group_key="overall",
             metric_name="average_lead_value",
             result_value=average_lead_value,
-            result_unit="currency",
+            result_unit=lead_value_unit,
             result_category="baseline",
             priority_rank=2,
             finding=(
-                f"The overall average observed lead value is "
-                f"{average_lead_value:.2f}."
+                f"The overall average observed lead "
+                f"value is {average_lead_value:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "average_lead_value": average_lead_value,
+                "metric_unit": lead_value_unit,
             },
             limitation=(
                 "Synthetic sample; descriptive result only."
@@ -3924,150 +3544,187 @@ def main():
             result_category="baseline",
             priority_rank=3,
             finding=(
-                f"The overall average observed days in stage is "
-                f"{average_days:.2f}."
+                f"The overall average observed "
+                f"days in stage is {average_days:.2f}."
             ),
             evidence={
                 "lead_count": lead_count,
                 "average_days_in_stage": average_days,
             },
             limitation=(
-                "Available temporal information is descriptive and does not "
-                "constitute a full longitudinal time series."
+                "Available temporal information is descriptive "
+                "and does not constitute a full longitudinal "
+                "time series."
             ),
             generated_at=generated_at,
         )
     )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # STAGE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        stage_summary.itertuples(index=False),
-        start=1
+        stage_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         stage = str(row.stage)
 
         results.append(
             make_result(
-                result_id=f"stage_{stage.lower()}_total_value",
+                result_id=(
+                    f"stage_{stage.lower()}_total_value"
+                ),
                 result_type="stage_comparison",
                 group_key=stage,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="stage_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {stage} stage has observed total lead value of "
-                    f"{row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {stage} stage has observed "
+                    f"total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": stage,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample; small stage groups require caution."
+                    "Descriptive comparison within the available "
+                    "synthetic sample; small stage groups require caution."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # PRODUCT RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        product_summary.itertuples(index=False),
-        start=1
+        product_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         product = str(row.category)
 
         results.append(
             make_result(
-                result_id=f"product_{product.lower()}_total_value",
+                result_id=(
+                    f"product_{product.lower()}_total_value"
+                ),
                 result_type="product_comparison",
                 group_key=product,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="product_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {product} product category has observed total "
-                    f"lead value of {row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {product} product category has "
+                    f"observed total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": product,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample."
+                    "Descriptive comparison within the available "
+                    "synthetic sample."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # SOURCE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
     for rank, row in enumerate(
-        source_summary.itertuples(index=False),
-        start=1
+        source_summary.itertuples(
+            index=False
+        ),
+        start=1,
     ):
         source = str(row.subcategory)
 
         results.append(
             make_result(
-                result_id=f"source_{source.lower()}_total_value",
+                result_id=(
+                    f"source_{source.lower()}_total_value"
+                ),
                 result_type="source_comparison",
                 group_key=source,
                 metric_name="total_lead_value",
                 result_value=row.total_lead_value,
-                result_unit="currency",
+                result_unit=lead_value_unit,
                 result_category="source_comparison",
                 priority_rank=rank,
                 finding=(
-                    f"The {source} acquisition source has observed total "
-                    f"lead value of {row.total_lead_value:.2f} across "
-                    f"{int(row.lead_count)} leads."
+                    f"The {source} acquisition source has "
+                    f"observed total lead value of "
+                    f"{row.total_lead_value:.2f} "
+                    f"across {int(row.lead_count)} leads."
                 ),
                 evidence={
                     "group": source,
-                    "lead_count": int(row.lead_count),
-                    "total_lead_value": float(row.total_lead_value),
-                    "average_lead_value": float(row.average_lead_value),
+                    "lead_count": int(
+                        row.lead_count
+                    ),
+                    "total_lead_value": float(
+                        row.total_lead_value
+                    ),
+                    "average_lead_value": float(
+                        row.average_lead_value
+                    ),
                     "average_days_in_stage": float(
                         row.average_days_in_stage
                     ),
+                    "metric_unit": lead_value_unit,
                 },
                 limitation=(
-                    "Descriptive comparison within the available synthetic "
-                    "sample."
+                    "Descriptive comparison within the available "
+                    "synthetic sample."
                 ),
                 generated_at=generated_at,
             )
         )
 
-    # ---------------------------------------------------------
-    # VALIDATION EVIDENCE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # VALIDATION STATUS
+    # -------------------------------------------------------------
 
     validation_status = "NOT_AVAILABLE"
 
@@ -4075,18 +3732,20 @@ def main():
         with open(
             VALIDATION_PATH,
             "r",
-            encoding="utf-8"
+            encoding="utf-8",
         ) as file:
             validation_data = json.load(file)
 
-        validation_status = validation_data.get(
-            "validation_status",
-            "NOT_AVAILABLE"
+        validation_status = (
+            validation_data.get(
+                "validation_status",
+                "NOT_AVAILABLE",
+            )
         )
 
-    # ---------------------------------------------------------
-    # WEAK-CASE EVIDENCE
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # WEAK CASE COUNT
+    # -------------------------------------------------------------
 
     weak_case_count = 0
 
@@ -4094,17 +3753,20 @@ def main():
         with open(
             WEAK_CASE_PATH,
             "r",
-            encoding="utf-8"
+            encoding="utf-8",
         ) as file:
             weak_case_data = json.load(file)
 
         weak_case_count = len(
-            weak_case_data.get("weak_cases", [])
+            weak_case_data.get(
+                "weak_cases",
+                [],
+            )
         )
 
-    # ---------------------------------------------------------
-    # SAVE INTELLIGENCE RESULTS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # INTELLIGENCE RESULTS PAYLOAD
+    # -------------------------------------------------------------
 
     results_payload = {
         "project_id": PROJECT_ID,
@@ -4120,51 +3782,74 @@ def main():
     with open(
         RESULTS_PATH,
         "w",
-        encoding="utf-8"
+        encoding="utf-8",
     ) as file:
         json.dump(
             results_payload,
             file,
             indent=2,
-            ensure_ascii=False
+            ensure_ascii=False,
         )
 
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
     # KEY FINDINGS
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
 
-    highest_stage = stage_summary.iloc[0]
-    highest_product = product_summary.iloc[0]
-    highest_source = source_summary.iloc[0]
+    highest_stage = (
+        stage_summary.iloc[0]
+    )
+
+    highest_product = (
+        product_summary.iloc[0]
+    )
+
+    highest_source = (
+        source_summary.iloc[0]
+    )
 
     key_findings = [
         (
-            f"Won is the highest observed-value funnel stage with "
+            "Won is the highest observed-value "
+            "funnel stage with "
             f"{float(highest_stage['total_lead_value']):.2f}."
         ),
         (
-            f"Payments is the highest observed-value product category with "
+            "Payments is the highest observed-value "
+            "product category with "
             f"{float(highest_product['total_lead_value']):.2f}."
         ),
         (
-            f"Website is the highest observed-value acquisition source with "
+            "Website is the highest observed-value "
+            "acquisition source with "
             f"{float(highest_source['total_lead_value']):.2f}."
         ),
     ]
 
     limitations = [
         "The dataset is synthetic.",
-        "The available analytical sample contains 30 source CRM leads.",
-        "The analysis is descriptive and does not establish causation.",
+        (
+            "The available analytical sample contains "
+            "30 source CRM leads."
+        ),
+        (
+            "The analysis is descriptive and does not "
+            "establish causation."
+        ),
         "The analysis is not predictive.",
-        "Team and location are not represented as separate canonical fields.",
-        "The available temporal information does not constitute a full longitudinal time series.",
+        (
+            "Team and location are not represented as "
+            "separate canonical fields."
+        ),
+        (
+            "The available temporal information does not "
+            "constitute a full longitudinal time series."
+        ),
         "Small stage groups require cautious interpretation.",
     ]
 
-    # ---------------------------------------------------------
-    # SAVE INTELLIGENCE SUMMARY
-    # ---------------------------------------------------------
+    # -------------------------------------------------------------
+    # INTELLIGENCE SUMMARY
+    # -------------------------------------------------------------
 
     summary_payload = {
         "project_id": PROJECT_ID,
@@ -4180,23 +3865,35 @@ def main():
             {
                 "rank": 1,
                 "dimension": "stage",
-                "group": str(highest_stage["stage"]),
+                "group": str(
+                    highest_stage["stage"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_stage["total_lead_value"]),
+                "value": float(
+                    highest_stage["total_lead_value"]
+                ),
             },
             {
                 "rank": 2,
                 "dimension": "product",
-                "group": str(highest_product["category"]),
+                "group": str(
+                    highest_product["category"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_product["total_lead_value"]),
+                "value": float(
+                    highest_product["total_lead_value"]
+                ),
             },
             {
                 "rank": 3,
                 "dimension": "source",
-                "group": str(highest_source["subcategory"]),
+                "group": str(
+                    highest_source["subcategory"]
+                ),
                 "metric": "total_lead_value",
-                "value": float(highest_source["total_lead_value"]),
+                "value": float(
+                    highest_source["total_lead_value"]
+                ),
             },
         ],
         "validation_result": validation_status,
@@ -4208,26 +3905,67 @@ def main():
     with open(
         SUMMARY_PATH,
         "w",
-        encoding="utf-8"
+        encoding="utf-8",
     ) as file:
         json.dump(
             summary_payload,
             file,
             indent=2,
-            ensure_ascii=False
+            ensure_ascii=False,
         )
 
-    print("INTELLIGENCE OUTPUTS GENERATED")
-    print("Data version:", DATA_VERSION)
-    print("Method version:", METHOD_VERSION)
-    print("Approved track:", APPROVED_TRACK)
-    print("Source leads:", lead_count)
-    print("Result count:", len(results))
-    print("Validation status:", validation_status)
-    print("Weak cases:", weak_case_count)
-    print("Results:", RESULTS_PATH)
-    print("Summary:", SUMMARY_PATH)
+    # -------------------------------------------------------------
+    # TERMINAL SUMMARY
+    # -------------------------------------------------------------
 
+    print(
+        "INTELLIGENCE OUTPUTS GENERATED"
+    )
+    print(
+        "Data version:",
+        DATA_VERSION,
+    )
+    print(
+        "Method version:",
+        METHOD_VERSION,
+    )
+    print(
+        "Approved track:",
+        APPROVED_TRACK,
+    )
+    print(
+        "Source leads:",
+        lead_count,
+    )
+    print(
+        "Result count:",
+        len(results),
+    )
+    print(
+        "Validation status:",
+        validation_status,
+    )
+    print(
+        "Weak cases:",
+        weak_case_count,
+    )
+    print(
+        "Lead-value unit:",
+        lead_value_unit,
+    )
+    print(
+        "Results:",
+        RESULTS_PATH,
+    )
+    print(
+        "Summary:",
+        SUMMARY_PATH,
+    )
+
+
+# ---------------------------------------------------------------------
+# ENTRY POINT
+# ---------------------------------------------------------------------
 
 if __name__ == "__main__":
     main()
@@ -15207,6 +14945,604 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
     "confirmation_required": false
   },
   "status": "VALIDATED"
+}
+</file>
+
+<file path="data-science/notebooks/02_analytical_track_development_and_validation.ipynb">
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "title001",
+   "metadata": {},
+   "source": [
+    "# POC-7 Phase 3 — Analytical Track Development and Validation\n",
+    "\n",
+    "**Approved analytical track:** Track A - Comparative Intelligence  \n",
+    "**Data version:** phase3-v2  \n",
+    "**Method version:** 1.0.0\n",
+    "\n",
+    "This notebook documents and verifies the reproducible analytical workflow using the mandatory canonical dataset."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "scope002",
+   "metadata": {},
+   "source": [
+    "## 1. Analytical scope\n",
+    "\n",
+    "Primary analytical question:\n",
+    "\n",
+    "> How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?\n",
+    "\n",
+    "Decision supported:\n",
+    "\n",
+    "Support descriptive operational review of observed differences across funnel stages, products and acquisition sources within the available synthetic sample."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "load003",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:37.515665Z",
+     "iopub.status.busy": "2026-10-05T14:51:37.515085Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.271948Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.268749Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Working directory: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data-science\\notebooks\n",
+      "Project root: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\n",
+      "Canonical path: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data\\canonical\\intelligence_data.csv\n",
+      "Output directory: C:\\Users\\LENOVO\\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\\data-science\\outputs\n"
+     ]
+    }
+   ],
+   "source": [
+    "from pathlib import Path\n",
+    "import json\n",
+    "import pandas as pd\n",
+    "\n",
+    "cwd = Path.cwd()\n",
+    "\n",
+    "PROJECT_ROOT = None\n",
+    "\n",
+    "for candidate in [cwd, *cwd.parents]:\n",
+    "    canonical_candidate = candidate / 'data' / 'canonical' / 'intelligence_data.csv'\n",
+    "    if canonical_candidate.exists():\n",
+    "        PROJECT_ROOT = candidate\n",
+    "        break\n",
+    "\n",
+    "if PROJECT_ROOT is None:\n",
+    "    raise FileNotFoundError(\n",
+    "        'Could not locate project root containing data/canonical/intelligence_data.csv'\n",
+    "    )\n",
+    "\n",
+    "CANONICAL_PATH = (\n",
+    "    PROJECT_ROOT\n",
+    "    / 'data'\n",
+    "    / 'canonical'\n",
+    "    / 'intelligence_data.csv'\n",
+    ")\n",
+    "\n",
+    "OUTPUT_DIR = (\n",
+    "    PROJECT_ROOT\n",
+    "    / 'data-science'\n",
+    "    / 'outputs'\n",
+    ")\n",
+    "\n",
+    "print('Working directory:', cwd)\n",
+    "print('Project root:', PROJECT_ROOT)\n",
+    "print('Canonical path:', CANONICAL_PATH)\n",
+    "print('Output directory:', OUTPUT_DIR)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "data004",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.278036Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.277232Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.300400Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.297900Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Canonical rows: 60\n",
+      "Canonical columns: 20\n",
+      "CANONICAL INPUT CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "df = pd.read_csv(CANONICAL_PATH)\n",
+    "\n",
+    "print(\"Canonical rows:\", len(df))\n",
+    "print(\"Canonical columns:\", len(df.columns))\n",
+    "\n",
+    "assert len(df) == 60\n",
+    "assert len(df.columns) == 20\n",
+    "assert df[\"data_version\"].dropna().astype(str).unique().tolist() == [\"phase3-v2\"]\n",
+    "\n",
+    "print(\"CANONICAL INPUT CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "unit005",
+   "metadata": {},
+   "source": [
+    "## 2. Analytical unit and approved dimensions\n",
+    "\n",
+    "The analytical unit is one source CRM lead.\n",
+    "\n",
+    "Approved comparison dimensions:\n",
+    "- funnel stage\n",
+    "- product category\n",
+    "- acquisition source\n",
+    "\n",
+    "The available canonical structure contains 60 rows representing 30 source leads and their associated metric records."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "dataset006",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.306550Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.305575Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.326303Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.325232Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Analytical rows: 30\n",
+      "ANALYTICAL UNIT CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "source_leads = df[df[\"record_type\"] == \"crm_lead\"].copy()\n",
+    "metric_records = df[df[\"record_type\"] == \"crm_lead_metric\"].copy()\n",
+    "\n",
+    "assert len(source_leads) == 30\n",
+    "assert len(metric_records) == 30\n",
+    "\n",
+    "lead_values = (\n",
+    "    source_leads\n",
+    "    .set_index(\"entity_id\")[\"metric_value\"]\n",
+    "    .astype(float)\n",
+    ")\n",
+    "\n",
+    "days_by_entity = (\n",
+    "    metric_records\n",
+    "    .set_index(\"entity_id\")[\"metric_value\"]\n",
+    "    .astype(float)\n",
+    ")\n",
+    "\n",
+    "analysis = source_leads[\n",
+    "    [\n",
+    "        \"entity_id\",\n",
+    "        \"stage\",\n",
+    "        \"category\",\n",
+    "        \"subcategory\",\n",
+    "        \"metric_value\",\n",
+    "    ]\n",
+    "].copy()\n",
+    "\n",
+    "analysis = analysis.rename(\n",
+    "    columns={\"metric_value\": \"lead_value\"}\n",
+    ")\n",
+    "\n",
+    "analysis[\"days_in_stage\"] = (\n",
+    "    analysis[\"entity_id\"]\n",
+    "    .map(days_by_entity)\n",
+    ")\n",
+    "\n",
+    "assert len(analysis) == 30\n",
+    "assert analysis[\"lead_value\"].notna().all()\n",
+    "assert analysis[\"days_in_stage\"].notna().all()\n",
+    "\n",
+    "print(\"Analytical rows:\", len(analysis))\n",
+    "print(\"ANALYTICAL UNIT CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "baseline007",
+   "metadata": {},
+   "source": [
+    "## 3. Baseline calculation\n",
+    "\n",
+    "Baseline metrics provide the overall descriptive reference against which group-level results are interpreted."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "baseline008",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.331188Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.330841Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.342132Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.340068Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Baseline:\n",
+      "lead_count: 30\n",
+      "total_lead_value: 2023000.0\n",
+      "average_lead_value: 67433.33333333333\n",
+      "average_days_in_stage: 13.1\n",
+      "median_days_in_stage: 10.0\n",
+      "BASELINE CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "baseline = {\n",
+    "    \"lead_count\": int(len(analysis)),\n",
+    "    \"total_lead_value\": float(analysis[\"lead_value\"].sum()),\n",
+    "    \"average_lead_value\": float(analysis[\"lead_value\"].mean()),\n",
+    "    \"average_days_in_stage\": float(analysis[\"days_in_stage\"].mean()),\n",
+    "    \"median_days_in_stage\": float(analysis[\"days_in_stage\"].median()),\n",
+    "}\n",
+    "\n",
+    "print(\"Baseline:\")\n",
+    "for key, value in baseline.items():\n",
+    "    print(f\"{key}: {value}\")\n",
+    "\n",
+    "assert baseline[\"lead_count\"] == 30\n",
+    "assert baseline[\"total_lead_value\"] == 2023000.0\n",
+    "assert round(baseline[\"average_lead_value\"], 2) == 67433.33\n",
+    "assert round(baseline[\"average_days_in_stage\"], 2) == 13.10\n",
+    "assert round(baseline[\"median_days_in_stage\"], 2) == 10.00\n",
+    "\n",
+    "print(\"BASELINE CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ranking009",
+   "metadata": {},
+   "source": [
+    "## 4. Comparative intelligence calculations\n",
+    "\n",
+    "Track A ranks groups by total observed lead value in descending order. Ties are handled deterministically by group name."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "ranking010",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.345893Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.345562Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.378735Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.377186Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Top stage: Won\n",
+      "Top product: Payments\n",
+      "Top source: Website\n",
+      "COMPARATIVE RANKING CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "stage_summary = (\n",
+    "    analysis\n",
+    "    .groupby(\"stage\", dropna=False)\n",
+    "    .agg(\n",
+    "        lead_count=(\"entity_id\", \"count\"),\n",
+    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
+    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
+    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
+    "    )\n",
+    "    .reset_index()\n",
+    "    .sort_values(\n",
+    "        [\"total_lead_value\", \"stage\"],\n",
+    "        ascending=[False, True],\n",
+    "    )\n",
+    ")\n",
+    "\n",
+    "product_summary = (\n",
+    "    analysis\n",
+    "    .groupby(\"category\", dropna=False)\n",
+    "    .agg(\n",
+    "        lead_count=(\"entity_id\", \"count\"),\n",
+    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
+    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
+    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
+    "    )\n",
+    "    .reset_index()\n",
+    "    .sort_values(\n",
+    "        [\"total_lead_value\", \"category\"],\n",
+    "        ascending=[False, True],\n",
+    "    )\n",
+    ")\n",
+    "\n",
+    "source_summary = (\n",
+    "    analysis\n",
+    "    .groupby(\"subcategory\", dropna=False)\n",
+    "    .agg(\n",
+    "        lead_count=(\"entity_id\", \"count\"),\n",
+    "        total_lead_value=(\"lead_value\", \"sum\"),\n",
+    "        average_lead_value=(\"lead_value\", \"mean\"),\n",
+    "        average_days_in_stage=(\"days_in_stage\", \"mean\"),\n",
+    "    )\n",
+    "    .reset_index()\n",
+    "    .sort_values(\n",
+    "        [\"total_lead_value\", \"subcategory\"],\n",
+    "        ascending=[False, True],\n",
+    "    )\n",
+    ")\n",
+    "\n",
+    "print(\"Top stage:\", stage_summary.iloc[0][\"stage\"])\n",
+    "print(\"Top product:\", product_summary.iloc[0][\"category\"])\n",
+    "print(\"Top source:\", source_summary.iloc[0][\"subcategory\"])\n",
+    "\n",
+    "assert stage_summary.iloc[0][\"stage\"] == \"Won\"\n",
+    "assert stage_summary.iloc[0][\"total_lead_value\"] == 949000.0\n",
+    "\n",
+    "assert product_summary.iloc[0][\"category\"] == \"Payments\"\n",
+    "assert product_summary.iloc[0][\"total_lead_value\"] == 942000.0\n",
+    "\n",
+    "assert source_summary.iloc[0][\"subcategory\"] == \"Website\"\n",
+    "assert source_summary.iloc[0][\"total_lead_value\"] == 689000.0\n",
+    "\n",
+    "print(\"COMPARATIVE RANKING CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "validation011",
+   "metadata": {},
+   "source": [
+    "## 5. Validation evidence\n",
+    "\n",
+    "The notebook verifies the machine-generated validation artifacts from the reusable validation script rather than replacing them."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "validation012",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.383668Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.383024Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.392756Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.391256Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Validation status: PASS\n",
+      "Calculation accuracy: PASS\n",
+      "Ranking stability: True\n",
+      "Weak cases: 4\n",
+      "VALIDATION EVIDENCE CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "validation_path = OUTPUT_DIR / \"validation_metrics.json\"\n",
+    "weak_case_path = OUTPUT_DIR / \"weak_case_review.json\"\n",
+    "\n",
+    "with open(validation_path, \"r\", encoding=\"utf-8\") as file:\n",
+    "    validation = json.load(file)\n",
+    "\n",
+    "with open(weak_case_path, \"r\", encoding=\"utf-8\") as file:\n",
+    "    weak_cases = json.load(file)\n",
+    "\n",
+    "print(\"Validation status:\", validation[\"validation_status\"])\n",
+    "print(\"Calculation accuracy:\", validation[\"calculation_accuracy\"][\"status\"])\n",
+    "print(\n",
+    "    \"Ranking stability:\",\n",
+    "    all(\n",
+    "        item[\"common_order_stable\"]\n",
+    "        for item in validation[\"small_group_sensitivity\"].values()\n",
+    "    ),\n",
+    ")\n",
+    "print(\n",
+    "    \"Weak cases:\",\n",
+    "    len(weak_cases.get(\"weak_cases\", [])),\n",
+    ")\n",
+    "\n",
+    "assert validation[\"validation_status\"] == \"PASS\"\n",
+    "assert validation[\"calculation_accuracy\"][\"status\"] == \"PASS\"\n",
+    "assert validation[\"weak_case_count\"] == 4\n",
+    "assert len(weak_cases.get(\"weak_cases\", [])) == 4\n",
+    "\n",
+    "print(\"VALIDATION EVIDENCE CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "outputs013",
+   "metadata": {},
+   "source": [
+    "## 6. Intelligence output verification"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "outputs014",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.396244Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.395903Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.405482Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.403848Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Result count: 16\n",
+      "Validation result: PASS\n",
+      "Weak-case count: 4\n",
+      "INTELLIGENCE OUTPUT CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "results_path = OUTPUT_DIR / \"intelligence_results.json\"\n",
+    "summary_path = OUTPUT_DIR / \"intelligence_summary.json\"\n",
+    "\n",
+    "with open(results_path, \"r\", encoding=\"utf-8\") as file:\n",
+    "    intelligence_results = json.load(file)\n",
+    "\n",
+    "with open(summary_path, \"r\", encoding=\"utf-8\") as file:\n",
+    "    intelligence_summary = json.load(file)\n",
+    "\n",
+    "print(\"Result count:\", intelligence_summary[\"result_count\"])\n",
+    "print(\"Validation result:\", intelligence_summary[\"validation_result\"])\n",
+    "print(\"Weak-case count:\", intelligence_summary[\"weak_case_count\"])\n",
+    "\n",
+    "assert intelligence_summary[\"data_version\"] == \"phase3-v2\"\n",
+    "assert intelligence_summary[\"method_version\"] == \"1.0.0\"\n",
+    "assert intelligence_summary[\"approved_track\"] == (\n",
+    "    \"Track A - Comparative Intelligence\"\n",
+    ")\n",
+    "assert intelligence_summary[\"result_count\"] == 16\n",
+    "assert intelligence_summary[\"validation_result\"] == \"PASS\"\n",
+    "assert intelligence_summary[\"weak_case_count\"] == 4\n",
+    "\n",
+    "assert len(intelligence_results[\"results\"]) == 16\n",
+    "\n",
+    "print(\"INTELLIGENCE OUTPUT CHECK: PASS\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "limits015",
+   "metadata": {},
+   "source": [
+    "## 7. Interpretation and limitations\n",
+    "\n",
+    "The approved interpretation is descriptive only. The analysis does not establish causation and is not predictive.\n",
+    "\n",
+    "Important limitations include the synthetic dataset, the 30-lead analytical sample, sparse stage groups, lack of separate team/location fields, and the absence of a full longitudinal time series."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "final016",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-10-05T14:51:38.409389Z",
+     "iopub.status.busy": "2026-10-05T14:51:38.409027Z",
+     "iopub.status.idle": "2026-10-05T14:51:38.416186Z",
+     "shell.execute_reply": "2026-10-05T14:51:38.414500Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "============================================================\n",
+      "TRACK A NOTEBOOK VALIDATION SUMMARY\n",
+      "============================================================\n",
+      "Data version: phase3-v2\n",
+      "Method version: 1.0.0\n",
+      "Approved track: Track A - Comparative Intelligence\n",
+      "Analytical rows: 30\n",
+      "Baseline total lead value: 2023000.0\n",
+      "Top stage: Won\n",
+      "Top product: Payments\n",
+      "Top source: Website\n",
+      "Validation status: PASS\n",
+      "Weak cases reviewed: 4\n",
+      "Interpretation: DESCRIPTIVE ONLY\n",
+      "Predictive use: NOT SUPPORTED\n",
+      "Causal interpretation: NOT SUPPORTED\n",
+      "============================================================\n",
+      "TRACK A NOTEBOOK CHECK: PASS\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"=\" * 60)\n",
+    "print(\"TRACK A NOTEBOOK VALIDATION SUMMARY\")\n",
+    "print(\"=\" * 60)\n",
+    "print(\"Data version: phase3-v2\")\n",
+    "print(\"Method version: 1.0.0\")\n",
+    "print(\"Approved track: Track A - Comparative Intelligence\")\n",
+    "print(\"Analytical rows: 30\")\n",
+    "print(\"Baseline total lead value: 2023000.0\")\n",
+    "print(\"Top stage: Won\")\n",
+    "print(\"Top product: Payments\")\n",
+    "print(\"Top source: Website\")\n",
+    "print(\"Validation status: PASS\")\n",
+    "print(\"Weak cases reviewed: 4\")\n",
+    "print(\"Interpretation: DESCRIPTIVE ONLY\")\n",
+    "print(\"Predictive use: NOT SUPPORTED\")\n",
+    "print(\"Causal interpretation: NOT SUPPORTED\")\n",
+    "print(\"=\" * 60)\n",
+    "print(\"TRACK A NOTEBOOK CHECK: PASS\")\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
 }
 </file>
 
