@@ -1,0 +1,204 @@
+{
+  "project_id": "POC-7",
+  "poc_title": "Lead Funnel Conversion Observatory",
+  "approved_track": "Track A - Comparative Intelligence",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "generated_at": "2026-10-05T12:12:22.678545+00:00",
+  "baseline": {
+    "lead_count": 30,
+    "total_lead_value": 2023000.0,
+    "average_lead_value": 67433.33333333333,
+    "average_days_in_stage": 13.1,
+    "median_days_in_stage": 10.0
+  },
+  "calculation_accuracy": {
+    "status": "PASS",
+    "discrepancy_count": 0,
+    "discrepancies": []
+  },
+  "group_size_assessment": {
+    "stage": {
+      "minimum_group_size_threshold": 5,
+      "groups": [
+        {
+          "stage": "Won",
+          "lead_count": 10
+        },
+        {
+          "stage": "Proposal",
+          "lead_count": 4
+        },
+        {
+          "stage": "Opportunity",
+          "lead_count": 5
+        },
+        {
+          "stage": "Qualified",
+          "lead_count": 5
+        },
+        {
+          "stage": "Lost",
+          "lead_count": 3
+        },
+        {
+          "stage": "Lead",
+          "lead_count": 3
+        }
+      ],
+      "small_groups": [
+        {
+          "stage": "Proposal",
+          "lead_count": 4
+        },
+        {
+          "stage": "Lost",
+          "lead_count": 3
+        },
+        {
+          "stage": "Lead",
+          "lead_count": 3
+        }
+      ]
+    },
+    "product": {
+      "minimum_group_size_threshold": 5,
+      "groups": [
+        {
+          "category": "Payments",
+          "lead_count": 12
+        },
+        {
+          "category": "Analytics",
+          "lead_count": 9
+        },
+        {
+          "category": "Security",
+          "lead_count": 9
+        }
+      ],
+      "small_groups": []
+    },
+    "source": {
+      "minimum_group_size_threshold": 5,
+      "groups": [
+        {
+          "subcategory": "Website",
+          "lead_count": 11
+        },
+        {
+          "subcategory": "Partner",
+          "lead_count": 5
+        },
+        {
+          "subcategory": "Referral",
+          "lead_count": 7
+        },
+        {
+          "subcategory": "Campaign",
+          "lead_count": 7
+        }
+      ],
+      "small_groups": []
+    }
+  },
+  "small_group_sensitivity": {
+    "stage": {
+      "full_order": [
+        "Won",
+        "Proposal",
+        "Opportunity",
+        "Qualified",
+        "Lost",
+        "Lead"
+      ],
+      "sensitivity_order": [
+        "Won",
+        "Opportunity",
+        "Qualified"
+      ],
+      "common_groups": [
+        "Won",
+        "Opportunity",
+        "Qualified"
+      ],
+      "common_order_stable": true,
+      "excluded_groups": [
+        "Proposal",
+        "Lost",
+        "Lead"
+      ]
+    },
+    "product": {
+      "full_order": [
+        "Payments",
+        "Analytics",
+        "Security"
+      ],
+      "sensitivity_order": [
+        "Payments",
+        "Analytics",
+        "Security"
+      ],
+      "common_groups": [
+        "Payments",
+        "Analytics",
+        "Security"
+      ],
+      "common_order_stable": true,
+      "excluded_groups": []
+    },
+    "source": {
+      "full_order": [
+        "Website",
+        "Partner",
+        "Referral",
+        "Campaign"
+      ],
+      "sensitivity_order": [
+        "Website",
+        "Partner",
+        "Referral",
+        "Campaign"
+      ],
+      "common_groups": [
+        "Website",
+        "Partner",
+        "Referral",
+        "Campaign"
+      ],
+      "common_order_stable": true,
+      "excluded_groups": []
+    }
+  },
+  "missing_group_effects": {
+    "stage": {
+      "missing_group_count": 0,
+      "missing_group_present": false
+    },
+    "product": {
+      "missing_group_count": 0,
+      "missing_group_present": false
+    },
+    "source": {
+      "missing_group_count": 0,
+      "missing_group_present": false
+    }
+  },
+  "ranking_results": {
+    "stage": {
+      "top_group": "Won",
+      "top_value": 949000.0
+    },
+    "product": {
+      "top_group": "Payments",
+      "top_value": 942000.0
+    },
+    "source": {
+      "top_group": "Website",
+      "top_value": 689000.0
+    }
+  },
+  "weak_case_count": 4,
+  "validation_status": "PASS"
+}

@@ -1,0 +1,39 @@
+{
+  "project_id": "POC-7",
+  "approved_track": "Track A - Comparative Intelligence",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "generated_at": "2026-10-05T12:12:22.679830+00:00",
+  "minimum_group_size_sensitivity": 5,
+  "weak_cases": [
+    {
+      "dimension": "stage",
+      "group": "Proposal",
+      "lead_count": 4,
+      "reason": "Sparse group below sensitivity threshold",
+      "interpretation": "Result is descriptive but should be interpreted cautiously because the group contains fewer observations than the sensitivity threshold."
+    },
+    {
+      "dimension": "stage",
+      "group": "Lost",
+      "lead_count": 3,
+      "reason": "Sparse group below sensitivity threshold",
+      "interpretation": "Result is descriptive but should be interpreted cautiously because the group contains fewer observations than the sensitivity threshold."
+    },
+    {
+      "dimension": "stage",
+      "group": "Lead",
+      "lead_count": 3,
+      "reason": "Sparse group below sensitivity threshold",
+      "interpretation": "Result is descriptive but should be interpreted cautiously because the group contains fewer observations than the sensitivity threshold."
+    },
+    {
+      "dimension": "stage",
+      "group": "Lost",
+      "lead_count": 3,
+      "reason": "Highest average days in stage",
+      "interpretation": "Lost shows the highest observed average days in stage, but the group is small and the result is descriptive rather than causal."
+    }
+  ],
+  "summary": "Weak cases include sparse groups, ranking sensitivity considerations, and descriptive findings that require cautious interpretation."
+}
