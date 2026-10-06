@@ -94,10 +94,17 @@ docs/
   CANONICAL_DATA_PACKAGE_VALIDATION.md
   CANONICAL_DATA_PROFILE.md
   DATA_ARCHETYPE_CONFIRMATION.md
+  DATA_INTELLIGENCE_PAGE_PLAN.md
+  DATA_INTELLIGENCE_TEST_EVIDENCE.md
+  DATA_INTELLIGENCE_UAT.md
+  DATA_INTELLIGENCE_UI_SPEC.md
   DATA_QUALITY_ASSESSMENT.md
   DATA_SOURCE_INVENTORY.md
+  INTELLIGENCE_API_CONTRACT.md
+  INTELLIGENCE_INTEGRATION_MAPPING.md
   INTELLIGENCE_OUTPUT_CONTRACT.md
   OPERATIONAL_PAGE_REGRESSION_EVIDENCE.md
+  OPERATIONAL_PAGE_REGRESSION_REPORT.md
   REPRESENTATIVENESS_ASSESSMENT.md
   SAMPLING_AND_REDUCTION_REPORT.md
   TRACK_A_COMPARATIVE_ANALYSIS.md
@@ -126,6 +133,8 @@ scripts/
     validate_data.py
 src/
   app/
+    data-intelligence/
+      page.tsx
     favicon.ico
     globals.css
     layout.tsx
@@ -140,12 +149,21 @@ src/
     SankeyChart.tsx
     StageAging.tsx
   data/
+    intelligence/
+      intelligence_results.json
+      intelligence_summary.json
+      loader.ts
+      summary.ts
     crmData.ts
   lib/
     calculations.ts
     download.ts
   types/
     crm.ts
+    intelligence.ts
+tests/
+  data-intelligence/
+    contract-test.mjs
 .gitignore
 AGENTS.md
 CLAUDE.md
@@ -7144,6 +7162,2776 @@ team and location coverage while respecting the limitations of the available
 sample.
 </file>
 
+<file path="docs/DATA_INTELLIGENCE_PAGE_PLAN.md">
+\# Data Intelligence Page Plan
+
+
+
+\## 1. Purpose
+
+
+
+Create a separate Data Intelligence page for Phase 3 Post #4 that presents the approved Track A - Comparative Intelligence results.
+
+
+
+The new page will provide descriptive operational intelligence from the approved intelligence outputs without reproducing or recalculating analytical logic in the frontend.
+
+
+
+The existing operational dashboard at `/` must remain intact and functional.
+
+
+
+\## 2. Existing Operational Page Protection
+
+
+
+The existing operational page will not be replaced or redesigned.
+
+
+
+Existing files and components remain unchanged unless a later integration requirement explicitly requires a minimal shared change.
+
+
+
+The existing operational dashboard continues to use the existing CRM frontend data and operational calculations.
+
+
+
+The Data Intelligence page is a separate route:
+
+
+
+`/data-intelligence`
+
+
+
+\## 3. Approved Analytical Track
+
+
+
+Project: POC-7 Lead Funnel Conversion Observatory
+
+
+
+Approved track: Track A - Comparative Intelligence
+
+
+
+Primary analytical question:
+
+
+
+"How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?"
+
+
+
+Supported decision:
+
+
+
+Descriptive operational review of observed differences within the available synthetic sample.
+
+
+
+The page must not present the analysis as causal, predictive, statistically significant, or as production decision automation.
+
+
+
+\## 4. Approved Data and Intelligence Sources
+
+
+
+Canonical analytical dataset:
+
+
+
+`/data/canonical/intelligence\_data.csv`
+
+
+
+Approved intelligence results:
+
+
+
+`/data-science/outputs/intelligence\_results.json`
+
+
+
+Approved intelligence summary:
+
+
+
+`/data-science/outputs/intelligence\_summary.json`
+
+
+
+Approved validation metadata:
+
+
+
+`/data-science/outputs/validation\_metrics.json`
+
+
+
+The frontend must consume the approved intelligence outputs rather than independently recalculating the analytical results from the CRM frontend dataset.
+
+
+
+\## 5. Integration Pattern
+
+
+
+Use a static generated JSON integration pattern.
+
+
+
+The approved intelligence output will be made available to the frontend through a controlled application data/loader layer.
+
+
+
+The frontend may:
+
+
+
+\- display approved values
+
+\- filter approved results
+
+\- sort approved results
+
+\- paginate results where appropriate
+
+\- format values for presentation
+
+\- display approved findings and evidence
+
+\- display approved limitations and metadata
+
+
+
+The frontend must not:
+
+
+
+\- recalculate analytical metrics
+
+\- create new analytical findings
+
+\- change analytical thresholds
+
+\- change group definitions
+
+\- change ranking logic
+
+\- change approved limitations
+
+\- generate unsupported recommendations
+
+\- use an LLM assistant for analytical interpretation
+
+
+
+\## 6. Route
+
+
+
+Primary route:
+
+
+
+`/data-intelligence`
+
+
+
+The route will be implemented as a separate Next.js App Router page.
+
+
+
+The existing `/` route must continue to function without regression.
+
+
+
+\## 7. Page Header
+
+
+
+The page header will identify:
+
+
+
+\- Lead Funnel Conversion Observatory
+
+\- Data Intelligence
+
+\- Track A - Comparative Intelligence
+
+\- data version: `phase3-v2`
+
+\- method version: `1.0.0`
+
+\- validation status: `PASS`
+
+\- quality status: `VALIDATED\_DESCRIPTIVE`
+
+
+
+Generated timestamp will be displayed from the approved output metadata.
+
+
+
+\## 8. Summary Cards
+
+
+
+Provide approximately 3-6 summary cards using approved intelligence values.
+
+
+
+Initial cards:
+
+
+
+1\. Total observed lead value
+
+2\. Average lead value
+
+3\. Average days in stage
+
+4\. Source lead count
+
+5\. Highest observed-value stage
+
+6\. Highest observed-value product/source where appropriate
+
+
+
+The cards must use values already present in the approved outputs.
+
+
+
+No new calculations will be introduced solely for presentation.
+
+
+
+\## 9. Track A Comparative Intelligence
+
+
+
+The primary intelligence area will contain three comparison dimensions:
+
+
+
+\### Funnel Stage
+
+
+
+Display all approved stage comparison results:
+
+
+
+\- Won
+
+\- Proposal
+
+\- Opportunity
+
+\- Qualified
+
+\- Lost
+
+\- Lead
+
+
+
+Show:
+
+
+
+\- group
+
+\- lead count
+
+\- total observed lead value
+
+\- average lead value
+
+\- average days in stage
+
+\- priority rank
+
+\- quality/limitation status
+
+
+
+\### Product
+
+
+
+Display:
+
+
+
+\- Payments
+
+\- Analytics
+
+\- Security
+
+
+
+Show the same approved evidence fields where available.
+
+
+
+\### Acquisition Source
+
+
+
+Display:
+
+
+
+\- Website
+
+\- Partner
+
+\- Referral
+
+\- Campaign
+
+
+
+Show the same approved evidence fields where available.
+
+
+
+\## 10. Ranking and Comparison Visuals
+
+
+
+Use approved priority ranks to order comparative results.
+
+
+
+Visual comparison may include:
+
+
+
+\- horizontal comparison bars
+
+\- ranking tables
+
+\- group contribution/value comparison
+
+\- performance-gap presentation based on approved values
+
+
+
+The visual layer must not independently derive a different ranking.
+
+
+
+The primary displayed ranking must remain consistent with the approved analytical output.
+
+
+
+\## 11. Minimum Group Size Warning
+
+
+
+The approved minimum group-size threshold is 5 records.
+
+
+
+Groups below 5 must remain visible.
+
+
+
+The page must clearly identify small groups and disclose that their comparison requires caution.
+
+
+
+Known small stage groups:
+
+
+
+\- Proposal: 4 leads
+
+\- Lost: 3 leads
+
+\- Lead: 3 leads
+
+
+
+Adequately sized groups must not be presented as equally reliable to groups below the approved sensitivity threshold.
+
+
+
+\## 12. Results and Priority Table
+
+
+
+Provide a detailed results table using the approved intelligence results.
+
+
+
+Recommended fields:
+
+
+
+\- Priority
+
+\- Dimension
+
+\- Group
+
+\- Metric
+
+\- Result value
+
+\- Lead count
+
+\- Average lead value
+
+\- Average days in stage
+
+\- Quality status
+
+\- Limitation
+
+
+
+The table may support:
+
+
+
+\- filtering
+
+\- sorting
+
+\- pagination
+
+
+
+These interactions must only operate on approved results.
+
+
+
+\## 13. Key Findings
+
+
+
+Display the approved key findings from the intelligence summary.
+
+
+
+Do not rewrite findings into stronger claims.
+
+
+
+The page must preserve the descriptive nature of the approved findings.
+
+
+
+\## 14. Evidence
+
+
+
+Provide an evidence section showing the structured numerical evidence associated with comparative results.
+
+
+
+Evidence must remain traceable to the approved analytical output.
+
+
+
+Do not fabricate identifiers or unsupported metrics.
+
+
+
+\## 15. Methodology
+
+
+
+Provide a concise methodology section explaining:
+
+
+
+\- canonical analytical dataset
+
+\- approved Track A dimensions
+
+\- approved analytical unit
+
+\- method version `1.0.0`
+
+\- data version `phase3-v2`
+
+\- descriptive comparative analysis
+
+\- validation status
+
+
+
+The methodology section will describe the approved process without reproducing the analytical calculations.
+
+
+
+\## 16. Limitations
+
+
+
+Display the approved limitations.
+
+
+
+At minimum include:
+
+
+
+\- dataset is synthetic
+
+\- available sample contains 30 source leads
+
+\- analysis is descriptive
+
+\- analysis is not causal
+
+\- analysis is not predictive
+
+\- temporal information is not a full longitudinal time series
+
+\- team and location are not represented as dedicated analytical fields
+
+\- small stage groups reduce confidence in comparisons involving those groups
+
+
+
+\## 17. Freshness and Metadata
+
+
+
+Display:
+
+
+
+\- generated timestamp
+
+\- data version
+
+\- method version
+
+\- validation status
+
+\- approved track
+
+
+
+Freshness must be derived from the approved output metadata.
+
+
+
+The page must not invent timestamps.
+
+
+
+\## 18. Contract Validation
+
+
+
+Before rendering intelligence results, validate the loaded output against the project intelligence contract.
+
+
+
+Validation must check:
+
+
+
+\- required top-level fields
+
+\- result count
+
+\- result object structure
+
+\- result identifiers
+
+\- supported result types
+
+\- required metric fields
+
+\- evidence structure
+
+\- data version
+
+\- method version
+
+\- quality status
+
+\- generated timestamp
+
+\- duplicate result IDs
+
+\- contract consistency
+
+
+
+The approved quality status for validated Track A results is:
+
+
+
+`VALIDATED\_DESCRIPTIVE`
+
+
+
+The expected data version is:
+
+
+
+`phase3-v2`
+
+
+
+The expected method version is:
+
+
+
+`1.0.0`
+
+
+
+\## 19. Safe Failure Behaviour
+
+
+
+The page must fail safely when:
+
+
+
+\- JSON cannot be loaded
+
+\- JSON is malformed
+
+\- required fields are missing
+
+\- result count does not match
+
+\- duplicate result IDs exist
+
+\- data version is unexpected
+
+\- method version is unexpected
+
+\- timestamp is invalid
+
+\- unsupported quality status is encountered
+
+\- result type is unsupported
+
+\- contract validation fails
+
+
+
+The page must display a clear error state rather than silently displaying invalid intelligence.
+
+
+
+\## 20. Loading State
+
+
+
+Provide a visible loading state while the intelligence output is being loaded.
+
+
+
+The loading state must prevent the user from interpreting incomplete data as final intelligence.
+
+
+
+\## 21. Empty State
+
+
+
+If valid intelligence data contains no displayable results, show a clear empty state.
+
+
+
+Do not invent replacement results.
+
+
+
+\## 22. Stale or Version-Mismatch State
+
+
+
+If the loaded intelligence output does not match the expected approved data version or method version, do not present it as current approved intelligence.
+
+
+
+Display a clear stale/version-mismatch state.
+
+
+
+Expected:
+
+
+
+\- data version: `phase3-v2`
+
+\- method version: `1.0.0`
+
+
+
+\## 23. Frontend Responsibilities
+
+
+
+The frontend is responsible for:
+
+
+
+\- presentation
+
+\- navigation
+
+\- filtering
+
+\- sorting
+
+\- pagination
+
+\- formatting
+
+\- responsive layout
+
+\- loading/error/empty/stale states
+
+\- contract validation before presentation
+
+
+
+The analytical pipeline remains responsible for:
+
+
+
+\- calculations
+
+\- group definitions
+
+\- ranking
+
+\- thresholds
+
+\- findings
+
+\- validation
+
+\- limitations
+
+\- approved output generation
+
+
+
+\## 24. Testing Plan
+
+
+
+Tests will cover:
+
+
+
+\### Contract tests
+
+
+
+Verify valid approved intelligence output is accepted.
+
+
+
+Verify malformed or incompatible output is rejected safely.
+
+
+
+\### Loader/API tests
+
+
+
+Verify the intelligence output can be loaded correctly.
+
+
+
+Verify loading failures are handled safely.
+
+
+
+\### UI tests
+
+
+
+Verify:
+
+
+
+\- page renders
+
+\- summary cards display
+
+\- Track A sections display
+
+\- small-group warnings display
+
+\- filters work
+
+\- sorting works
+
+\- evidence displays
+
+\- methodology displays
+
+\- limitations display
+
+\- error state displays
+
+\- stale/version mismatch state displays
+
+
+
+\### Regression tests
+
+
+
+Verify the existing operational `/` page continues to:
+
+
+
+\- load
+
+\- display its existing dashboard
+
+\- retain existing filters
+
+\- retain existing charts
+
+\- retain existing intelligence panel
+
+\- retain existing data export behaviour
+
+
+
+\## 25. Acceptance Criteria
+
+
+
+The Data Intelligence page is acceptable only when:
+
+
+
+1\. `/data-intelligence` loads successfully.
+
+2\. Existing `/` operational functionality remains intact.
+
+3\. Approved intelligence results are consumed without frontend analytical recalculation.
+
+4\. Data version `phase3-v2` is validated.
+
+5\. Method version `1.0.0` is validated.
+
+6\. Quality status `VALIDATED\_DESCRIPTIVE` is accepted.
+
+7\. Result count is validated.
+
+8\. Duplicate result IDs are rejected.
+
+9\. Contract failures are handled safely.
+
+10\. Track A stage, product and source comparisons are displayed.
+
+11\. Small groups below 5 leads are visibly disclosed.
+
+12\. Approved findings are displayed without unsupported interpretation.
+
+13\. Evidence is traceable to approved outputs.
+
+14\. Methodology and limitations are displayed.
+
+15\. Loading, error, empty and stale states are implemented.
+
+16\. Operational-page regression checks pass.
+
+17\. Required documentation and test evidence are completed.
+
+
+
+\## 26. Implementation Order
+
+
+
+Implementation will follow this order:
+
+
+
+1\. Complete and review this page plan.
+
+2\. Create intelligence TypeScript types.
+
+3\. Create contract validator.
+
+4\. Create intelligence loader/adapter.
+
+5\. Create `/data-intelligence` route.
+
+6\. Implement page shell and metadata.
+
+7\. Implement summary cards.
+
+8\. Implement Track A comparison sections.
+
+9\. Implement results table and filters.
+
+10\. Implement evidence, methodology and limitations.
+
+11\. Implement loading, error, empty and stale states.
+
+12\. Add contract and UI tests.
+
+13\. Run operational regression tests.
+
+14\. Run production/build checks.
+
+15\. Capture evidence/screenshots.
+
+16\. Commit and push the completed Post #4 implementation.
+
+
+
+\## 27. Final Approval Condition
+
+
+
+The final Post #4 result must be one of:
+
+
+
+\- `DATA INTELLIGENCE PAGE APPROVED`
+
+\- `DATA INTELLIGENCE PAGE CHANGES REQUIRED`
+
+\- `INTELLIGENCE INTEGRATION BLOCKED`
+
+
+
+No final approval will be claimed until implementation, validation, testing and operational regression evidence are complete.
+</file>
+
+<file path="docs/DATA_INTELLIGENCE_TEST_EVIDENCE.md">
+\# Data Intelligence Test and Evidence Report
+
+
+
+\## 1. Purpose
+
+
+
+This document records the validation evidence completed for Phase 3 Post #4 — Data Intelligence Page Integration.
+
+
+
+The report records only tests and checks that were actually executed.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- Analytical Track: Track A - Comparative Intelligence
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+\- Integration Pattern: Static Generated JSON
+
+\- Data Intelligence Route: `/data-intelligence`
+
+\- Existing Operational Route: `/`
+
+
+
+\---
+
+
+
+\## 3. Git Evidence
+
+
+
+\### Latest Commit
+
+
+
+```text
+
+51561ed Add Data Intelligence contract test
+</file>
+
+<file path="docs/DATA_INTELLIGENCE_UAT.md">
+\# Data Intelligence User Acceptance Test (UAT)
+
+
+
+\## 1. Purpose
+
+
+
+This document records the User Acceptance Testing requirements and results for the Phase 3 Data Intelligence page.
+
+
+
+The UAT validates that the implemented page correctly presents the approved Track A - Comparative Intelligence outputs and preserves the existing operational page.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- Analytical Track: Track A - Comparative Intelligence
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+\- Integration Pattern: Static Generated JSON
+
+\- Data Intelligence Route: `/data-intelligence`
+
+\- Existing Operational Route: `/`
+
+
+
+\---
+
+
+
+\## 3. UAT Scope
+
+
+
+The UAT covers:
+
+
+
+1\. Data Intelligence route availability
+
+2\. Page header and metadata
+
+3\. Summary cards
+
+4\. Stage comparison
+
+5\. Product comparison
+
+6\. Source comparison
+
+7\. Search/filter behaviour
+
+8\. Small-group warnings
+
+9\. Key findings
+
+10\. Evidence
+
+11\. Methodology
+
+12\. Limitations
+
+13\. Freshness metadata
+
+14\. Validation status
+
+15\. Loading behaviour
+
+16\. Error behaviour
+
+17\. Empty behaviour
+
+18\. Stale/version mismatch behaviour
+
+19\. Existing operational page regression
+
+20\. Responsive behaviour
+
+21\. Accessibility
+
+22\. Production build
+
+
+
+\---
+
+
+
+\## 4. Test Environment
+
+
+
+\### Application
+
+
+
+Next.js application
+
+
+
+\### Route
+
+
+
+`/data-intelligence`
+
+
+
+\### Existing Operational Route
+
+
+
+`/`
+
+
+
+\### Integration Pattern
+
+
+
+Static Generated JSON
+
+
+
+\### Approved Results
+
+
+
+`src/data/intelligence/intelligence\_results.json`
+
+
+
+\### Approved Summary
+
+
+
+`src/data/intelligence/intelligence\_summary.json`
+
+
+
+\### Loader
+
+
+
+`src/data/intelligence/loader.ts`
+
+
+
+\### Type Contract
+
+
+
+`src/types/intelligence.ts`
+
+
+
+\---
+
+
+
+\# 5. UAT Test Cases
+
+
+
+\## UAT-001 — Data Intelligence Route
+
+
+
+\### Objective
+
+
+
+Verify that the Data Intelligence page is available at the required route.
+
+
+
+\### Steps
+
+
+
+1\. Start the application.
+
+2\. Navigate to `/data-intelligence`.
+
+3\. Observe the page.
+
+
+
+\### Expected Result
+
+
+
+The Data Intelligence page loads successfully.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\### Evidence
+
+
+
+The Data Intelligence page was opened successfully during local validation.
+
+
+
+\---
+
+
+
+\## UAT-002 — Page Header
+
+
+
+\### Objective
+
+
+
+Verify that the page clearly identifies the Data Intelligence view.
+
+
+
+\### Expected Result
+
+
+
+The page displays:
+
+
+
+\- Data Intelligence title
+
+\- Project information
+
+\- Track information
+
+\- Data version
+
+\- Method version
+
+\- Quality status
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-003 — Approved Analytical Track
+
+
+
+\### Objective
+
+
+
+Verify that the page identifies the approved analytical track.
+
+
+
+\### Expected Result
+
+
+
+The page identifies:
+
+
+
+`Track A - Comparative Intelligence`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-004 — Summary Cards
+
+
+
+\### Objective
+
+
+
+Verify that the approved baseline metrics are displayed.
+
+
+
+\### Expected Values
+
+
+
+| Metric | Approved Value |
+
+|---|---:|
+
+| Source Leads | 30 |
+
+| Total Observed Value | 2,023,000 |
+
+| Average Lead Value | 67,433.33 |
+
+| Average Days in Stage | 13.1 |
+
+
+
+\### Expected Result
+
+
+
+The summary cards display the approved values.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-005 — Stage Comparison
+
+
+
+\### Objective
+
+
+
+Verify the Stage comparison view.
+
+
+
+\### Expected Groups
+
+
+
+\- Won
+
+\- Proposal
+
+\- Opportunity
+
+\- Qualified
+
+\- Lost
+
+\- Lead
+
+
+
+\### Expected Result
+
+
+
+All six approved stage groups are displayed.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-006 — Product Comparison
+
+
+
+\### Objective
+
+
+
+Verify the Product comparison view.
+
+
+
+\### Expected Groups
+
+
+
+\- Payments
+
+\- Analytics
+
+\- Security
+
+
+
+\### Expected Result
+
+
+
+All three approved product groups are displayed.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-007 — Source Comparison
+
+
+
+\### Objective
+
+
+
+Verify the acquisition Source comparison view.
+
+
+
+\### Expected Groups
+
+
+
+\- Website
+
+\- Partner
+
+\- Referral
+
+\- Campaign
+
+
+
+\### Expected Result
+
+
+
+All four approved source groups are displayed.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-008 — Search / Filter
+
+
+
+\### Objective
+
+
+
+Verify presentation-level filtering.
+
+
+
+\### Test
+
+
+
+Search for:
+
+
+
+`Won`
+
+
+
+\### Expected Result
+
+
+
+The Stage view displays only the matching Won result.
+
+
+
+After clearing the search, all Stage results return.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-009 — Small Group Warning
+
+
+
+\### Objective
+
+
+
+Verify that groups below the approved minimum size are disclosed.
+
+
+
+\### Approved Threshold
+
+
+
+`5 leads`
+
+
+
+\### Expected Small Groups
+
+
+
+| Group | Lead Count |
+
+|---|---:|
+
+| Proposal | 4 |
+
+| Lost | 3 |
+
+| Lead | 3 |
+
+
+
+\### Expected Result
+
+
+
+The page keeps these groups visible and displays a small-group warning.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-010 — Key Findings
+
+
+
+\### Objective
+
+
+
+Verify that approved key findings are displayed.
+
+
+
+\### Expected Findings
+
+
+
+1\. Won is the highest observed-value funnel stage.
+
+2\. Payments is the highest observed-value product.
+
+3\. Website is the highest observed-value acquisition source.
+
+
+
+\### Expected Result
+
+
+
+The approved findings are visible on the page.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-011 — Evidence
+
+
+
+\### Objective
+
+
+
+Verify that supporting evidence is visible.
+
+
+
+\### Expected Result
+
+
+
+The page exposes structured evidence associated with the approved results.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-012 — Methodology
+
+
+
+\### Objective
+
+
+
+Verify that methodology information is visible.
+
+
+
+\### Expected Result
+
+
+
+The page explains that the results are approved Track A descriptive intelligence and that the frontend does not reproduce analytical calculations.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-013 — Limitations
+
+
+
+\### Objective
+
+
+
+Verify that analytical limitations are visible.
+
+
+
+\### Expected Limitations
+
+
+
+\- Synthetic dataset
+
+\- 30 source leads
+
+\- Descriptive analysis
+
+\- Non-causal analysis
+
+\- Non-predictive analysis
+
+\- Not a full longitudinal production series
+
+\- Team and location are not dedicated Track A analytical dimensions
+
+\- Small stage groups reduce confidence in comparisons
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-014 — Data Version
+
+
+
+\### Objective
+
+
+
+Verify the approved data version.
+
+
+
+\### Expected Value
+
+
+
+`phase3-v2`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-015 — Method Version
+
+
+
+\### Objective
+
+
+
+Verify the approved method version.
+
+
+
+\### Expected Value
+
+
+
+`1.0.0`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-016 — Quality Status
+
+
+
+\### Objective
+
+
+
+Verify the approved quality status.
+
+
+
+\### Expected Value
+
+
+
+`VALIDATED\_DESCRIPTIVE`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-017 — Validation Result
+
+
+
+\### Objective
+
+
+
+Verify that the analytical validation status is visible.
+
+
+
+\### Expected Value
+
+
+
+`PASS`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-018 — Generated Timestamp
+
+
+
+\### Objective
+
+
+
+Verify that freshness information is visible.
+
+
+
+\### Expected Result
+
+
+
+The page displays the generated timestamp supplied by the approved intelligence output.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-019 — Result Count
+
+
+
+\### Objective
+
+
+
+Verify that the approved result count is visible.
+
+
+
+\### Expected Value
+
+
+
+`16`
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-020 — Loading State
+
+
+
+\### Objective
+
+
+
+Verify that the application has a safe loading state.
+
+
+
+\### Expected Result
+
+
+
+The page does not display fabricated analytical results while data is being loaded.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-021 — Error State
+
+
+
+\### Objective
+
+
+
+Verify safe handling of invalid intelligence data.
+
+
+
+\### Expected Behaviour
+
+
+
+Invalid contract data must result in an error state rather than fabricated or silently modified results.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\### Validation Mechanism
+
+
+
+Implemented through:
+
+
+
+`src/data/intelligence/loader.ts`
+
+
+
+\---
+
+
+
+\## UAT-022 — Empty State
+
+
+
+\### Objective
+
+
+
+Verify that an empty intelligence result set is handled safely.
+
+
+
+\### Expected Behaviour
+
+
+
+The interface must communicate that no approved intelligence results are available.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-023 — Stale / Version Mismatch
+
+
+
+\### Objective
+
+
+
+Verify that incompatible analytical versions are rejected.
+
+
+
+\### Expected Behaviour
+
+
+
+The loader checks:
+
+
+
+\- Data version
+
+\- Method version
+
+\- Analytical track
+
+
+
+Incompatible values must produce a safe integration failure.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-024 — Duplicate Result ID Validation
+
+
+
+\### Objective
+
+
+
+Verify that duplicate intelligence result identifiers are rejected.
+
+
+
+\### Expected Behaviour
+
+
+
+Duplicate `result\_id` values must fail contract validation.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-025 — Result Count Validation
+
+
+
+\### Objective
+
+
+
+Verify that the document result count matches the result array.
+
+
+
+\### Expected Behaviour
+
+
+
+`result\_count` must equal `results.length`.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-026 — Timestamp Validation
+
+
+
+\### Objective
+
+
+
+Verify that generated timestamps are validated.
+
+
+
+\### Expected Behaviour
+
+
+
+Invalid timestamps must fail contract validation.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\---
+
+
+
+\## UAT-027 — Existing Operational Page
+
+
+
+\### Objective
+
+
+
+Verify that the existing operational dashboard remains functional.
+
+
+
+\### Route
+
+
+
+`/`
+
+
+
+\### Expected Behaviour
+
+
+
+The original operational dashboard continues to load with its existing dashboard functionality.
+
+
+
+\### Result
+
+
+
+PASS
+
+
+
+\### Regression Evidence
+
+
+
+The operational page was opened and verified after Data Intelligence implementation.
+
+
+
+Observed existing functionality included:
+
+
+
+\- Total Leads
+
+\- Opportunities
+
+\- Won Deals
+
+\- Average Stage Age
+
+\- Won Pipeline Value
+
+\- Funnel visualization
+
+\- Filters
+
+\- Export functionality
+
+
+
+\---
+
+
+
+\## UAT-028 — Route Separation
+
+
+
+\### Objective
+
+
+
+Verify that the new intelligence page is separate from the operational page.
+
+
+
+\### Expected Routes
+
+
+
+```text
+
+/
+</file>
+
+<file path="docs/DATA_INTELLIGENCE_UI_SPEC.md">
+\# Data Intelligence UI Specification
+
+
+
+\## 1. Purpose
+
+
+
+This document specifies the user interface requirements for the Phase 3 Data Intelligence page.
+
+
+
+The page presents approved Track A - Comparative Intelligence outputs through the dedicated route:
+
+
+
+`/data-intelligence`
+
+
+
+The interface is a presentation and controlled integration layer. It must not reproduce analytical calculations or generate unsupported analytical conclusions.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- Approved Analytical Track: Track A - Comparative Intelligence
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+\- Integration Pattern: Static Generated JSON
+
+\- Route: `/data-intelligence`
+
+
+
+\---
+
+
+
+\## 3. Existing Operational Page
+
+
+
+The existing operational dashboard remains available at:
+
+
+
+`/`
+
+
+
+The Data Intelligence page is a separate route:
+
+
+
+`/data-intelligence`
+
+
+
+The existing operational page must remain functional and visually intact.
+
+
+
+The Data Intelligence page must not replace the operational dashboard.
+
+
+
+\---
+
+
+
+\## 4. Page Structure
+
+
+
+The page follows this structure:
+
+
+
+```text
+
+Data Intelligence Header
+
+&#x20;       ↓
+
+Metadata
+
+&#x20;       ↓
+
+Summary Cards
+
+&#x20;       ↓
+
+Track A View Selector
+
+&#x20;       ↓
+
+Search / Filter
+
+&#x20;       ↓
+
+Primary Comparison Table
+
+&#x20;       ↓
+
+Key Findings
+
+&#x20;       ↓
+
+Evidence
+
+&#x20;       ↓
+
+Methodology
+
+&#x20;       ↓
+
+Limitations
+
+&#x20;       ↓
+
+Freshness / Validation Metadata
+</file>
+
+<file path="docs/INTELLIGENCE_API_CONTRACT.md">
+\# Intelligence API / Static Data Contract
+
+
+
+\## 1. Document Purpose
+
+
+
+This document defines the integration contract for the Phase 3 Data Intelligence page.
+
+
+
+The implementation uses the \*\*Static Generated JSON\*\* integration pattern.
+
+
+
+The frontend consumes approved analytical outputs generated by the Phase 3 Track A analytical workflow.
+
+
+
+The frontend must not reproduce or modify the approved analytical calculations.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- Analytical Track: Track A - Comparative Intelligence
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+\- Integration Pattern: Static Generated JSON
+
+\- Route: `/data-intelligence`
+
+
+
+\---
+
+
+
+\## 3. Integration Pattern
+
+
+
+The selected integration pattern is:
+
+
+
+\*\*Static Generated JSON\*\*
+
+
+
+The approved analytical outputs are generated outside the frontend and copied into the frontend data directory.
+
+
+
+\### Data Flow
+
+
+
+```text
+
+Canonical Dataset
+
+&#x20;       ↓
+
+Track A Analytical Scripts
+
+&#x20;       ↓
+
+Approved Intelligence Outputs
+
+&#x20;       ↓
+
+Static Generated JSON
+
+&#x20;       ↓
+
+Frontend Loader
+
+&#x20;       ↓
+
+Contract Validation
+
+&#x20;       ↓
+
+Data Intelligence Page
+</file>
+
+<file path="docs/INTELLIGENCE_INTEGRATION_MAPPING.md">
+\# Intelligence Integration Mapping
+
+
+
+\## 1. Purpose
+
+
+
+This document maps the approved Phase 3 Track A analytical outputs to the Data Intelligence page implementation.
+
+
+
+The integration uses the approved generated intelligence outputs without reproducing analytical calculations in the frontend.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- Analytical Track: Track A - Comparative Intelligence
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+\- Integration Pattern: Static Generated JSON
+
+\- Data Intelligence Route: `/data-intelligence`
+
+
+
+\---
+
+
+
+\## 3. Approved Analytical Sources
+
+
+
+\### Canonical Dataset
+
+
+
+Source:
+
+
+
+`data/canonical/intelligence\_data.csv`
+
+
+
+This is the canonical analytical dataset used to generate the approved Track A intelligence outputs.
+
+
+
+The frontend does not independently calculate intelligence from the canonical dataset.
+
+
+
+\### Intelligence Results
+
+
+
+Source:
+
+
+
+`data-science/outputs/intelligence\_results.json`
+
+
+
+Frontend copy:
+
+
+
+`src/data/intelligence/intelligence\_results.json`
+
+
+
+Purpose:
+
+
+
+\- Provides the approved Track A comparison results.
+
+\- Contains stage, product, source and baseline results.
+
+\- Provides approved metrics, findings, evidence, rankings, quality status and limitations.
+
+
+
+\### Intelligence Summary
+
+
+
+Source:
+
+
+
+`data-science/outputs/intelligence\_summary.json`
+
+
+
+Frontend copy:
+
+
+
+`src/data/intelligence/intelligence\_summary.json`
+
+
+
+Purpose:
+
+
+
+\- Provides the approved project-level summary.
+
+\- Provides key findings.
+
+\- Provides priority items.
+
+\- Provides validation result.
+
+\- Provides approved limitations and metadata.
+
+
+
+\### Validation Metrics
+
+
+
+Source:
+
+
+
+`data-science/outputs/validation\_metrics.json`
+
+
+
+Purpose:
+
+
+
+\- Provides analytical validation evidence.
+
+\- Confirms the approved validation status.
+
+\- Provides baseline and group-size validation information.
+
+
+
+\---
+
+
+
+\## 4. Frontend Integration Structure
+
+
+
+The Data Intelligence page uses the following implementation structure:
+
+
+
+```text
+
+src/
+
+├── app/
+
+│   └── data-intelligence/
+
+│       └── page.tsx
+
+│
+
+├── data/
+
+│   └── intelligence/
+
+│       ├── intelligence\_results.json
+
+│       ├── intelligence\_summary.json
+
+│       ├── loader.ts
+
+│       └── summary.ts
+
+│
+
+└── types/
+
+&#x20;   └── intelligence.ts
+</file>
+
 <file path="docs/INTELLIGENCE_OUTPUT_CONTRACT.md">
 \# POC-7 Lead Funnel Conversion Observatory
 
@@ -8208,6 +10996,100 @@ The existing operational application remained buildable and reachable after the 
 The reviewer-requested analytical correction was applied, affected intelligence outputs were regenerated, Notebook 02 was re-executed with visible outputs, and Repomix was regenerated afterward.
 
 Existing Operational Page Regression: PASS
+</file>
+
+<file path="docs/OPERATIONAL_PAGE_REGRESSION_REPORT.md">
+\# Operational Page Regression Report
+
+
+
+\## 1. Purpose
+
+
+
+This document records regression validation of the existing operational dashboard after implementation of the Phase 3 Data Intelligence page.
+
+
+
+The objective is to confirm that the existing operational page remains functional and that the new Data Intelligence route does not replace, corrupt or break the existing dashboard.
+
+
+
+\---
+
+
+
+\## 2. Project Information
+
+
+
+\- Project ID: POC-7
+
+\- PoC Title: Lead Funnel Conversion Observatory
+
+\- Phase: Phase 3
+
+\- New Intelligence Route: `/data-intelligence`
+
+\- Existing Operational Route: `/`
+
+\- Integration Pattern: Static Generated JSON
+
+\- Data Version: phase3-v2
+
+\- Method Version: 1.0.0
+
+
+
+\---
+
+
+
+\## 3. Regression Scope
+
+
+
+The regression review covers:
+
+
+
+1\. Existing operational route availability
+
+2\. Existing dashboard rendering
+
+3\. Existing KPI cards
+
+4\. Existing funnel visualization
+
+5\. Existing filters
+
+6\. Existing export functionality
+
+7\. Existing operational data presentation
+
+8\. Route separation
+
+9\. Production build compatibility
+
+10\. Preservation of the original operational page
+
+
+
+\---
+
+
+
+\# 4. Existing Operational Route
+
+
+
+The original operational dashboard remains available at:
+
+
+
+```text
+
+/
 </file>
 
 <file path="docs/REPRESENTATIVENESS_ASSESSMENT.md">
@@ -10305,6 +13187,998 @@ if __name__ == "__main__":
     main()
 </file>
 
+<file path="src/app/data-intelligence/page.tsx">
+"use client";
+
+import { useMemo, useState } from "react";
+
+import {
+  getGroupSizeWarning,
+  loadIntelligenceResults,
+} from "@/data/intelligence/loader";
+
+import type {
+  IntelligenceResult,
+  IntelligenceResultType,
+} from "@/types/intelligence";
+
+type ViewType =
+  | "stage_comparison"
+  | "product_comparison"
+  | "source_comparison";
+
+const VIEW_LABELS: Record<ViewType, string> = {
+  stage_comparison: "Stages",
+  product_comparison: "Products",
+  source_comparison: "Sources",
+};
+
+const VIEW_TITLES: Record<ViewType, string> = {
+  stage_comparison: "Funnel Stage Comparison",
+  product_comparison: "Product Comparison",
+  source_comparison: "Acquisition Source Comparison",
+};
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatValue(value: number, unit: string): string {
+  if (unit === "days") {
+    return `${formatNumber(value)} days`;
+  }
+
+  if (unit === "percent") {
+    return `${formatNumber(value)}%`;
+  }
+
+  return formatNumber(value);
+}
+
+function getViewType(
+  resultType: IntelligenceResultType,
+): ViewType | null {
+  if (resultType === "stage_comparison") {
+    return "stage_comparison";
+  }
+
+  if (resultType === "product_comparison") {
+    return "product_comparison";
+  }
+
+  if (resultType === "source_comparison") {
+    return "source_comparison";
+  }
+
+  return null;
+}
+
+export default function DataIntelligencePage() {
+  const [selectedType, setSelectedType] =
+    useState<ViewType>("stage_comparison");
+
+  const [search, setSearch] = useState("");
+
+  const loadResult = useMemo(
+    () => loadIntelligenceResults(),
+    [],
+  );
+
+  const filteredResults = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return [] as IntelligenceResult[];
+    }
+
+    const normalizedSearch =
+      search.trim().toLowerCase();
+
+    return loadResult.data.results
+      .filter(
+        (result) =>
+          getViewType(result.result_type) ===
+          selectedType,
+      )
+      .filter((result) => {
+        if (!normalizedSearch) {
+          return true;
+        }
+
+        const searchableText = [
+          result.group_key ?? "",
+          result.entity_id ?? "",
+          result.metric_name,
+          result.result_category,
+          result.finding,
+          result.limitation,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return searchableText.includes(
+          normalizedSearch,
+        );
+      })
+      .sort((a, b) => {
+        const rankA =
+          a.priority_rank ??
+          Number.MAX_SAFE_INTEGER;
+
+        const rankB =
+          b.priority_rank ??
+          Number.MAX_SAFE_INTEGER;
+
+        return rankA - rankB;
+      });
+  }, [loadResult, search, selectedType]);
+
+  const baseline = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return {
+        sourceLeads: 0,
+        totalValue: 0,
+        averageLeadValue: 0,
+        averageDays: 0,
+      };
+    }
+
+    const results = loadResult.data.results;
+
+    const totalValue = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_total_lead_value",
+    );
+
+    const averageLeadValue = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_average_lead_value",
+    );
+
+    const averageDays = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_average_days_in_stage",
+    );
+
+    return {
+      sourceLeads:
+        totalValue?.evidence.lead_count ?? 0,
+
+      totalValue:
+        totalValue?.result_value ?? 0,
+
+      averageLeadValue:
+        averageLeadValue?.result_value ?? 0,
+
+      averageDays:
+        averageDays?.result_value ?? 0,
+    };
+  }, [loadResult]);
+
+  const keyFindings = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return [];
+    }
+
+    const results = loadResult.data.results;
+
+    const stageResult = results.find(
+      (result) =>
+        result.result_id ===
+        "stage_won_total_value",
+    );
+
+    const productResult = results.find(
+      (result) =>
+        result.result_id ===
+        "product_payments_total_value",
+    );
+
+    const sourceResult = results.find(
+      (result) =>
+        result.result_id ===
+        "source_website_total_value",
+    );
+
+    return [
+      stageResult
+        ? `Won is the highest observed-value funnel stage with ${stageResult.result_value.toFixed(2)}.`
+        : null,
+
+      productResult
+        ? `Payments is the highest observed-value product category with ${productResult.result_value.toFixed(2)}.`
+        : null,
+
+      sourceResult
+        ? `Website is the highest observed-value acquisition source with ${sourceResult.result_value.toFixed(2)}.`
+        : null,
+    ].filter(
+      (finding): finding is string =>
+        finding !== null,
+    );
+  }, [loadResult]);
+
+  if (loadResult.status === "error") {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          background: "#f8fafc",
+          padding: "32px",
+          fontFamily:
+            "Arial, Helvetica, sans-serif",
+        }}
+      >
+        <section
+          style={{
+            maxWidth: "1080px",
+            margin: "0 auto",
+            border: "1px solid #fca5a5",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+          }}
+        >
+          <h1
+            style={{
+              margin: "0 0 12px",
+              color: "#b91c1c",
+              fontSize: "26px",
+            }}
+          >
+            Data Intelligence
+          </h1>
+
+          <p
+            style={{
+              margin: "0 0 8px",
+              color: "#334155",
+              fontSize: "16px",
+            }}
+          >
+            The approved intelligence
+            output could not be loaded
+            safely.
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#475569",
+              fontSize: "14px",
+            }}
+          >
+            {loadResult.message}
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+  const data = loadResult.data;
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#f8fafc",
+        color: "#0f172a",
+        padding: "28px 20px 60px",
+        fontFamily:
+          "Arial, Helvetica, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+        }}
+      >
+        <section
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "24px",
+            marginBottom: "28px",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                color: "#1d4ed8",
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "6px",
+              }}
+            >
+              PHASE 3 · POST #4
+            </div>
+
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "36px",
+                lineHeight: 1.1,
+              }}
+            >
+              Data Intelligence
+            </h1>
+
+            <p
+              style={{
+                margin: "10px 0 0",
+                color: "#475569",
+                fontSize: "16px",
+              }}
+            >
+              Approved Track A comparative
+              intelligence from the validated
+              synthetic lead sample.
+            </p>
+          </div>
+
+          <div
+            style={{
+              border: "1px solid #334155",
+              borderRadius: "12px",
+              padding: "16px 20px",
+              background: "#ffffff",
+              minWidth: "245px",
+            }}
+          >
+            <div>
+              <strong>Data version:</strong>{" "}
+              {data.data_version}
+            </div>
+
+            <div style={{ marginTop: "7px" }}>
+              <strong>Method version:</strong>{" "}
+              {data.method_version}
+            </div>
+
+            <div style={{ marginTop: "7px" }}>
+              <strong>Quality:</strong>{" "}
+              VALIDATED_DESCRIPTIVE
+            </div>
+          </div>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(4, minmax(0, 1fr))",
+            gap: "16px",
+            marginBottom: "28px",
+          }}
+        >
+          {[
+            {
+              label: "Source leads",
+              value: formatNumber(
+                baseline.sourceLeads,
+              ),
+            },
+            {
+              label: "Total observed value",
+              value: formatNumber(
+                baseline.totalValue,
+              ),
+            },
+            {
+              label: "Average lead value",
+              value: formatNumber(
+                baseline.averageLeadValue,
+              ),
+            },
+            {
+              label: "Average days in stage",
+              value: formatNumber(
+                baseline.averageDays,
+              ),
+            },
+          ].map((card) => (
+            <div
+              key={card.label}
+              style={{
+                border: "1px solid #334155",
+                borderRadius: "14px",
+                background: "#ffffff",
+                padding: "24px",
+              }}
+            >
+              <div
+                style={{
+                  color: "#64748b",
+                  fontSize: "15px",
+                  marginBottom: "12px",
+                }}
+              >
+                {card.label}
+              </div>
+
+              <div
+                style={{
+                  fontSize: "28px",
+                  fontWeight: 700,
+                }}
+              >
+                {card.value}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "20px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  margin: "0 0 8px",
+                  fontSize: "24px",
+                }}
+              >
+                Track A — Comparative
+                Intelligence
+              </h2>
+
+              <p
+                style={{
+                  margin: 0,
+                  color: "#64748b",
+                }}
+              >
+                Compare approved descriptive
+                results across stages, products,
+                and acquisition sources.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              {(
+                Object.keys(
+                  VIEW_LABELS,
+                ) as ViewType[]
+              ).map((type) => {
+                const active =
+                  selectedType === type;
+
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() =>
+                      setSelectedType(type)
+                    }
+                    style={{
+                      padding: "10px 18px",
+                      borderRadius: "10px",
+                      border: active
+                        ? "1px solid #2563eb"
+                        : "1px solid #64748b",
+                      background: active
+                        ? "#2563eb"
+                        : "#ffffff",
+                      color: active
+                        ? "#ffffff"
+                        : "#0f172a",
+                      cursor: "pointer",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {VIEW_LABELS[type]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "20px 24px",
+            marginBottom: "24px",
+          }}
+        >
+          <label
+            htmlFor="intelligence-search"
+            style={{
+              display: "block",
+              marginBottom: "8px",
+              fontSize: "15px",
+            }}
+          >
+            Filter results
+          </label>
+
+          <input
+            id="intelligence-search"
+            type="text"
+            value={search}
+            onChange={(event) =>
+              setSearch(event.target.value)
+            }
+            placeholder="Search group, metric, or finding..."
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              border: "1px solid #64748b",
+              borderRadius: "10px",
+              padding: "13px 15px",
+              fontSize: "16px",
+              outline: "none",
+            }}
+          />
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            overflow: "hidden",
+            marginBottom: "24px",
+          }}
+        >
+          <div
+            style={{
+              padding: "24px 26px",
+              borderBottom: "1px solid #334155",
+            }}
+          >
+            <h2
+              style={{
+                margin: "0 0 8px",
+                fontSize: "24px",
+              }}
+            >
+              {VIEW_TITLES[selectedType]}
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: "#64748b",
+              }}
+            >
+              Approved analytical results.
+              Values are displayed directly
+              from the validated intelligence
+              output.
+            </p>
+          </div>
+
+          {filteredResults.length === 0 ? (
+            <div
+              style={{
+                padding: "32px",
+                color: "#64748b",
+              }}
+            >
+              No approved results match the
+              current filter.
+            </div>
+          ) : (
+            <div
+              style={{
+                overflowX: "auto",
+              }}
+            >
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  minWidth: "900px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    {[
+                      "Rank",
+                      "Group",
+                      "Metric",
+                      "Value",
+                      "Status",
+                      "Finding",
+                    ].map((heading) => (
+                      <th
+                        key={heading}
+                        style={{
+                          textAlign: "left",
+                          padding: "14px 16px",
+                          borderBottom:
+                            "1px solid #334155",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredResults.map(
+                    (result, index) => {
+                      const warning =
+                        getGroupSizeWarning(
+                          result,
+                        );
+
+                      return (
+                        <tr
+                          key={result.result_id}
+                        >
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            {result.priority_rank ??
+                              index + 1}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {result.group_key ??
+                              result.entity_id ??
+                              "Overall"}
+
+                            {warning && (
+                              <div
+                                style={{
+                                  marginTop: "7px",
+                                  color: "#b45309",
+                                  fontSize: "12px",
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {warning}
+                              </div>
+                            )}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            {result.metric_name}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {formatValue(
+                              result.result_value,
+                              result.result_unit,
+                            )}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            <span
+                              style={{
+                                display: "inline-block",
+                                padding: "5px 10px",
+                                borderRadius: "999px",
+                                background: "#dcfce7",
+                                color: "#15803d",
+                                fontSize: "12px",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {result.quality_status}
+                            </span>
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            {result.finding}
+                          </td>
+                        </tr>
+                      );
+                    },
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Key Findings
+          </h2>
+
+          {keyFindings.map((finding) => (
+            <p
+              key={finding}
+              style={{
+                margin: "0 0 14px",
+                color: "#334155",
+                lineHeight: 1.6,
+              }}
+            >
+              {finding}
+            </p>
+          ))}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 16px",
+              fontSize: "24px",
+            }}
+          >
+            Evidence
+          </h2>
+
+          <p
+            style={{
+              margin: "0 0 10px",
+              color: "#334155",
+              lineHeight: 1.6,
+            }}
+          >
+            The page displays evidence attached
+            to the approved analytical results.
+            No new analytical calculations are
+            performed here.
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#64748b",
+            }}
+          >
+            Source: canonical intelligence output
+            generated for {data.data_version}.
+          </p>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Methodology
+          </h2>
+
+          <p
+            style={{
+              margin: "0 0 14px",
+              lineHeight: 1.6,
+            }}
+          >
+            How do lead value and days in stage
+            vary across CRM funnel stages,
+            acquisition sources and products
+            within the available synthetic lead
+            sample?
+          </p>
+
+          <p
+            style={{
+              margin: "0 0 14px",
+              lineHeight: 1.6,
+            }}
+          >
+            Support descriptive operational review
+            of observed differences across funnel
+            stages, products and acquisition sources
+            within the available synthetic sample.
+          </p>
+
+          <p
+            style={{
+              margin: "0 0 8px",
+              color: "#475569",
+            }}
+          >
+            Track: {data.approved_track}
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#475569",
+            }}
+          >
+            Method version: {data.method_version}
+          </p>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Limitations
+          </h2>
+
+          <ul
+            style={{
+              margin: "0 0 18px",
+              paddingLeft: "22px",
+              lineHeight: 1.8,
+              color: "#334155",
+            }}
+          >
+            <li>The dataset is synthetic.</li>
+
+            <li>
+              The available analytical sample
+              contains 30 source CRM leads.
+            </li>
+
+            <li>
+              The analysis is descriptive and
+              does not establish causation.
+            </li>
+
+            <li>
+              The analysis is not predictive.
+            </li>
+
+            <li>
+              Team and location are not represented
+              as separate canonical fields.
+            </li>
+
+            <li>
+              The available temporal information
+              does not constitute a full longitudinal
+              time series.
+            </li>
+
+            <li>
+              Small stage groups require cautious
+              interpretation.
+            </li>
+          </ul>
+
+          <div
+            style={{
+              color: "#b45309",
+              fontWeight: 600,
+            }}
+          >
+            Weak-case count: 4
+          </div>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "20px 24px",
+          }}
+        >
+          <div style={{ marginBottom: "8px" }}>
+            <strong>Generated:</strong>{" "}
+            {data.generated_at}
+          </div>
+
+          <div style={{ marginBottom: "8px" }}>
+            <strong>Result count:</strong>{" "}
+            {data.result_count}
+          </div>
+
+          <div>
+            <strong>Validation:</strong> PASS
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+</file>
+
 <file path="src/components/CohortHeatmap.tsx">
 "use client";
 
@@ -11211,6 +15085,892 @@ export default function StageAging({ data }: StageAgingProps) {
 }
 </file>
 
+<file path="src/data/intelligence/intelligence_results.json">
+{
+  "project_id": "POC-7",
+  "poc_title": "Lead Funnel Conversion Observatory",
+  "approved_track": "Track A - Comparative Intelligence",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "generated_at": "2026-10-05T14:51:04.757150+00:00",
+  "result_count": 16,
+  "results": [
+    {
+      "result_id": "baseline_total_lead_value",
+      "result_type": "baseline_summary",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "overall",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 2023000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "baseline",
+      "priority_rank": 1,
+      "finding": "The available sample contains 30 source CRM leads with total observed lead value of 2023000.00.",
+      "evidence": {
+        "lead_count": 30,
+        "total_lead_value": 2023000.0,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Synthetic sample; descriptive result only."
+    },
+    {
+      "result_id": "baseline_average_lead_value",
+      "result_type": "baseline_summary",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "overall",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "average_lead_value",
+      "result_value": 67433.33333333333,
+      "result_unit": "currency_unspecified",
+      "result_category": "baseline",
+      "priority_rank": 2,
+      "finding": "The overall average observed lead value is 67433.33.",
+      "evidence": {
+        "lead_count": 30,
+        "average_lead_value": 67433.33333333333,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Synthetic sample; descriptive result only."
+    },
+    {
+      "result_id": "baseline_average_days_in_stage",
+      "result_type": "baseline_summary",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "overall",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "average_days_in_stage",
+      "result_value": 13.1,
+      "result_unit": "days",
+      "result_category": "baseline",
+      "priority_rank": 3,
+      "finding": "The overall average observed days in stage is 13.10.",
+      "evidence": {
+        "lead_count": 30,
+        "average_days_in_stage": 13.1
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Available temporal information is descriptive and does not constitute a full longitudinal time series."
+    },
+    {
+      "result_id": "stage_won_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Won",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 949000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 1,
+      "finding": "The Won stage has observed total lead value of 949000.00 across 10 leads.",
+      "evidence": {
+        "group": "Won",
+        "lead_count": 10,
+        "total_lead_value": 949000.0,
+        "average_lead_value": 94900.0,
+        "average_days_in_stage": 8.9,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "stage_proposal_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Proposal",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 397000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 2,
+      "finding": "The Proposal stage has observed total lead value of 397000.00 across 4 leads.",
+      "evidence": {
+        "group": "Proposal",
+        "lead_count": 4,
+        "total_lead_value": 397000.0,
+        "average_lead_value": 99250.0,
+        "average_days_in_stage": 17.25,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "stage_opportunity_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Opportunity",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 252000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 3,
+      "finding": "The Opportunity stage has observed total lead value of 252000.00 across 5 leads.",
+      "evidence": {
+        "group": "Opportunity",
+        "lead_count": 5,
+        "total_lead_value": 252000.0,
+        "average_lead_value": 50400.0,
+        "average_days_in_stage": 19.4,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "stage_qualified_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Qualified",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 191000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 4,
+      "finding": "The Qualified stage has observed total lead value of 191000.00 across 5 leads.",
+      "evidence": {
+        "group": "Qualified",
+        "lead_count": 5,
+        "total_lead_value": 191000.0,
+        "average_lead_value": 38200.0,
+        "average_days_in_stage": 7.0,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "stage_lost_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Lost",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 147000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 5,
+      "finding": "The Lost stage has observed total lead value of 147000.00 across 3 leads.",
+      "evidence": {
+        "group": "Lost",
+        "lead_count": 3,
+        "total_lead_value": 147000.0,
+        "average_lead_value": 49000.0,
+        "average_days_in_stage": 30.333333333333332,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "stage_lead_total_value",
+      "result_type": "stage_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Lead",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 87000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "stage_comparison",
+      "priority_rank": 6,
+      "finding": "The Lead stage has observed total lead value of 87000.00 across 3 leads.",
+      "evidence": {
+        "group": "Lead",
+        "lead_count": 3,
+        "total_lead_value": 87000.0,
+        "average_lead_value": 29000.0,
+        "average_days_in_stage": 4.0,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
+    },
+    {
+      "result_id": "product_payments_total_value",
+      "result_type": "product_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Payments",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 942000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "product_comparison",
+      "priority_rank": 1,
+      "finding": "The Payments product category has observed total lead value of 942000.00 across 12 leads.",
+      "evidence": {
+        "group": "Payments",
+        "lead_count": 12,
+        "total_lead_value": 942000.0,
+        "average_lead_value": 78500.0,
+        "average_days_in_stage": 9.166666666666666,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "product_analytics_total_value",
+      "result_type": "product_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Analytics",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 592000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "product_comparison",
+      "priority_rank": 2,
+      "finding": "The Analytics product category has observed total lead value of 592000.00 across 9 leads.",
+      "evidence": {
+        "group": "Analytics",
+        "lead_count": 9,
+        "total_lead_value": 592000.0,
+        "average_lead_value": 65777.77777777778,
+        "average_days_in_stage": 14.333333333333334,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "product_security_total_value",
+      "result_type": "product_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Security",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 489000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "product_comparison",
+      "priority_rank": 3,
+      "finding": "The Security product category has observed total lead value of 489000.00 across 9 leads.",
+      "evidence": {
+        "group": "Security",
+        "lead_count": 9,
+        "total_lead_value": 489000.0,
+        "average_lead_value": 54333.333333333336,
+        "average_days_in_stage": 17.11111111111111,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "source_website_total_value",
+      "result_type": "source_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Website",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 689000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "source_comparison",
+      "priority_rank": 1,
+      "finding": "The Website acquisition source has observed total lead value of 689000.00 across 11 leads.",
+      "evidence": {
+        "group": "Website",
+        "lead_count": 11,
+        "total_lead_value": 689000.0,
+        "average_lead_value": 62636.36363636364,
+        "average_days_in_stage": 14.727272727272727,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "source_partner_total_value",
+      "result_type": "source_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Partner",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 493000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "source_comparison",
+      "priority_rank": 2,
+      "finding": "The Partner acquisition source has observed total lead value of 493000.00 across 5 leads.",
+      "evidence": {
+        "group": "Partner",
+        "lead_count": 5,
+        "total_lead_value": 493000.0,
+        "average_lead_value": 98600.0,
+        "average_days_in_stage": 17.0,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "source_referral_total_value",
+      "result_type": "source_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Referral",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 484000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "source_comparison",
+      "priority_rank": 3,
+      "finding": "The Referral acquisition source has observed total lead value of 484000.00 across 7 leads.",
+      "evidence": {
+        "group": "Referral",
+        "lead_count": 7,
+        "total_lead_value": 484000.0,
+        "average_lead_value": 69142.85714285714,
+        "average_days_in_stage": 9.857142857142858,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    },
+    {
+      "result_id": "source_campaign_total_value",
+      "result_type": "source_comparison",
+      "record_id": null,
+      "entity_id": null,
+      "group_key": "Campaign",
+      "period_start": null,
+      "period_end": null,
+      "metric_name": "total_lead_value",
+      "result_value": 357000.0,
+      "result_unit": "currency_unspecified",
+      "result_category": "source_comparison",
+      "priority_rank": 4,
+      "finding": "The Campaign acquisition source has observed total lead value of 357000.00 across 7 leads.",
+      "evidence": {
+        "group": "Campaign",
+        "lead_count": 7,
+        "total_lead_value": 357000.0,
+        "average_lead_value": 51000.0,
+        "average_days_in_stage": 11.0,
+        "metric_unit": "currency_unspecified"
+      },
+      "method_version": "1.0.0",
+      "data_version": "phase3-v2",
+      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample."
+    }
+  ]
+}
+</file>
+
+<file path="src/data/intelligence/intelligence_summary.json">
+{
+  "project_id": "POC-7",
+  "poc_title": "Lead Funnel Conversion Observatory",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "approved_track": "Track A - Comparative Intelligence",
+  "primary_question": "How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?",
+  "decision": "Support descriptive operational review of observed differences across funnel stages, products and acquisition sources within the available synthetic sample.",
+  "result_count": 16,
+  "key_findings": [
+    "Won is the highest observed-value funnel stage with 949000.00.",
+    "Payments is the highest observed-value product category with 942000.00.",
+    "Website is the highest observed-value acquisition source with 689000.00."
+  ],
+  "priority_items": [
+    {
+      "rank": 1,
+      "dimension": "stage",
+      "group": "Won",
+      "metric": "total_lead_value",
+      "value": 949000.0
+    },
+    {
+      "rank": 2,
+      "dimension": "product",
+      "group": "Payments",
+      "metric": "total_lead_value",
+      "value": 942000.0
+    },
+    {
+      "rank": 3,
+      "dimension": "source",
+      "group": "Website",
+      "metric": "total_lead_value",
+      "value": 689000.0
+    }
+  ],
+  "validation_result": "PASS",
+  "weak_case_count": 4,
+  "limitations": [
+    "The dataset is synthetic.",
+    "The available analytical sample contains 30 source CRM leads.",
+    "The analysis is descriptive and does not establish causation.",
+    "The analysis is not predictive.",
+    "Team and location are not represented as separate canonical fields.",
+    "The available temporal information does not constitute a full longitudinal time series.",
+    "Small stage groups require cautious interpretation."
+  ],
+  "generated_at": "2026-10-05T14:51:04.757150+00:00"
+}
+</file>
+
+<file path="src/data/intelligence/loader.ts">
+import type {
+  IntelligenceResult,
+  IntelligenceResultsDocument,
+} from "@/types/intelligence";
+
+import rawResults from "./intelligence_results.json";
+
+const EXPECTED_DATA_VERSION = "phase3-v2";
+const EXPECTED_METHOD_VERSION = "1.0.0";
+const EXPECTED_TRACK =
+  "Track A - Comparative Intelligence";
+
+const MIN_GROUP_SIZE = 5;
+
+export type IntelligenceLoadResult =
+  | {
+      status: "success";
+      data: IntelligenceResultsDocument;
+    }
+  | {
+      status: "error";
+      message: string;
+    };
+
+function isValidTimestamp(
+  value: unknown,
+): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  return !Number.isNaN(Date.parse(value));
+}
+
+function isValidEvidence(
+  value: unknown,
+): boolean {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const evidence =
+    value as Record<string, unknown>;
+
+  if (
+    evidence.group !== undefined &&
+    typeof evidence.group !== "string"
+  ) {
+    return false;
+  }
+
+  if (
+    evidence.metric_unit !== undefined &&
+    typeof evidence.metric_unit !== "string"
+  ) {
+    return false;
+  }
+
+  const numericFields = [
+    "lead_count",
+    "total_lead_value",
+    "average_lead_value",
+    "average_days_in_stage",
+    "median_days_in_stage",
+  ];
+
+  for (const field of numericFields) {
+    if (
+      evidence[field] !== undefined &&
+      (
+        typeof evidence[field] !== "number" ||
+        !Number.isFinite(
+          evidence[field] as number,
+        )
+      )
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isValidResult(
+  result: unknown,
+): result is IntelligenceResult {
+  if (!result || typeof result !== "object") {
+    return false;
+  }
+
+  const item =
+    result as Record<string, unknown>;
+
+  return (
+    typeof item.result_id === "string" &&
+    typeof item.result_type === "string" &&
+    typeof item.metric_name === "string" &&
+    typeof item.result_value === "number" &&
+    Number.isFinite(item.result_value) &&
+    typeof item.result_unit === "string" &&
+    typeof item.result_category === "string" &&
+    typeof item.finding === "string" &&
+    isValidEvidence(item.evidence) &&
+    typeof item.method_version === "string" &&
+    typeof item.data_version === "string" &&
+    typeof item.generated_at === "string" &&
+    isValidTimestamp(item.generated_at) &&
+    item.quality_status ===
+      "VALIDATED_DESCRIPTIVE" &&
+    typeof item.limitation === "string"
+  );
+}
+
+export function loadIntelligenceResults():
+  IntelligenceLoadResult {
+  try {
+    const data =
+      rawResults as unknown;
+
+    if (!data || typeof data !== "object") {
+      return {
+        status: "error",
+        message:
+          "Intelligence output is malformed.",
+      };
+    }
+
+    const document =
+      data as Record<string, unknown>;
+
+    if (
+      document.data_version !==
+      EXPECTED_DATA_VERSION
+    ) {
+      return {
+        status: "error",
+        message:
+          `Data version mismatch. Expected ${EXPECTED_DATA_VERSION}.`,
+      };
+    }
+
+    if (
+      document.method_version !==
+      EXPECTED_METHOD_VERSION
+    ) {
+      return {
+        status: "error",
+        message:
+          `Method version mismatch. Expected ${EXPECTED_METHOD_VERSION}.`,
+      };
+    }
+
+    if (
+      document.approved_track !==
+      EXPECTED_TRACK
+    ) {
+      return {
+        status: "error",
+        message:
+          "Unsupported analytical track.",
+      };
+    }
+
+    if (!Array.isArray(document.results)) {
+      return {
+        status: "error",
+        message:
+          "Intelligence results are missing or malformed.",
+      };
+    }
+
+    if (
+      typeof document.result_count !== "number" ||
+      document.result_count !==
+        document.results.length
+    ) {
+      return {
+        status: "error",
+        message:
+          "Intelligence result count does not match the output.",
+      };
+    }
+
+    const results =
+      document.results;
+
+    if (!results.every(isValidResult)) {
+      return {
+        status: "error",
+        message:
+          "One or more intelligence results violate the contract.",
+      };
+    }
+
+    const resultIds =
+      results.map(
+        (result) => result.result_id,
+      );
+
+    if (
+      new Set(resultIds).size !==
+      resultIds.length
+    ) {
+      return {
+        status: "error",
+        message:
+          "Duplicate intelligence result IDs detected.",
+      };
+    }
+
+    const loadedDocument:
+      IntelligenceResultsDocument = {
+      project_id: String(
+        document.project_id,
+      ),
+
+      poc_title: String(
+        document.poc_title,
+      ),
+
+      approved_track:
+        EXPECTED_TRACK,
+
+      data_version:
+        EXPECTED_DATA_VERSION,
+
+      method_version:
+        EXPECTED_METHOD_VERSION,
+
+      generated_at: String(
+        document.generated_at,
+      ),
+
+      result_count:
+        results.length,
+
+      results,
+    };
+
+    return {
+      status: "success",
+      data: loadedDocument,
+    };
+  } catch {
+    return {
+      status: "error",
+      message:
+        "Unable to load intelligence results.",
+    };
+  }
+}
+
+export function getGroupSizeWarning(
+  result: IntelligenceResult,
+): string | null {
+  const leadCount =
+    result.evidence.lead_count;
+
+  if (
+    typeof leadCount === "number" &&
+    leadCount < MIN_GROUP_SIZE
+  ) {
+    return (
+      `Small group: ${leadCount} leads. ` +
+      `Minimum approved group size is ${MIN_GROUP_SIZE}.`
+    );
+  }
+
+  return null;
+}
+</file>
+
+<file path="src/data/intelligence/summary.ts">
+import type { IntelligenceSummary } from "@/types/intelligence";
+
+import rawSummary from "./intelligence_summary.json";
+
+const EXPECTED_DATA_VERSION = "phase3-v2";
+const EXPECTED_METHOD_VERSION = "1.0.0";
+const EXPECTED_TRACK = "Track A - Comparative Intelligence";
+
+export type IntelligenceSummaryLoadResult =
+  | {
+      status: "success";
+      data: IntelligenceSummary;
+    }
+  | {
+      status: "error";
+      message: string;
+    };
+
+export function loadIntelligenceSummary(): IntelligenceSummaryLoadResult {
+  try {
+    const data = rawSummary as unknown;
+
+    if (!data || typeof data !== "object") {
+      return {
+        status: "error",
+        message: "Intelligence summary is malformed.",
+      };
+    }
+
+    const summary = data as Record<string, unknown>;
+
+    if (summary.data_version !== EXPECTED_DATA_VERSION) {
+      return {
+        status: "error",
+        message: `Summary data version mismatch. Expected ${EXPECTED_DATA_VERSION}.`,
+      };
+    }
+
+    if (summary.method_version !== EXPECTED_METHOD_VERSION) {
+      return {
+        status: "error",
+        message: `Summary method version mismatch. Expected ${EXPECTED_METHOD_VERSION}.`,
+      };
+    }
+
+    if (summary.approved_track !== EXPECTED_TRACK) {
+      return {
+        status: "error",
+        message: "Unsupported analytical track in summary.",
+      };
+    }
+
+    if (
+      typeof summary.project_id !== "string" ||
+      typeof summary.poc_title !== "string" ||
+      typeof summary.primary_question !== "string" ||
+      typeof summary.decision !== "string" ||
+      typeof summary.result_count !== "number" ||
+      !Array.isArray(summary.key_findings) ||
+      !Array.isArray(summary.priority_items) ||
+      typeof summary.validation_result !== "string" ||
+      typeof summary.weak_case_count !== "number" ||
+      !Array.isArray(summary.limitations) ||
+      typeof summary.generated_at !== "string"
+    ) {
+      return {
+        status: "error",
+        message: "Intelligence summary violates the expected contract.",
+      };
+    }
+
+    const loadedSummary: IntelligenceSummary = {
+      project_id: summary.project_id,
+      poc_title: summary.poc_title,
+      data_version: EXPECTED_DATA_VERSION,
+      method_version: EXPECTED_METHOD_VERSION,
+      approved_track: EXPECTED_TRACK,
+      primary_question: summary.primary_question,
+      decision: summary.decision,
+      result_count: summary.result_count,
+      key_findings: summary.key_findings.filter(
+        (item): item is string => typeof item === "string",
+      ),
+      priority_items: summary.priority_items.filter(
+        (item): item is string => typeof item === "string",
+      ),
+      validation_result: summary.validation_result,
+      weak_case_count: summary.weak_case_count,
+      limitations: summary.limitations.filter(
+        (item): item is string => typeof item === "string",
+      ),
+      generated_at: summary.generated_at,
+    };
+
+    return {
+      status: "success",
+      data: loadedSummary,
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Unable to load intelligence summary.",
+    };
+  }
+}
+</file>
+
 <file path="src/data/crmData.ts">
 import type { CRMLead, LeadStage } from "@/types/crm";
 
@@ -11771,6 +16531,664 @@ export type CRMLead = {
   daysInStage: number;
   value: number;
 };
+</file>
+
+<file path="src/types/intelligence.ts">
+export type IntelligenceResultType =
+  | "stage_comparison"
+  | "product_comparison"
+  | "source_comparison"
+  | "baseline_summary";
+
+export type IntelligenceMetric =
+  | "total_lead_value"
+  | "average_lead_value"
+  | "average_days_in_stage"
+  | "median_days_in_stage"
+  | "lead_count"
+  | "value_share_percent";
+
+export type IntelligenceQualityStatus =
+  "VALIDATED_DESCRIPTIVE";
+
+export type IntelligenceEvidence = {
+  group?: string;
+  lead_count?: number;
+  total_lead_value?: number;
+  average_lead_value?: number;
+  average_days_in_stage?: number;
+  median_days_in_stage?: number;
+  metric_unit?: string;
+};
+
+export type IntelligenceResult = {
+  result_id: string;
+  result_type: IntelligenceResultType;
+
+  record_id: string | null;
+  entity_id: string | null;
+  group_key: string | null;
+
+  period_start: string | null;
+  period_end: string | null;
+
+  metric_name: IntelligenceMetric;
+  result_value: number;
+  result_unit: string;
+  result_category: string;
+
+  priority_rank: number | null;
+
+  finding: string;
+
+  evidence: IntelligenceEvidence;
+
+  method_version: string;
+  data_version: string;
+  generated_at: string;
+
+  quality_status: IntelligenceQualityStatus;
+  limitation: string;
+};
+
+export type IntelligenceResultsDocument = {
+  project_id: string;
+  poc_title: string;
+
+  approved_track:
+    "Track A - Comparative Intelligence";
+
+  data_version: string;
+  method_version: string;
+  generated_at: string;
+
+  result_count: number;
+  results: IntelligenceResult[];
+};
+
+export type IntelligenceSummary = {
+  project_id: string;
+  poc_title: string;
+
+  data_version: string;
+  method_version: string;
+
+  approved_track:
+    "Track A - Comparative Intelligence";
+
+  primary_question: string;
+  decision: string;
+
+  result_count: number;
+
+  key_findings: string[];
+  priority_items: string[];
+
+  validation_result: string;
+
+  weak_case_count: number;
+
+  limitations: string[];
+
+  generated_at: string;
+};
+</file>
+
+<file path="tests/data-intelligence/contract-test.mjs">
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert/strict";
+
+const projectRoot = process.cwd();
+
+const resultsPath = path.join(
+  projectRoot,
+  "src",
+  "data",
+  "intelligence",
+  "intelligence_results.json"
+);
+
+const summaryPath = path.join(
+  projectRoot,
+  "src",
+  "data",
+  "intelligence",
+  "intelligence_summary.json"
+);
+
+const EXPECTED_PROJECT_ID = "POC-7";
+const EXPECTED_TRACK = "Track A - Comparative Intelligence";
+const EXPECTED_DATA_VERSION = "phase3-v2";
+const EXPECTED_METHOD_VERSION = "1.0.0";
+const EXPECTED_QUALITY_STATUS = "VALIDATED_DESCRIPTIVE";
+const EXPECTED_RESULT_COUNT = 16;
+const MIN_GROUP_SIZE = 5;
+
+const ALLOWED_RESULT_TYPES = new Set([
+  "stage_comparison",
+  "product_comparison",
+  "source_comparison",
+  "baseline_summary",
+]);
+
+const ALLOWED_METRICS = new Set([
+  "total_lead_value",
+  "average_lead_value",
+  "average_days_in_stage",
+  "median_days_in_stage",
+  "lead_count",
+  "value_share_percent",
+]);
+
+function readJson(filePath) {
+  assert.ok(
+    fs.existsSync(filePath),
+    `Required JSON file does not exist: ${filePath}`
+  );
+
+  const raw = fs.readFileSync(filePath, "utf8");
+
+  assert.doesNotThrow(
+    () => JSON.parse(raw),
+    `Invalid JSON: ${filePath}`
+  );
+
+  return JSON.parse(raw);
+}
+
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function isValidTimestamp(value) {
+  if (typeof value !== "string" || value.trim() === "") {
+    return false;
+  }
+
+  return !Number.isNaN(Date.parse(value));
+}
+
+function validateOptionalString(value, fieldName) {
+  if (value !== null && typeof value !== "string") {
+    throw new Error(`${fieldName} must be a string or null`);
+  }
+}
+
+function validateEvidence(evidence, resultId) {
+  assert.ok(
+    isObject(evidence),
+    `Evidence must be an object for result ${resultId}`
+  );
+
+  const stringFields = ["group", "metric_unit"];
+
+  for (const field of stringFields) {
+    if (
+      evidence[field] !== undefined &&
+      typeof evidence[field] !== "string"
+    ) {
+      throw new Error(
+        `Evidence field ${field} must be a string for result ${resultId}`
+      );
+    }
+  }
+
+  const numericFields = [
+    "lead_count",
+    "total_lead_value",
+    "average_lead_value",
+    "average_days_in_stage",
+    "median_days_in_stage",
+  ];
+
+  for (const field of numericFields) {
+    if (
+      evidence[field] !== undefined &&
+      typeof evidence[field] !== "number"
+    ) {
+      throw new Error(
+        `Evidence field ${field} must be numeric for result ${resultId}`
+      );
+    }
+
+    if (
+      evidence[field] !== undefined &&
+      !Number.isFinite(evidence[field])
+    ) {
+      throw new Error(
+        `Evidence field ${field} must be finite for result ${resultId}`
+      );
+    }
+  }
+}
+
+function validateResult(result) {
+  assert.ok(
+    isObject(result),
+    "Every intelligence result must be an object"
+  );
+
+  assert.equal(
+    typeof result.result_id,
+    "string",
+    "result_id must be a string"
+  );
+
+  assert.ok(
+    result.result_id.length > 0,
+    "result_id must not be empty"
+  );
+
+  assert.ok(
+    ALLOWED_RESULT_TYPES.has(result.result_type),
+    `Unsupported result_type: ${result.result_type}`
+  );
+
+  validateOptionalString(result.record_id, "record_id");
+  validateOptionalString(result.entity_id, "entity_id");
+  validateOptionalString(result.group_key, "group_key");
+  validateOptionalString(result.period_start, "period_start");
+  validateOptionalString(result.period_end, "period_end");
+
+  assert.ok(
+    ALLOWED_METRICS.has(result.metric_name),
+    `Unsupported metric_name: ${result.metric_name}`
+  );
+
+  assert.equal(
+    typeof result.result_value,
+    "number",
+    `result_value must be numeric for ${result.result_id}`
+  );
+
+  assert.ok(
+    Number.isFinite(result.result_value),
+    `result_value must be finite for ${result.result_id}`
+  );
+
+  assert.equal(
+    typeof result.result_unit,
+    "string",
+    `result_unit must be a string for ${result.result_id}`
+  );
+
+  assert.equal(
+    typeof result.result_category,
+    "string",
+    `result_category must be a string for ${result.result_id}`
+  );
+
+  assert.ok(
+    result.priority_rank === null ||
+      Number.isInteger(result.priority_rank),
+    `priority_rank must be an integer or null for ${result.result_id}`
+  );
+
+  assert.equal(
+    typeof result.finding,
+    "string",
+    `finding must be a string for ${result.result_id}`
+  );
+
+  validateEvidence(result.evidence, result.result_id);
+
+  assert.equal(
+    result.method_version,
+    EXPECTED_METHOD_VERSION,
+    `Invalid method_version for ${result.result_id}`
+  );
+
+  assert.equal(
+    result.data_version,
+    EXPECTED_DATA_VERSION,
+    `Invalid data_version for ${result.result_id}`
+  );
+
+  assert.ok(
+    isValidTimestamp(result.generated_at),
+    `Invalid generated_at timestamp for ${result.result_id}`
+  );
+
+  if (result.period_start !== null) {
+    assert.ok(
+      isValidTimestamp(result.period_start),
+      `Invalid period_start for ${result.result_id}`
+    );
+  }
+
+  if (result.period_end !== null) {
+    assert.ok(
+      isValidTimestamp(result.period_end),
+      `Invalid period_end for ${result.result_id}`
+    );
+  }
+
+  assert.equal(
+    result.quality_status,
+    EXPECTED_QUALITY_STATUS,
+    `Invalid quality_status for ${result.result_id}`
+  );
+
+  assert.equal(
+    typeof result.limitation,
+    "string",
+    `limitation must be a string for ${result.result_id}`
+  );
+}
+
+function validateResultsDocument(document) {
+  assert.ok(
+    isObject(document),
+    "Intelligence results document must be an object"
+  );
+
+  assert.equal(
+    document.project_id,
+    EXPECTED_PROJECT_ID,
+    "Invalid project_id"
+  );
+
+  assert.equal(
+    document.approved_track,
+    EXPECTED_TRACK,
+    "Invalid approved_track"
+  );
+
+  assert.equal(
+    document.data_version,
+    EXPECTED_DATA_VERSION,
+    "Invalid data_version"
+  );
+
+  assert.equal(
+    document.method_version,
+    EXPECTED_METHOD_VERSION,
+    "Invalid method_version"
+  );
+
+  assert.ok(
+    isValidTimestamp(document.generated_at),
+    "Invalid document generated_at timestamp"
+  );
+
+  assert.equal(
+    typeof document.result_count,
+    "number",
+    "result_count must be numeric"
+  );
+
+  assert.ok(
+    Number.isInteger(document.result_count),
+    "result_count must be an integer"
+  );
+
+  assert.ok(
+    Array.isArray(document.results),
+    "results must be an array"
+  );
+
+  assert.equal(
+    document.result_count,
+    document.results.length,
+    "result_count must equal results.length"
+  );
+
+  assert.equal(
+    document.result_count,
+    EXPECTED_RESULT_COUNT,
+    `Expected ${EXPECTED_RESULT_COUNT} approved results`
+  );
+
+  const resultIds = new Set();
+
+  for (const result of document.results) {
+    validateResult(result);
+
+    assert.ok(
+      !resultIds.has(result.result_id),
+      `Duplicate result_id detected: ${result.result_id}`
+    );
+
+    resultIds.add(result.result_id);
+  }
+
+  assert.equal(
+    resultIds.size,
+    document.results.length,
+    "Every result must have a unique result_id"
+  );
+}
+
+function validateSummary(summary) {
+  assert.ok(
+    isObject(summary),
+    "Intelligence summary must be an object"
+  );
+
+  assert.equal(
+    summary.project_id,
+    EXPECTED_PROJECT_ID,
+    "Invalid summary project_id"
+  );
+
+  assert.equal(
+    summary.data_version,
+    EXPECTED_DATA_VERSION,
+    "Invalid summary data_version"
+  );
+
+  assert.equal(
+    summary.method_version,
+    EXPECTED_METHOD_VERSION,
+    "Invalid summary method_version"
+  );
+
+  assert.equal(
+    summary.approved_track,
+    EXPECTED_TRACK,
+    "Invalid summary approved_track"
+  );
+
+  assert.equal(
+    typeof summary.primary_question,
+    "string",
+    "primary_question must be a string"
+  );
+
+  assert.equal(
+    typeof summary.decision,
+    "string",
+    "decision must be a string"
+  );
+
+  assert.equal(
+    summary.result_count,
+    EXPECTED_RESULT_COUNT,
+    "Summary result_count must equal 16"
+  );
+
+  assert.ok(
+    Array.isArray(summary.key_findings),
+    "key_findings must be an array"
+  );
+
+  assert.ok(
+    Array.isArray(summary.priority_items),
+    "priority_items must be an array"
+  );
+
+  assert.equal(
+    summary.validation_result,
+    "PASS",
+    "Summary validation_result must be PASS"
+  );
+
+  assert.equal(
+    typeof summary.weak_case_count,
+    "number",
+    "weak_case_count must be numeric"
+  );
+
+  assert.ok(
+    Array.isArray(summary.limitations),
+    "limitations must be an array"
+  );
+
+  assert.ok(
+    isValidTimestamp(summary.generated_at),
+    "Invalid summary generated_at timestamp"
+  );
+}
+
+function validateExpectedDimensions(results) {
+  const stageResults = results.filter(
+    (result) => result.result_type === "stage_comparison"
+  );
+
+  const productResults = results.filter(
+    (result) => result.result_type === "product_comparison"
+  );
+
+  const sourceResults = results.filter(
+    (result) => result.result_type === "source_comparison"
+  );
+
+  const baselineResults = results.filter(
+    (result) => result.result_type === "baseline_summary"
+  );
+
+  assert.equal(
+    stageResults.length,
+    6,
+    "Expected 6 stage comparison results"
+  );
+
+  assert.equal(
+    productResults.length,
+    3,
+    "Expected 3 product comparison results"
+  );
+
+  assert.equal(
+    sourceResults.length,
+    4,
+    "Expected 4 source comparison results"
+  );
+
+  assert.equal(
+    baselineResults.length,
+    3,
+    "Expected 3 baseline results"
+  );
+}
+
+function validateSmallGroups(results) {
+  const stageResults = results.filter(
+    (result) => result.result_type === "stage_comparison"
+  );
+
+  const smallGroups = stageResults.filter(
+    (result) =>
+      result.evidence &&
+      typeof result.evidence.lead_count === "number" &&
+      result.evidence.lead_count < MIN_GROUP_SIZE
+  );
+
+  const smallGroupNames = smallGroups
+    .map((result) => result.group_key)
+    .sort();
+
+  assert.deepEqual(
+    smallGroupNames,
+    ["Lead", "Lost", "Proposal"],
+    "Approved small stage groups do not match expected groups"
+  );
+}
+
+function run() {
+  console.log("========================================");
+  console.log("DATA INTELLIGENCE CONTRACT TEST");
+  console.log("========================================");
+
+  console.log("\n[1/7] Reading intelligence results...");
+  const resultsDocument = readJson(resultsPath);
+  console.log("PASS");
+
+  console.log("\n[2/7] Validating results document...");
+  validateResultsDocument(resultsDocument);
+  console.log("PASS");
+
+  console.log("\n[3/7] Validating result dimensions...");
+  validateExpectedDimensions(resultsDocument.results);
+  console.log("PASS");
+
+  console.log("\n[4/7] Validating small-group disclosure data...");
+  validateSmallGroups(resultsDocument.results);
+  console.log("PASS");
+
+  console.log("\n[5/7] Reading intelligence summary...");
+  const summary = readJson(summaryPath);
+  console.log("PASS");
+
+  console.log("\n[6/7] Validating intelligence summary...");
+  validateSummary(summary);
+  console.log("PASS");
+
+  console.log("\n[7/7] Validating approved metadata...");
+  assert.equal(
+    resultsDocument.project_id,
+    summary.project_id,
+    "Project IDs do not match"
+  );
+
+  assert.equal(
+    resultsDocument.data_version,
+    summary.data_version,
+    "Data versions do not match"
+  );
+
+  assert.equal(
+    resultsDocument.method_version,
+    summary.method_version,
+    "Method versions do not match"
+  );
+
+  assert.equal(
+    resultsDocument.approved_track,
+    summary.approved_track,
+    "Analytical tracks do not match"
+  );
+
+  assert.equal(
+    resultsDocument.result_count,
+    summary.result_count,
+    "Result counts do not match"
+  );
+
+  console.log("PASS");
+
+  console.log("\n========================================");
+  console.log("CONTRACT TEST PASSED");
+  console.log("========================================");
+  console.log(`Project: ${resultsDocument.project_id}`);
+  console.log(`Track: ${resultsDocument.approved_track}`);
+  console.log(`Data version: ${resultsDocument.data_version}`);
+  console.log(`Method version: ${resultsDocument.method_version}`);
+  console.log(`Result count: ${resultsDocument.result_count}`);
+  console.log(`Quality status: ${EXPECTED_QUALITY_STATUS}`);
+  console.log("========================================");
+}
+
+try {
+  run();
+} catch (error) {
+  console.error("\n========================================");
+  console.error("CONTRACT TEST FAILED");
+  console.error("========================================");
+  console.error(error.message);
+  process.exit(1);
+}
 </file>
 
 <file path=".gitignore">
@@ -19974,39 +25392,6 @@ export default function IntelligencePanel({
 }
 </file>
 
-<file path="package.json">
-{
-  "name": "lead-funnel-conversion-observatory",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "data:validate": "python scripts/data_pipeline/validate_data.py",
-    "data:publish": "python scripts/data_pipeline/publish_data.py",
-    "prebuild": "npm run data:validate && npm run data:publish",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "echarts": "^6.1.0",
-    "next": "16.3.4",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
-}
-</file>
-
 <file path="README.md">
 # POC-7 Lead Funnel Conversion Observatory - Phase 3
 
@@ -20034,6 +25419,40 @@ The current Phase 2 CRM data source is:
 
 ```text
 src/data/crmData.ts
+</file>
+
+<file path="package.json">
+{
+  "name": "lead-funnel-conversion-observatory",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "data:validate": "python scripts/data_pipeline/validate_data.py",
+    "data:publish": "python scripts/data_pipeline/publish_data.py",
+    "prebuild": "npm run data:validate && npm run data:publish",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test:intelligence": "node tests/data-intelligence/contract-test.mjs"
+  },
+  "dependencies": {
+    "echarts": "^6.1.0",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
 </file>
 
 </files>
