@@ -287,6 +287,48 @@ export default function DataIntelligencePage() {
           margin: "0 auto",
         }}
       >
+              <nav
+          aria-label="Primary navigation"
+          style={{
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+            marginBottom: "20px",
+          }}
+        >
+          <a
+            href="/"
+            style={{
+              display: "inline-block",
+              padding: "10px 16px",
+              border: "1px solid #64748b",
+              borderRadius: "10px",
+              background: "#ffffff",
+              color: "#0f172a",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Operational View
+          </a>
+
+          <a
+            href="/data-intelligence"
+            aria-current="page"
+            style={{
+              display: "inline-block",
+              padding: "10px 16px",
+              border: "1px solid #2563eb",
+              borderRadius: "10px",
+              background: "#2563eb",
+              color: "#ffffff",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Data Intelligence
+          </a>
+        </nav>
         <section
           style={{
             display: "flex",
