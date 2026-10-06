@@ -1,0 +1,50 @@
+{
+  "project_id": "POC-7",
+  "poc_title": "Lead Funnel Conversion Observatory",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "approved_track": "Track A - Comparative Intelligence",
+  "primary_question": "How do lead value and days in stage vary across CRM funnel stages, acquisition sources and products within the available synthetic lead sample?",
+  "decision": "Support descriptive operational review of observed differences across funnel stages, products and acquisition sources within the available synthetic sample.",
+  "result_count": 16,
+  "key_findings": [
+    "Won is the highest observed-value funnel stage with 949000.00.",
+    "Payments is the highest observed-value product category with 942000.00.",
+    "Website is the highest observed-value acquisition source with 689000.00."
+  ],
+  "priority_items": [
+    {
+      "rank": 1,
+      "dimension": "stage",
+      "group": "Won",
+      "metric": "total_lead_value",
+      "value": 949000.0
+    },
+    {
+      "rank": 2,
+      "dimension": "product",
+      "group": "Payments",
+      "metric": "total_lead_value",
+      "value": 942000.0
+    },
+    {
+      "rank": 3,
+      "dimension": "source",
+      "group": "Website",
+      "metric": "total_lead_value",
+      "value": 689000.0
+    }
+  ],
+  "validation_result": "PASS",
+  "weak_case_count": 4,
+  "limitations": [
+    "The dataset is synthetic.",
+    "The available analytical sample contains 30 source CRM leads.",
+    "The analysis is descriptive and does not establish causation.",
+    "The analysis is not predictive.",
+    "Team and location are not represented as separate canonical fields.",
+    "The available temporal information does not constitute a full longitudinal time series.",
+    "Small stage groups require cautious interpretation."
+  ],
+  "generated_at": "2026-10-05T14:51:04.757150+00:00"
+}
