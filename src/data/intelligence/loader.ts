@@ -111,13 +111,11 @@ function isValidResult(
   );
 }
 
-export function loadIntelligenceResults():
-  IntelligenceLoadResult {
+export function validateIntelligenceDocument(
+  value: unknown,
+): IntelligenceLoadResult {
   try {
-    const data =
-      rawResults as unknown;
-
-    if (!data || typeof data !== "object") {
+    if (!value || typeof value !== "object") {
       return {
         status: "error",
         message:
@@ -126,7 +124,7 @@ export function loadIntelligenceResults():
     }
 
     const document =
-      data as Record<string, unknown>;
+      value as Record<string, unknown>;
 
     if (
       document.data_version !==
@@ -208,6 +206,14 @@ export function loadIntelligenceResults():
       };
     }
 
+    if (!isValidTimestamp(document.generated_at)) {
+      return {
+        status: "error",
+        message:
+          "Generated timestamp is invalid.",
+      };
+    }
+
     const loadedDocument:
       IntelligenceResultsDocument = {
       project_id: String(
@@ -248,6 +254,13 @@ export function loadIntelligenceResults():
         "Unable to load intelligence results.",
     };
   }
+}
+
+export function loadIntelligenceResults():
+  IntelligenceLoadResult {
+  return validateIntelligenceDocument(
+    rawResults as unknown,
+  );
 }
 
 export function getGroupSizeWarning(
