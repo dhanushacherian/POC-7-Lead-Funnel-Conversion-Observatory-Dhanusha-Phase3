@@ -95,6 +95,7 @@ docs/
   CANONICAL_DATA_PROFILE.md
   DATA_ARCHETYPE_CONFIRMATION.md
   DATA_INTELLIGENCE_PAGE_PLAN.md
+  DATA_INTELLIGENCE_SELENIUM_EVIDENCE.md
   DATA_INTELLIGENCE_TEST_EVIDENCE.md
   DATA_INTELLIGENCE_UAT.md
   DATA_INTELLIGENCE_UI_SPEC.md
@@ -164,9 +165,11 @@ src/
 tests/
   data-intelligence/
     contract-test.mjs
+    loader-test.ts
 .gitignore
 AGENTS.md
 CLAUDE.md
+Dockerfile
 eslint.config.mjs
 next.config.ts
 package.json
@@ -8124,6 +8127,92 @@ The final Post #4 result must be one of:
 No final approval will be claimed until implementation, validation, testing and operational regression evidence are complete.
 </file>
 
+<file path="docs/DATA_INTELLIGENCE_SELENIUM_EVIDENCE.md">
+\# Data Intelligence Selenium Evidence
+
+
+
+\## Phase 3 · Post #4
+
+
+
+\*\*Project:\*\* POC-7 — Lead Funnel Conversion Observatory  
+
+\*\*Feature:\*\* Data Intelligence  
+
+\*\*Route:\*\* `/data-intelligence`  
+
+\*\*Track:\*\* Track A — Comparative Intelligence  
+
+\*\*Data version:\*\* `phase3-v2`  
+
+\*\*Method version:\*\* `1.0.0`
+
+
+
+\## Automated Browser Environment
+
+
+
+\- Browser: Microsoft Edge
+
+\- Selenium: 4.50.0
+
+\- Python: 3.14
+
+\- Browser mode: Headless
+
+\- Viewport: 1440 × 900
+
+\- Application server: Next.js development server
+
+\- Application URL: `http://localhost:3000`
+
+
+
+\## Selenium Journey
+
+
+
+The following automated browser journey was executed successfully:
+
+
+
+1\. Data Intelligence route loads.
+
+2\. Product view works.
+
+3\. Source view works.
+
+4\. Stage view works.
+
+5\. Filter works.
+
+6\. Operational View regression route works.
+
+
+
+\## Execution Result
+
+
+
+```text
+
+1 PASS: Data Intelligence route loads
+
+2 PASS: Product view works
+
+3 PASS: Source view works
+
+4 PASS: Stage view works
+
+5 PASS: Filter works
+
+6 PASS: Operational View regression route works
+
+=== SELENIUM JOURNEY PASSED ===
+</file>
+
 <file path="docs/DATA_INTELLIGENCE_TEST_EVIDENCE.md">
 \# Data Intelligence Test and Evidence Report
 
@@ -13187,998 +13276,6 @@ if __name__ == "__main__":
     main()
 </file>
 
-<file path="src/app/data-intelligence/page.tsx">
-"use client";
-
-import { useMemo, useState } from "react";
-
-import {
-  getGroupSizeWarning,
-  loadIntelligenceResults,
-} from "@/data/intelligence/loader";
-
-import type {
-  IntelligenceResult,
-  IntelligenceResultType,
-} from "@/types/intelligence";
-
-type ViewType =
-  | "stage_comparison"
-  | "product_comparison"
-  | "source_comparison";
-
-const VIEW_LABELS: Record<ViewType, string> = {
-  stage_comparison: "Stages",
-  product_comparison: "Products",
-  source_comparison: "Sources",
-};
-
-const VIEW_TITLES: Record<ViewType, string> = {
-  stage_comparison: "Funnel Stage Comparison",
-  product_comparison: "Product Comparison",
-  source_comparison: "Acquisition Source Comparison",
-};
-
-function formatNumber(value: number): string {
-  return new Intl.NumberFormat("en-IN", {
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
-function formatValue(value: number, unit: string): string {
-  if (unit === "days") {
-    return `${formatNumber(value)} days`;
-  }
-
-  if (unit === "percent") {
-    return `${formatNumber(value)}%`;
-  }
-
-  return formatNumber(value);
-}
-
-function getViewType(
-  resultType: IntelligenceResultType,
-): ViewType | null {
-  if (resultType === "stage_comparison") {
-    return "stage_comparison";
-  }
-
-  if (resultType === "product_comparison") {
-    return "product_comparison";
-  }
-
-  if (resultType === "source_comparison") {
-    return "source_comparison";
-  }
-
-  return null;
-}
-
-export default function DataIntelligencePage() {
-  const [selectedType, setSelectedType] =
-    useState<ViewType>("stage_comparison");
-
-  const [search, setSearch] = useState("");
-
-  const loadResult = useMemo(
-    () => loadIntelligenceResults(),
-    [],
-  );
-
-  const filteredResults = useMemo(() => {
-    if (loadResult.status !== "success") {
-      return [] as IntelligenceResult[];
-    }
-
-    const normalizedSearch =
-      search.trim().toLowerCase();
-
-    return loadResult.data.results
-      .filter(
-        (result) =>
-          getViewType(result.result_type) ===
-          selectedType,
-      )
-      .filter((result) => {
-        if (!normalizedSearch) {
-          return true;
-        }
-
-        const searchableText = [
-          result.group_key ?? "",
-          result.entity_id ?? "",
-          result.metric_name,
-          result.result_category,
-          result.finding,
-          result.limitation,
-        ]
-          .join(" ")
-          .toLowerCase();
-
-        return searchableText.includes(
-          normalizedSearch,
-        );
-      })
-      .sort((a, b) => {
-        const rankA =
-          a.priority_rank ??
-          Number.MAX_SAFE_INTEGER;
-
-        const rankB =
-          b.priority_rank ??
-          Number.MAX_SAFE_INTEGER;
-
-        return rankA - rankB;
-      });
-  }, [loadResult, search, selectedType]);
-
-  const baseline = useMemo(() => {
-    if (loadResult.status !== "success") {
-      return {
-        sourceLeads: 0,
-        totalValue: 0,
-        averageLeadValue: 0,
-        averageDays: 0,
-      };
-    }
-
-    const results = loadResult.data.results;
-
-    const totalValue = results.find(
-      (result) =>
-        result.result_id ===
-        "baseline_total_lead_value",
-    );
-
-    const averageLeadValue = results.find(
-      (result) =>
-        result.result_id ===
-        "baseline_average_lead_value",
-    );
-
-    const averageDays = results.find(
-      (result) =>
-        result.result_id ===
-        "baseline_average_days_in_stage",
-    );
-
-    return {
-      sourceLeads:
-        totalValue?.evidence.lead_count ?? 0,
-
-      totalValue:
-        totalValue?.result_value ?? 0,
-
-      averageLeadValue:
-        averageLeadValue?.result_value ?? 0,
-
-      averageDays:
-        averageDays?.result_value ?? 0,
-    };
-  }, [loadResult]);
-
-  const keyFindings = useMemo(() => {
-    if (loadResult.status !== "success") {
-      return [];
-    }
-
-    const results = loadResult.data.results;
-
-    const stageResult = results.find(
-      (result) =>
-        result.result_id ===
-        "stage_won_total_value",
-    );
-
-    const productResult = results.find(
-      (result) =>
-        result.result_id ===
-        "product_payments_total_value",
-    );
-
-    const sourceResult = results.find(
-      (result) =>
-        result.result_id ===
-        "source_website_total_value",
-    );
-
-    return [
-      stageResult
-        ? `Won is the highest observed-value funnel stage with ${stageResult.result_value.toFixed(2)}.`
-        : null,
-
-      productResult
-        ? `Payments is the highest observed-value product category with ${productResult.result_value.toFixed(2)}.`
-        : null,
-
-      sourceResult
-        ? `Website is the highest observed-value acquisition source with ${sourceResult.result_value.toFixed(2)}.`
-        : null,
-    ].filter(
-      (finding): finding is string =>
-        finding !== null,
-    );
-  }, [loadResult]);
-
-  if (loadResult.status === "error") {
-    return (
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "#f8fafc",
-          padding: "32px",
-          fontFamily:
-            "Arial, Helvetica, sans-serif",
-        }}
-      >
-        <section
-          style={{
-            maxWidth: "1080px",
-            margin: "0 auto",
-            border: "1px solid #fca5a5",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-          }}
-        >
-          <h1
-            style={{
-              margin: "0 0 12px",
-              color: "#b91c1c",
-              fontSize: "26px",
-            }}
-          >
-            Data Intelligence
-          </h1>
-
-          <p
-            style={{
-              margin: "0 0 8px",
-              color: "#334155",
-              fontSize: "16px",
-            }}
-          >
-            The approved intelligence
-            output could not be loaded
-            safely.
-          </p>
-
-          <p
-            style={{
-              margin: 0,
-              color: "#475569",
-              fontSize: "14px",
-            }}
-          >
-            {loadResult.message}
-          </p>
-        </section>
-      </main>
-    );
-  }
-
-  const data = loadResult.data;
-
-  return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#f8fafc",
-        color: "#0f172a",
-        padding: "28px 20px 60px",
-        fontFamily:
-          "Arial, Helvetica, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1280px",
-          margin: "0 auto",
-        }}
-      >
-        <section
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "24px",
-            marginBottom: "28px",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                color: "#1d4ed8",
-                fontWeight: 700,
-                fontSize: "14px",
-                marginBottom: "6px",
-              }}
-            >
-              PHASE 3 · POST #4
-            </div>
-
-            <h1
-              style={{
-                margin: 0,
-                fontSize: "36px",
-                lineHeight: 1.1,
-              }}
-            >
-              Data Intelligence
-            </h1>
-
-            <p
-              style={{
-                margin: "10px 0 0",
-                color: "#475569",
-                fontSize: "16px",
-              }}
-            >
-              Approved Track A comparative
-              intelligence from the validated
-              synthetic lead sample.
-            </p>
-          </div>
-
-          <div
-            style={{
-              border: "1px solid #334155",
-              borderRadius: "12px",
-              padding: "16px 20px",
-              background: "#ffffff",
-              minWidth: "245px",
-            }}
-          >
-            <div>
-              <strong>Data version:</strong>{" "}
-              {data.data_version}
-            </div>
-
-            <div style={{ marginTop: "7px" }}>
-              <strong>Method version:</strong>{" "}
-              {data.method_version}
-            </div>
-
-            <div style={{ marginTop: "7px" }}>
-              <strong>Quality:</strong>{" "}
-              VALIDATED_DESCRIPTIVE
-            </div>
-          </div>
-        </section>
-
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(4, minmax(0, 1fr))",
-            gap: "16px",
-            marginBottom: "28px",
-          }}
-        >
-          {[
-            {
-              label: "Source leads",
-              value: formatNumber(
-                baseline.sourceLeads,
-              ),
-            },
-            {
-              label: "Total observed value",
-              value: formatNumber(
-                baseline.totalValue,
-              ),
-            },
-            {
-              label: "Average lead value",
-              value: formatNumber(
-                baseline.averageLeadValue,
-              ),
-            },
-            {
-              label: "Average days in stage",
-              value: formatNumber(
-                baseline.averageDays,
-              ),
-            },
-          ].map((card) => (
-            <div
-              key={card.label}
-              style={{
-                border: "1px solid #334155",
-                borderRadius: "14px",
-                background: "#ffffff",
-                padding: "24px",
-              }}
-            >
-              <div
-                style={{
-                  color: "#64748b",
-                  fontSize: "15px",
-                  marginBottom: "12px",
-                }}
-              >
-                {card.label}
-              </div>
-
-              <div
-                style={{
-                  fontSize: "28px",
-                  fontWeight: 700,
-                }}
-              >
-                {card.value}
-              </div>
-            </div>
-          ))}
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-            marginBottom: "24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "20px",
-              flexWrap: "wrap",
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  margin: "0 0 8px",
-                  fontSize: "24px",
-                }}
-              >
-                Track A — Comparative
-                Intelligence
-              </h2>
-
-              <p
-                style={{
-                  margin: 0,
-                  color: "#64748b",
-                }}
-              >
-                Compare approved descriptive
-                results across stages, products,
-                and acquisition sources.
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
-              {(
-                Object.keys(
-                  VIEW_LABELS,
-                ) as ViewType[]
-              ).map((type) => {
-                const active =
-                  selectedType === type;
-
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() =>
-                      setSelectedType(type)
-                    }
-                    style={{
-                      padding: "10px 18px",
-                      borderRadius: "10px",
-                      border: active
-                        ? "1px solid #2563eb"
-                        : "1px solid #64748b",
-                      background: active
-                        ? "#2563eb"
-                        : "#ffffff",
-                      color: active
-                        ? "#ffffff"
-                        : "#0f172a",
-                      cursor: "pointer",
-                      fontSize: "15px",
-                    }}
-                  >
-                    {VIEW_LABELS[type]}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "20px 24px",
-            marginBottom: "24px",
-          }}
-        >
-          <label
-            htmlFor="intelligence-search"
-            style={{
-              display: "block",
-              marginBottom: "8px",
-              fontSize: "15px",
-            }}
-          >
-            Filter results
-          </label>
-
-          <input
-            id="intelligence-search"
-            type="text"
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-            placeholder="Search group, metric, or finding..."
-            style={{
-              width: "100%",
-              boxSizing: "border-box",
-              border: "1px solid #64748b",
-              borderRadius: "10px",
-              padding: "13px 15px",
-              fontSize: "16px",
-              outline: "none",
-            }}
-          />
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            overflow: "hidden",
-            marginBottom: "24px",
-          }}
-        >
-          <div
-            style={{
-              padding: "24px 26px",
-              borderBottom: "1px solid #334155",
-            }}
-          >
-            <h2
-              style={{
-                margin: "0 0 8px",
-                fontSize: "24px",
-              }}
-            >
-              {VIEW_TITLES[selectedType]}
-            </h2>
-
-            <p
-              style={{
-                margin: 0,
-                color: "#64748b",
-              }}
-            >
-              Approved analytical results.
-              Values are displayed directly
-              from the validated intelligence
-              output.
-            </p>
-          </div>
-
-          {filteredResults.length === 0 ? (
-            <div
-              style={{
-                padding: "32px",
-                color: "#64748b",
-              }}
-            >
-              No approved results match the
-              current filter.
-            </div>
-          ) : (
-            <div
-              style={{
-                overflowX: "auto",
-              }}
-            >
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  minWidth: "900px",
-                }}
-              >
-                <thead>
-                  <tr>
-                    {[
-                      "Rank",
-                      "Group",
-                      "Metric",
-                      "Value",
-                      "Status",
-                      "Finding",
-                    ].map((heading) => (
-                      <th
-                        key={heading}
-                        style={{
-                          textAlign: "left",
-                          padding: "14px 16px",
-                          borderBottom:
-                            "1px solid #334155",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {heading}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredResults.map(
-                    (result, index) => {
-                      const warning =
-                        getGroupSizeWarning(
-                          result,
-                        );
-
-                      return (
-                        <tr
-                          key={result.result_id}
-                        >
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                            }}
-                          >
-                            {result.priority_rank ??
-                              index + 1}
-                          </td>
-
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                              fontWeight: 600,
-                            }}
-                          >
-                            {result.group_key ??
-                              result.entity_id ??
-                              "Overall"}
-
-                            {warning && (
-                              <div
-                                style={{
-                                  marginTop: "7px",
-                                  color: "#b45309",
-                                  fontSize: "12px",
-                                  fontWeight: 500,
-                                }}
-                              >
-                                {warning}
-                              </div>
-                            )}
-                          </td>
-
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                            }}
-                          >
-                            {result.metric_name}
-                          </td>
-
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                              fontWeight: 700,
-                            }}
-                          >
-                            {formatValue(
-                              result.result_value,
-                              result.result_unit,
-                            )}
-                          </td>
-
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                            }}
-                          >
-                            <span
-                              style={{
-                                display: "inline-block",
-                                padding: "5px 10px",
-                                borderRadius: "999px",
-                                background: "#dcfce7",
-                                color: "#15803d",
-                                fontSize: "12px",
-                                fontWeight: 700,
-                              }}
-                            >
-                              {result.quality_status}
-                            </span>
-                          </td>
-
-                          <td
-                            style={{
-                              padding:
-                                "14px 16px",
-                              borderBottom:
-                                "1px solid #cbd5e1",
-                              lineHeight: 1.5,
-                            }}
-                          >
-                            {result.finding}
-                          </td>
-                        </tr>
-                      );
-                    },
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-            marginBottom: "24px",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 18px",
-              fontSize: "24px",
-            }}
-          >
-            Key Findings
-          </h2>
-
-          {keyFindings.map((finding) => (
-            <p
-              key={finding}
-              style={{
-                margin: "0 0 14px",
-                color: "#334155",
-                lineHeight: 1.6,
-              }}
-            >
-              {finding}
-            </p>
-          ))}
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-            marginBottom: "24px",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 16px",
-              fontSize: "24px",
-            }}
-          >
-            Evidence
-          </h2>
-
-          <p
-            style={{
-              margin: "0 0 10px",
-              color: "#334155",
-              lineHeight: 1.6,
-            }}
-          >
-            The page displays evidence attached
-            to the approved analytical results.
-            No new analytical calculations are
-            performed here.
-          </p>
-
-          <p
-            style={{
-              margin: 0,
-              color: "#64748b",
-            }}
-          >
-            Source: canonical intelligence output
-            generated for {data.data_version}.
-          </p>
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-            marginBottom: "24px",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 18px",
-              fontSize: "24px",
-            }}
-          >
-            Methodology
-          </h2>
-
-          <p
-            style={{
-              margin: "0 0 14px",
-              lineHeight: 1.6,
-            }}
-          >
-            How do lead value and days in stage
-            vary across CRM funnel stages,
-            acquisition sources and products
-            within the available synthetic lead
-            sample?
-          </p>
-
-          <p
-            style={{
-              margin: "0 0 14px",
-              lineHeight: 1.6,
-            }}
-          >
-            Support descriptive operational review
-            of observed differences across funnel
-            stages, products and acquisition sources
-            within the available synthetic sample.
-          </p>
-
-          <p
-            style={{
-              margin: "0 0 8px",
-              color: "#475569",
-            }}
-          >
-            Track: {data.approved_track}
-          </p>
-
-          <p
-            style={{
-              margin: 0,
-              color: "#475569",
-            }}
-          >
-            Method version: {data.method_version}
-          </p>
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "24px",
-            marginBottom: "24px",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 18px",
-              fontSize: "24px",
-            }}
-          >
-            Limitations
-          </h2>
-
-          <ul
-            style={{
-              margin: "0 0 18px",
-              paddingLeft: "22px",
-              lineHeight: 1.8,
-              color: "#334155",
-            }}
-          >
-            <li>The dataset is synthetic.</li>
-
-            <li>
-              The available analytical sample
-              contains 30 source CRM leads.
-            </li>
-
-            <li>
-              The analysis is descriptive and
-              does not establish causation.
-            </li>
-
-            <li>
-              The analysis is not predictive.
-            </li>
-
-            <li>
-              Team and location are not represented
-              as separate canonical fields.
-            </li>
-
-            <li>
-              The available temporal information
-              does not constitute a full longitudinal
-              time series.
-            </li>
-
-            <li>
-              Small stage groups require cautious
-              interpretation.
-            </li>
-          </ul>
-
-          <div
-            style={{
-              color: "#b45309",
-              fontWeight: 600,
-            }}
-          >
-            Weak-case count: 4
-          </div>
-        </section>
-
-        <section
-          style={{
-            border: "1px solid #334155",
-            borderRadius: "14px",
-            background: "#ffffff",
-            padding: "20px 24px",
-          }}
-        >
-          <div style={{ marginBottom: "8px" }}>
-            <strong>Generated:</strong>{" "}
-            {data.generated_at}
-          </div>
-
-          <div style={{ marginBottom: "8px" }}>
-            <strong>Result count:</strong>{" "}
-            {data.result_count}
-          </div>
-
-          <div>
-            <strong>Validation:</strong> PASS
-          </div>
-        </section>
-      </div>
-    </main>
-  );
-}
-</file>
-
 <file path="src/components/CohortHeatmap.tsx">
 "use client";
 
@@ -15590,279 +14687,6 @@ export default function StageAging({ data }: StageAgingProps) {
 }
 </file>
 
-<file path="src/data/intelligence/loader.ts">
-import type {
-  IntelligenceResult,
-  IntelligenceResultsDocument,
-} from "@/types/intelligence";
-
-import rawResults from "./intelligence_results.json";
-
-const EXPECTED_DATA_VERSION = "phase3-v2";
-const EXPECTED_METHOD_VERSION = "1.0.0";
-const EXPECTED_TRACK =
-  "Track A - Comparative Intelligence";
-
-const MIN_GROUP_SIZE = 5;
-
-export type IntelligenceLoadResult =
-  | {
-      status: "success";
-      data: IntelligenceResultsDocument;
-    }
-  | {
-      status: "error";
-      message: string;
-    };
-
-function isValidTimestamp(
-  value: unknown,
-): value is string {
-  if (typeof value !== "string") {
-    return false;
-  }
-
-  return !Number.isNaN(Date.parse(value));
-}
-
-function isValidEvidence(
-  value: unknown,
-): boolean {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const evidence =
-    value as Record<string, unknown>;
-
-  if (
-    evidence.group !== undefined &&
-    typeof evidence.group !== "string"
-  ) {
-    return false;
-  }
-
-  if (
-    evidence.metric_unit !== undefined &&
-    typeof evidence.metric_unit !== "string"
-  ) {
-    return false;
-  }
-
-  const numericFields = [
-    "lead_count",
-    "total_lead_value",
-    "average_lead_value",
-    "average_days_in_stage",
-    "median_days_in_stage",
-  ];
-
-  for (const field of numericFields) {
-    if (
-      evidence[field] !== undefined &&
-      (
-        typeof evidence[field] !== "number" ||
-        !Number.isFinite(
-          evidence[field] as number,
-        )
-      )
-    ) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function isValidResult(
-  result: unknown,
-): result is IntelligenceResult {
-  if (!result || typeof result !== "object") {
-    return false;
-  }
-
-  const item =
-    result as Record<string, unknown>;
-
-  return (
-    typeof item.result_id === "string" &&
-    typeof item.result_type === "string" &&
-    typeof item.metric_name === "string" &&
-    typeof item.result_value === "number" &&
-    Number.isFinite(item.result_value) &&
-    typeof item.result_unit === "string" &&
-    typeof item.result_category === "string" &&
-    typeof item.finding === "string" &&
-    isValidEvidence(item.evidence) &&
-    typeof item.method_version === "string" &&
-    typeof item.data_version === "string" &&
-    typeof item.generated_at === "string" &&
-    isValidTimestamp(item.generated_at) &&
-    item.quality_status ===
-      "VALIDATED_DESCRIPTIVE" &&
-    typeof item.limitation === "string"
-  );
-}
-
-export function loadIntelligenceResults():
-  IntelligenceLoadResult {
-  try {
-    const data =
-      rawResults as unknown;
-
-    if (!data || typeof data !== "object") {
-      return {
-        status: "error",
-        message:
-          "Intelligence output is malformed.",
-      };
-    }
-
-    const document =
-      data as Record<string, unknown>;
-
-    if (
-      document.data_version !==
-      EXPECTED_DATA_VERSION
-    ) {
-      return {
-        status: "error",
-        message:
-          `Data version mismatch. Expected ${EXPECTED_DATA_VERSION}.`,
-      };
-    }
-
-    if (
-      document.method_version !==
-      EXPECTED_METHOD_VERSION
-    ) {
-      return {
-        status: "error",
-        message:
-          `Method version mismatch. Expected ${EXPECTED_METHOD_VERSION}.`,
-      };
-    }
-
-    if (
-      document.approved_track !==
-      EXPECTED_TRACK
-    ) {
-      return {
-        status: "error",
-        message:
-          "Unsupported analytical track.",
-      };
-    }
-
-    if (!Array.isArray(document.results)) {
-      return {
-        status: "error",
-        message:
-          "Intelligence results are missing or malformed.",
-      };
-    }
-
-    if (
-      typeof document.result_count !== "number" ||
-      document.result_count !==
-        document.results.length
-    ) {
-      return {
-        status: "error",
-        message:
-          "Intelligence result count does not match the output.",
-      };
-    }
-
-    const results =
-      document.results;
-
-    if (!results.every(isValidResult)) {
-      return {
-        status: "error",
-        message:
-          "One or more intelligence results violate the contract.",
-      };
-    }
-
-    const resultIds =
-      results.map(
-        (result) => result.result_id,
-      );
-
-    if (
-      new Set(resultIds).size !==
-      resultIds.length
-    ) {
-      return {
-        status: "error",
-        message:
-          "Duplicate intelligence result IDs detected.",
-      };
-    }
-
-    const loadedDocument:
-      IntelligenceResultsDocument = {
-      project_id: String(
-        document.project_id,
-      ),
-
-      poc_title: String(
-        document.poc_title,
-      ),
-
-      approved_track:
-        EXPECTED_TRACK,
-
-      data_version:
-        EXPECTED_DATA_VERSION,
-
-      method_version:
-        EXPECTED_METHOD_VERSION,
-
-      generated_at: String(
-        document.generated_at,
-      ),
-
-      result_count:
-        results.length,
-
-      results,
-    };
-
-    return {
-      status: "success",
-      data: loadedDocument,
-    };
-  } catch {
-    return {
-      status: "error",
-      message:
-        "Unable to load intelligence results.",
-    };
-  }
-}
-
-export function getGroupSizeWarning(
-  result: IntelligenceResult,
-): string | null {
-  const leadCount =
-    result.evidence.lead_count;
-
-  if (
-    typeof leadCount === "number" &&
-    leadCount < MIN_GROUP_SIZE
-  ) {
-    return (
-      `Small group: ${leadCount} leads. ` +
-      `Minimum approved group size is ${MIN_GROUP_SIZE}.`
-    );
-  }
-
-  return null;
-}
-</file>
-
 <file path="src/data/intelligence/summary.ts">
 import type { IntelligenceSummary } from "@/types/intelligence";
 
@@ -17191,6 +16015,278 @@ try {
 }
 </file>
 
+<file path="tests/data-intelligence/loader-test.ts">
+import rawResults from "../../src/data/intelligence/intelligence_results.json";
+
+import {
+  validateIntelligenceDocument,
+  getGroupSizeWarning,
+} from "../../src/data/intelligence/loader";
+
+function assert(
+  condition: boolean,
+  message: string,
+): void {
+  if (!condition) {
+    throw new Error(`FAIL: ${message}`);
+  }
+
+  console.log(`PASS: ${message}`);
+}
+
+function cloneDocument(): any {
+  return JSON.parse(
+    JSON.stringify(rawResults),
+  );
+}
+
+console.log(
+  "\n=== DATA INTELLIGENCE LOADER TEST ===\n",
+);
+
+// 1. Successful validation
+const validResult =
+  validateIntelligenceDocument(rawResults);
+
+assert(
+  validResult.status === "success",
+  "Approved intelligence output loads successfully",
+);
+
+if (validResult.status === "success") {
+  assert(
+    validResult.data.data_version ===
+      "phase3-v2",
+    "Data version is phase3-v2",
+  );
+
+  assert(
+    validResult.data.method_version ===
+      "1.0.0",
+    "Method version is 1.0.0",
+  );
+
+  assert(
+    validResult.data.result_count ===
+      16,
+    "Result count is 16",
+  );
+
+  assert(
+    validResult.data.results.length ===
+      16,
+    "Results array contains 16 records",
+  );
+}
+
+// 2. Data version mismatch
+const badDataVersion =
+  cloneDocument();
+
+badDataVersion.data_version =
+  "wrong-version";
+
+const dataVersionResult =
+  validateIntelligenceDocument(
+    badDataVersion,
+  );
+
+assert(
+  dataVersionResult.status === "error" &&
+    dataVersionResult.message.includes(
+      "Data version mismatch",
+    ),
+  "Rejects data version mismatch",
+);
+
+// 3. Method version mismatch
+const badMethodVersion =
+  cloneDocument();
+
+badMethodVersion.method_version =
+  "9.9.9";
+
+const methodVersionResult =
+  validateIntelligenceDocument(
+    badMethodVersion,
+  );
+
+assert(
+  methodVersionResult.status === "error" &&
+    methodVersionResult.message.includes(
+      "Method version mismatch",
+    ),
+  "Rejects method version mismatch",
+);
+
+// 4. Result-count mismatch
+const badCount =
+  cloneDocument();
+
+badCount.result_count = 999;
+
+const countResult =
+  validateIntelligenceDocument(
+    badCount,
+  );
+
+assert(
+  countResult.status === "error" &&
+    countResult.message.includes(
+      "result count",
+    ),
+  "Rejects result-count mismatch",
+);
+
+// 5. Duplicate result IDs
+const duplicateIds =
+  cloneDocument();
+
+duplicateIds.results[1].result_id =
+  duplicateIds.results[0].result_id;
+
+const duplicateResult =
+  validateIntelligenceDocument(
+    duplicateIds,
+  );
+
+assert(
+  duplicateResult.status === "error" &&
+    duplicateResult.message.includes(
+      "Duplicate intelligence result IDs",
+    ),
+  "Rejects duplicate result IDs",
+);
+
+// 6. Invalid generated timestamp
+const badTimestamp =
+  cloneDocument();
+
+badTimestamp.generated_at =
+  "not-a-valid-timestamp";
+
+const timestampResult =
+  validateIntelligenceDocument(
+    badTimestamp,
+  );
+
+assert(
+  timestampResult.status === "error" &&
+    timestampResult.message.includes(
+      "Generated timestamp is invalid",
+    ),
+  "Rejects invalid document timestamp",
+);
+
+// 7. Invalid result timestamp
+const badResultTimestamp =
+  cloneDocument();
+
+badResultTimestamp.results[0].generated_at =
+  "not-a-valid-timestamp";
+
+const resultTimestampResult =
+  validateIntelligenceDocument(
+    badResultTimestamp,
+  );
+
+assert(
+  resultTimestampResult.status === "error" &&
+    resultTimestampResult.message.includes(
+      "contract",
+    ),
+  "Rejects invalid result timestamp",
+);
+
+// 8. Unsupported quality status
+const badQuality =
+  cloneDocument();
+
+badQuality.results[0].quality_status =
+  "REJECTED";
+
+const qualityResult =
+  validateIntelligenceDocument(
+    badQuality,
+  );
+
+assert(
+  qualityResult.status === "error" &&
+    qualityResult.message.includes(
+      "contract",
+    ),
+  "Rejects unsupported quality status",
+);
+
+// 9. Missing results
+const missingResults =
+  cloneDocument();
+
+delete missingResults.results;
+
+const missingResultsResult =
+  validateIntelligenceDocument(
+    missingResults,
+  );
+
+assert(
+  missingResultsResult.status === "error" &&
+    missingResultsResult.message.includes(
+      "missing or malformed",
+    ),
+  "Rejects missing results array",
+);
+
+// 10. Malformed document
+const malformedResult =
+  validateIntelligenceDocument(
+    null,
+  );
+
+assert(
+  malformedResult.status === "error" &&
+    malformedResult.message.includes(
+      "malformed",
+    ),
+  "Rejects malformed document",
+);
+
+// 11. Small-group warning
+if (validResult.status === "success") {
+  const proposal =
+    validResult.data.results.find(
+      (result) =>
+        result.group_key ===
+        "Proposal",
+    );
+
+  assert(
+    proposal !== undefined,
+    "Finds Proposal result",
+  );
+
+  if (proposal) {
+    const warning =
+      getGroupSizeWarning(proposal);
+
+    assert(
+      warning !== null,
+      "Warns when group size is below minimum",
+    );
+
+    assert(
+      warning?.includes("4 leads") ===
+        true,
+      "Proposal warning reports 4 leads",
+    );
+  }
+}
+
+console.log(
+  "\n=== LOADER TEST PASSED ===\n",
+);
+</file>
+
 <file path=".gitignore">
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -17249,6 +16345,29 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <file path="CLAUDE.md">
 @AGENTS.md
+</file>
+
+<file path="Dockerfile">
+FROM node:20-bookworm-slim
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3 && \
+    ln -s /usr/bin/python3 /usr/local/bin/python && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY package.json package-lock.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
 </file>
 
 <file path="eslint.config.mjs">
@@ -23145,6 +22264,1040 @@ if __name__ == "__main__":
     main()
 </file>
 
+<file path="src/app/data-intelligence/page.tsx">
+"use client";
+
+import { useMemo, useState } from "react";
+
+import {
+  getGroupSizeWarning,
+  loadIntelligenceResults,
+} from "@/data/intelligence/loader";
+
+import type {
+  IntelligenceResult,
+  IntelligenceResultType,
+} from "@/types/intelligence";
+
+type ViewType =
+  | "stage_comparison"
+  | "product_comparison"
+  | "source_comparison";
+
+const VIEW_LABELS: Record<ViewType, string> = {
+  stage_comparison: "Stages",
+  product_comparison: "Products",
+  source_comparison: "Sources",
+};
+
+const VIEW_TITLES: Record<ViewType, string> = {
+  stage_comparison: "Funnel Stage Comparison",
+  product_comparison: "Product Comparison",
+  source_comparison: "Acquisition Source Comparison",
+};
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatValue(value: number, unit: string): string {
+  if (unit === "days") {
+    return `${formatNumber(value)} days`;
+  }
+
+  if (unit === "percent") {
+    return `${formatNumber(value)}%`;
+  }
+
+  return formatNumber(value);
+}
+
+function getViewType(
+  resultType: IntelligenceResultType,
+): ViewType | null {
+  if (resultType === "stage_comparison") {
+    return "stage_comparison";
+  }
+
+  if (resultType === "product_comparison") {
+    return "product_comparison";
+  }
+
+  if (resultType === "source_comparison") {
+    return "source_comparison";
+  }
+
+  return null;
+}
+
+export default function DataIntelligencePage() {
+  const [selectedType, setSelectedType] =
+    useState<ViewType>("stage_comparison");
+
+  const [search, setSearch] = useState("");
+
+  const loadResult = useMemo(
+    () => loadIntelligenceResults(),
+    [],
+  );
+
+  const filteredResults = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return [] as IntelligenceResult[];
+    }
+
+    const normalizedSearch =
+      search.trim().toLowerCase();
+
+    return loadResult.data.results
+      .filter(
+        (result) =>
+          getViewType(result.result_type) ===
+          selectedType,
+      )
+      .filter((result) => {
+        if (!normalizedSearch) {
+          return true;
+        }
+
+        const searchableText = [
+          result.group_key ?? "",
+          result.entity_id ?? "",
+          result.metric_name,
+          result.result_category,
+          result.finding,
+          result.limitation,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return searchableText.includes(
+          normalizedSearch,
+        );
+      })
+      .sort((a, b) => {
+        const rankA =
+          a.priority_rank ??
+          Number.MAX_SAFE_INTEGER;
+
+        const rankB =
+          b.priority_rank ??
+          Number.MAX_SAFE_INTEGER;
+
+        return rankA - rankB;
+      });
+  }, [loadResult, search, selectedType]);
+
+  const baseline = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return {
+        sourceLeads: 0,
+        totalValue: 0,
+        averageLeadValue: 0,
+        averageDays: 0,
+      };
+    }
+
+    const results = loadResult.data.results;
+
+    const totalValue = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_total_lead_value",
+    );
+
+    const averageLeadValue = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_average_lead_value",
+    );
+
+    const averageDays = results.find(
+      (result) =>
+        result.result_id ===
+        "baseline_average_days_in_stage",
+    );
+
+    return {
+      sourceLeads:
+        totalValue?.evidence.lead_count ?? 0,
+
+      totalValue:
+        totalValue?.result_value ?? 0,
+
+      averageLeadValue:
+        averageLeadValue?.result_value ?? 0,
+
+      averageDays:
+        averageDays?.result_value ?? 0,
+    };
+  }, [loadResult]);
+
+  const keyFindings = useMemo(() => {
+    if (loadResult.status !== "success") {
+      return [];
+    }
+
+    const results = loadResult.data.results;
+
+    const stageResult = results.find(
+      (result) =>
+        result.result_id ===
+        "stage_won_total_value",
+    );
+
+    const productResult = results.find(
+      (result) =>
+        result.result_id ===
+        "product_payments_total_value",
+    );
+
+    const sourceResult = results.find(
+      (result) =>
+        result.result_id ===
+        "source_website_total_value",
+    );
+
+    return [
+      stageResult
+        ? `Won is the highest observed-value funnel stage with ${stageResult.result_value.toFixed(2)}.`
+        : null,
+
+      productResult
+        ? `Payments is the highest observed-value product category with ${productResult.result_value.toFixed(2)}.`
+        : null,
+
+      sourceResult
+        ? `Website is the highest observed-value acquisition source with ${sourceResult.result_value.toFixed(2)}.`
+        : null,
+    ].filter(
+      (finding): finding is string =>
+        finding !== null,
+    );
+  }, [loadResult]);
+
+  if (loadResult.status === "error") {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          background: "#f8fafc",
+          padding: "32px",
+          fontFamily:
+            "Arial, Helvetica, sans-serif",
+        }}
+      >
+        <section
+          style={{
+            maxWidth: "1080px",
+            margin: "0 auto",
+            border: "1px solid #fca5a5",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+          }}
+        >
+          <h1
+            style={{
+              margin: "0 0 12px",
+              color: "#b91c1c",
+              fontSize: "26px",
+            }}
+          >
+            Data Intelligence
+          </h1>
+
+          <p
+            style={{
+              margin: "0 0 8px",
+              color: "#334155",
+              fontSize: "16px",
+            }}
+          >
+            The approved intelligence
+            output could not be loaded
+            safely.
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#475569",
+              fontSize: "14px",
+            }}
+          >
+            {loadResult.message}
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+  const data = loadResult.data;
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#f8fafc",
+        color: "#0f172a",
+        padding: "28px 20px 60px",
+        fontFamily:
+          "Arial, Helvetica, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+        }}
+      >
+              <nav
+          aria-label="Primary navigation"
+          style={{
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+            marginBottom: "20px",
+          }}
+        >
+          <a
+            href="/"
+            style={{
+              display: "inline-block",
+              padding: "10px 16px",
+              border: "1px solid #64748b",
+              borderRadius: "10px",
+              background: "#ffffff",
+              color: "#0f172a",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Operational View
+          </a>
+
+          <a
+            href="/data-intelligence"
+            aria-current="page"
+            style={{
+              display: "inline-block",
+              padding: "10px 16px",
+              border: "1px solid #2563eb",
+              borderRadius: "10px",
+              background: "#2563eb",
+              color: "#ffffff",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Data Intelligence
+          </a>
+        </nav>
+        <section
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "24px",
+            marginBottom: "28px",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                color: "#1d4ed8",
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "6px",
+              }}
+            >
+              PHASE 3 · POST #4
+            </div>
+
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "36px",
+                lineHeight: 1.1,
+              }}
+            >
+              Data Intelligence
+            </h1>
+
+            <p
+              style={{
+                margin: "10px 0 0",
+                color: "#475569",
+                fontSize: "16px",
+              }}
+            >
+              Approved Track A comparative
+              intelligence from the validated
+              synthetic lead sample.
+            </p>
+          </div>
+
+          <div
+            style={{
+              border: "1px solid #334155",
+              borderRadius: "12px",
+              padding: "16px 20px",
+              background: "#ffffff",
+              minWidth: "245px",
+            }}
+          >
+            <div>
+              <strong>Data version:</strong>{" "}
+              {data.data_version}
+            </div>
+
+            <div style={{ marginTop: "7px" }}>
+              <strong>Method version:</strong>{" "}
+              {data.method_version}
+            </div>
+
+            <div style={{ marginTop: "7px" }}>
+              <strong>Quality:</strong>{" "}
+              VALIDATED_DESCRIPTIVE
+            </div>
+          </div>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(4, minmax(0, 1fr))",
+            gap: "16px",
+            marginBottom: "28px",
+          }}
+        >
+          {[
+            {
+              label: "Source leads",
+              value: formatNumber(
+                baseline.sourceLeads,
+              ),
+            },
+            {
+              label: "Total observed value",
+              value: formatNumber(
+                baseline.totalValue,
+              ),
+            },
+            {
+              label: "Average lead value",
+              value: formatNumber(
+                baseline.averageLeadValue,
+              ),
+            },
+            {
+              label: "Average days in stage",
+              value: formatNumber(
+                baseline.averageDays,
+              ),
+            },
+          ].map((card) => (
+            <div
+              key={card.label}
+              style={{
+                border: "1px solid #334155",
+                borderRadius: "14px",
+                background: "#ffffff",
+                padding: "24px",
+              }}
+            >
+              <div
+                style={{
+                  color: "#64748b",
+                  fontSize: "15px",
+                  marginBottom: "12px",
+                }}
+              >
+                {card.label}
+              </div>
+
+              <div
+                style={{
+                  fontSize: "28px",
+                  fontWeight: 700,
+                }}
+              >
+                {card.value}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "20px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  margin: "0 0 8px",
+                  fontSize: "24px",
+                }}
+              >
+                Track A — Comparative
+                Intelligence
+              </h2>
+
+              <p
+                style={{
+                  margin: 0,
+                  color: "#64748b",
+                }}
+              >
+                Compare approved descriptive
+                results across stages, products,
+                and acquisition sources.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              {(
+                Object.keys(
+                  VIEW_LABELS,
+                ) as ViewType[]
+              ).map((type) => {
+                const active =
+                  selectedType === type;
+
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() =>
+                      setSelectedType(type)
+                    }
+                    style={{
+                      padding: "10px 18px",
+                      borderRadius: "10px",
+                      border: active
+                        ? "1px solid #2563eb"
+                        : "1px solid #64748b",
+                      background: active
+                        ? "#2563eb"
+                        : "#ffffff",
+                      color: active
+                        ? "#ffffff"
+                        : "#0f172a",
+                      cursor: "pointer",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {VIEW_LABELS[type]}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "20px 24px",
+            marginBottom: "24px",
+          }}
+        >
+          <label
+            htmlFor="intelligence-search"
+            style={{
+              display: "block",
+              marginBottom: "8px",
+              fontSize: "15px",
+            }}
+          >
+            Filter results
+          </label>
+
+          <input
+            id="intelligence-search"
+            type="text"
+            value={search}
+            onChange={(event) =>
+              setSearch(event.target.value)
+            }
+            placeholder="Search group, metric, or finding..."
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              border: "1px solid #64748b",
+              borderRadius: "10px",
+              padding: "13px 15px",
+              fontSize: "16px",
+              outline: "none",
+            }}
+          />
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            overflow: "hidden",
+            marginBottom: "24px",
+          }}
+        >
+          <div
+            style={{
+              padding: "24px 26px",
+              borderBottom: "1px solid #334155",
+            }}
+          >
+            <h2
+              style={{
+                margin: "0 0 8px",
+                fontSize: "24px",
+              }}
+            >
+              {VIEW_TITLES[selectedType]}
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: "#64748b",
+              }}
+            >
+              Approved analytical results.
+              Values are displayed directly
+              from the validated intelligence
+              output.
+            </p>
+          </div>
+
+          {filteredResults.length === 0 ? (
+            <div
+              style={{
+                padding: "32px",
+                color: "#64748b",
+              }}
+            >
+              No approved results match the
+              current filter.
+            </div>
+          ) : (
+            <div
+              style={{
+                overflowX: "auto",
+              }}
+            >
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  minWidth: "900px",
+                }}
+              >
+                <thead>
+                  <tr>
+                    {[
+                      "Rank",
+                      "Group",
+                      "Metric",
+                      "Value",
+                      "Status",
+                      "Finding",
+                    ].map((heading) => (
+                      <th
+                        key={heading}
+                        style={{
+                          textAlign: "left",
+                          padding: "14px 16px",
+                          borderBottom:
+                            "1px solid #334155",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredResults.map(
+                    (result, index) => {
+                      const warning =
+                        getGroupSizeWarning(
+                          result,
+                        );
+
+                      return (
+                        <tr
+                          key={result.result_id}
+                        >
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            {result.priority_rank ??
+                              index + 1}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {result.group_key ??
+                              result.entity_id ??
+                              "Overall"}
+
+                            {warning && (
+                              <div
+                                style={{
+                                  marginTop: "7px",
+                                  color: "#b45309",
+                                  fontSize: "12px",
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {warning}
+                              </div>
+                            )}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            {result.metric_name}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {formatValue(
+                              result.result_value,
+                              result.result_unit,
+                            )}
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                            }}
+                          >
+                            <span
+                              style={{
+                                display: "inline-block",
+                                padding: "5px 10px",
+                                borderRadius: "999px",
+                                background: "#dcfce7",
+                                color: "#15803d",
+                                fontSize: "12px",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {result.quality_status}
+                            </span>
+                          </td>
+
+                          <td
+                            style={{
+                              padding:
+                                "14px 16px",
+                              borderBottom:
+                                "1px solid #cbd5e1",
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            {result.finding}
+                          </td>
+                        </tr>
+                      );
+                    },
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Key Findings
+          </h2>
+
+          {keyFindings.map((finding) => (
+            <p
+              key={finding}
+              style={{
+                margin: "0 0 14px",
+                color: "#334155",
+                lineHeight: 1.6,
+              }}
+            >
+              {finding}
+            </p>
+          ))}
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 16px",
+              fontSize: "24px",
+            }}
+          >
+            Evidence
+          </h2>
+
+          <p
+            style={{
+              margin: "0 0 10px",
+              color: "#334155",
+              lineHeight: 1.6,
+            }}
+          >
+            The page displays evidence attached
+            to the approved analytical results.
+            No new analytical calculations are
+            performed here.
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#64748b",
+            }}
+          >
+            Source: canonical intelligence output
+            generated for {data.data_version}.
+          </p>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Methodology
+          </h2>
+
+          <p
+            style={{
+              margin: "0 0 14px",
+              lineHeight: 1.6,
+            }}
+          >
+            How do lead value and days in stage
+            vary across CRM funnel stages,
+            acquisition sources and products
+            within the available synthetic lead
+            sample?
+          </p>
+
+          <p
+            style={{
+              margin: "0 0 14px",
+              lineHeight: 1.6,
+            }}
+          >
+            Support descriptive operational review
+            of observed differences across funnel
+            stages, products and acquisition sources
+            within the available synthetic sample.
+          </p>
+
+          <p
+            style={{
+              margin: "0 0 8px",
+              color: "#475569",
+            }}
+          >
+            Track: {data.approved_track}
+          </p>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#475569",
+            }}
+          >
+            Method version: {data.method_version}
+          </p>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "24px",
+            marginBottom: "24px",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "24px",
+            }}
+          >
+            Limitations
+          </h2>
+
+          <ul
+            style={{
+              margin: "0 0 18px",
+              paddingLeft: "22px",
+              lineHeight: 1.8,
+              color: "#334155",
+            }}
+          >
+            <li>The dataset is synthetic.</li>
+
+            <li>
+              The available analytical sample
+              contains 30 source CRM leads.
+            </li>
+
+            <li>
+              The analysis is descriptive and
+              does not establish causation.
+            </li>
+
+            <li>
+              The analysis is not predictive.
+            </li>
+
+            <li>
+              Team and location are not represented
+              as separate canonical fields.
+            </li>
+
+            <li>
+              The available temporal information
+              does not constitute a full longitudinal
+              time series.
+            </li>
+
+            <li>
+              Small stage groups require cautious
+              interpretation.
+            </li>
+          </ul>
+
+          <div
+            style={{
+              color: "#b45309",
+              fontWeight: 600,
+            }}
+          >
+            Weak-case count: 4
+          </div>
+        </section>
+
+        <section
+          style={{
+            border: "1px solid #334155",
+            borderRadius: "14px",
+            background: "#ffffff",
+            padding: "20px 24px",
+          }}
+        >
+          <div style={{ marginBottom: "8px" }}>
+            <strong>Generated:</strong>{" "}
+            {data.generated_at}
+          </div>
+
+          <div style={{ marginBottom: "8px" }}>
+            <strong>Result count:</strong>{" "}
+            {data.result_count}
+          </div>
+
+          <div>
+            <strong>Validation:</strong> PASS
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+</file>
+
 <file path="src/app/globals.css">
 @import "tailwindcss";
 
@@ -23632,6 +23785,292 @@ export default function SankeyChart({ data }: SankeyChartProps) {
       </div>
     </div>
   );
+}
+</file>
+
+<file path="src/data/intelligence/loader.ts">
+import type {
+  IntelligenceResult,
+  IntelligenceResultsDocument,
+} from "@/types/intelligence";
+
+import rawResults from "./intelligence_results.json";
+
+const EXPECTED_DATA_VERSION = "phase3-v2";
+const EXPECTED_METHOD_VERSION = "1.0.0";
+const EXPECTED_TRACK =
+  "Track A - Comparative Intelligence";
+
+const MIN_GROUP_SIZE = 5;
+
+export type IntelligenceLoadResult =
+  | {
+      status: "success";
+      data: IntelligenceResultsDocument;
+    }
+  | {
+      status: "error";
+      message: string;
+    };
+
+function isValidTimestamp(
+  value: unknown,
+): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  return !Number.isNaN(Date.parse(value));
+}
+
+function isValidEvidence(
+  value: unknown,
+): boolean {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const evidence =
+    value as Record<string, unknown>;
+
+  if (
+    evidence.group !== undefined &&
+    typeof evidence.group !== "string"
+  ) {
+    return false;
+  }
+
+  if (
+    evidence.metric_unit !== undefined &&
+    typeof evidence.metric_unit !== "string"
+  ) {
+    return false;
+  }
+
+  const numericFields = [
+    "lead_count",
+    "total_lead_value",
+    "average_lead_value",
+    "average_days_in_stage",
+    "median_days_in_stage",
+  ];
+
+  for (const field of numericFields) {
+    if (
+      evidence[field] !== undefined &&
+      (
+        typeof evidence[field] !== "number" ||
+        !Number.isFinite(
+          evidence[field] as number,
+        )
+      )
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isValidResult(
+  result: unknown,
+): result is IntelligenceResult {
+  if (!result || typeof result !== "object") {
+    return false;
+  }
+
+  const item =
+    result as Record<string, unknown>;
+
+  return (
+    typeof item.result_id === "string" &&
+    typeof item.result_type === "string" &&
+    typeof item.metric_name === "string" &&
+    typeof item.result_value === "number" &&
+    Number.isFinite(item.result_value) &&
+    typeof item.result_unit === "string" &&
+    typeof item.result_category === "string" &&
+    typeof item.finding === "string" &&
+    isValidEvidence(item.evidence) &&
+    typeof item.method_version === "string" &&
+    typeof item.data_version === "string" &&
+    typeof item.generated_at === "string" &&
+    isValidTimestamp(item.generated_at) &&
+    item.quality_status ===
+      "VALIDATED_DESCRIPTIVE" &&
+    typeof item.limitation === "string"
+  );
+}
+
+export function validateIntelligenceDocument(
+  value: unknown,
+): IntelligenceLoadResult {
+  try {
+    if (!value || typeof value !== "object") {
+      return {
+        status: "error",
+        message:
+          "Intelligence output is malformed.",
+      };
+    }
+
+    const document =
+      value as Record<string, unknown>;
+
+    if (
+      document.data_version !==
+      EXPECTED_DATA_VERSION
+    ) {
+      return {
+        status: "error",
+        message:
+          `Data version mismatch. Expected ${EXPECTED_DATA_VERSION}.`,
+      };
+    }
+
+    if (
+      document.method_version !==
+      EXPECTED_METHOD_VERSION
+    ) {
+      return {
+        status: "error",
+        message:
+          `Method version mismatch. Expected ${EXPECTED_METHOD_VERSION}.`,
+      };
+    }
+
+    if (
+      document.approved_track !==
+      EXPECTED_TRACK
+    ) {
+      return {
+        status: "error",
+        message:
+          "Unsupported analytical track.",
+      };
+    }
+
+    if (!Array.isArray(document.results)) {
+      return {
+        status: "error",
+        message:
+          "Intelligence results are missing or malformed.",
+      };
+    }
+
+    if (
+      typeof document.result_count !== "number" ||
+      document.result_count !==
+        document.results.length
+    ) {
+      return {
+        status: "error",
+        message:
+          "Intelligence result count does not match the output.",
+      };
+    }
+
+    const results =
+      document.results;
+
+    if (!results.every(isValidResult)) {
+      return {
+        status: "error",
+        message:
+          "One or more intelligence results violate the contract.",
+      };
+    }
+
+    const resultIds =
+      results.map(
+        (result) => result.result_id,
+      );
+
+    if (
+      new Set(resultIds).size !==
+      resultIds.length
+    ) {
+      return {
+        status: "error",
+        message:
+          "Duplicate intelligence result IDs detected.",
+      };
+    }
+
+    if (!isValidTimestamp(document.generated_at)) {
+      return {
+        status: "error",
+        message:
+          "Generated timestamp is invalid.",
+      };
+    }
+
+    const loadedDocument:
+      IntelligenceResultsDocument = {
+      project_id: String(
+        document.project_id,
+      ),
+
+      poc_title: String(
+        document.poc_title,
+      ),
+
+      approved_track:
+        EXPECTED_TRACK,
+
+      data_version:
+        EXPECTED_DATA_VERSION,
+
+      method_version:
+        EXPECTED_METHOD_VERSION,
+
+      generated_at: String(
+        document.generated_at,
+      ),
+
+      result_count:
+        results.length,
+
+      results,
+    };
+
+    return {
+      status: "success",
+      data: loadedDocument,
+    };
+  } catch {
+    return {
+      status: "error",
+      message:
+        "Unable to load intelligence results.",
+    };
+  }
+}
+
+export function loadIntelligenceResults():
+  IntelligenceLoadResult {
+  return validateIntelligenceDocument(
+    rawResults as unknown,
+  );
+}
+
+export function getGroupSizeWarning(
+  result: IntelligenceResult,
+): string | null {
+  const leadCount =
+    result.evidence.lead_count;
+
+  if (
+    typeof leadCount === "number" &&
+    leadCount < MIN_GROUP_SIZE
+  ) {
+    return (
+      `Small group: ${leadCount} leads. ` +
+      `Minimum approved group size is ${MIN_GROUP_SIZE}.`
+    );
+  }
+
+  return null;
 }
 </file>
 
@@ -25450,6 +25889,7 @@ src/data/crmData.ts
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }
