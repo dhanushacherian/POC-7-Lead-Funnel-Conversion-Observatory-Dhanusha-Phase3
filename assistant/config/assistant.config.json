@@ -1,0 +1,32 @@
+
+{
+  "assistant_id": "poc7-grounded-data-assistant",
+  "assistant_version": "1.0.0",
+  "mode": "A_DETERMINISTIC_GUIDED",
+  "llm_enabled": false,
+  "approved_track": "Track A - Comparative Intelligence",
+  "data_version": "phase3-v2",
+  "method_version": "1.0.0",
+  "quality_status": "VALIDATED_DESCRIPTIVE",
+  "limits": {
+    "max_question_length": 500,
+    "max_result_items": 25,
+    "max_evidence_references": 10,
+    "max_suggested_follow_ups": 3
+  },
+  "minimum_group_size": 5,
+  "supported_intents": [
+    "get_summary",
+    "compare_groups",
+    "explain_result",
+    "explain_method",
+    "explain_limitation",
+    "get_data_freshness",
+    "get_small_group_warnings"
+  ],
+  "approved_dimensions": [
+    "stage",
+    "product",
+    "source"
+  ]
+}

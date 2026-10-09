@@ -1,12 +1,16 @@
-import type { IntelligenceSummary } from "@/types/intelligence";
 
-import rawSummary from "./intelligence_summary.json";
+import summaryDocument from "./intelligence_summary.json";
+
+import type {
+  IntelligencePriorityItem,
+  IntelligenceSummary,
+} from "@/types/intelligence";
 
 const EXPECTED_DATA_VERSION = "phase3-v2";
 const EXPECTED_METHOD_VERSION = "1.0.0";
 const EXPECTED_TRACK = "Track A - Comparative Intelligence";
 
-export type IntelligenceSummaryLoadResult =
+type SummaryLoadResult =
   | {
       status: "success";
       data: IntelligenceSummary;
@@ -16,43 +20,32 @@ export type IntelligenceSummaryLoadResult =
       message: string;
     };
 
-export function loadIntelligenceSummary(): IntelligenceSummaryLoadResult {
+function isPriorityItem(item: unknown): item is IntelligencePriorityItem {
+  if (typeof item !== "object" || item === null) {
+    return false;
+  }
+
+  const value = item as Record<string, unknown>;
+
+  return (
+    typeof value.rank === "number" &&
+    typeof value.dimension === "string" &&
+    typeof value.group === "string" &&
+    typeof value.metric === "string" &&
+    typeof value.value === "number"
+  );
+}
+
+export function loadIntelligenceSummary(): SummaryLoadResult {
   try {
-    const data = rawSummary as unknown;
-
-    if (!data || typeof data !== "object") {
-      return {
-        status: "error",
-        message: "Intelligence summary is malformed.",
-      };
-    }
-
-    const summary = data as Record<string, unknown>;
-
-    if (summary.data_version !== EXPECTED_DATA_VERSION) {
-      return {
-        status: "error",
-        message: `Summary data version mismatch. Expected ${EXPECTED_DATA_VERSION}.`,
-      };
-    }
-
-    if (summary.method_version !== EXPECTED_METHOD_VERSION) {
-      return {
-        status: "error",
-        message: `Summary method version mismatch. Expected ${EXPECTED_METHOD_VERSION}.`,
-      };
-    }
-
-    if (summary.approved_track !== EXPECTED_TRACK) {
-      return {
-        status: "error",
-        message: "Unsupported analytical track in summary.",
-      };
-    }
+    const summary = summaryDocument as Record<string, unknown>;
 
     if (
       typeof summary.project_id !== "string" ||
       typeof summary.poc_title !== "string" ||
+      typeof summary.data_version !== "string" ||
+      typeof summary.method_version !== "string" ||
+      summary.approved_track !== EXPECTED_TRACK ||
       typeof summary.primary_question !== "string" ||
       typeof summary.decision !== "string" ||
       typeof summary.result_count !== "number" ||
@@ -69,6 +62,16 @@ export function loadIntelligenceSummary(): IntelligenceSummaryLoadResult {
       };
     }
 
+    if (
+      summary.data_version !== EXPECTED_DATA_VERSION ||
+      summary.method_version !== EXPECTED_METHOD_VERSION
+    ) {
+      return {
+        status: "error",
+        message: "Intelligence summary version does not match the approved version.",
+      };
+    }
+
     const loadedSummary: IntelligenceSummary = {
       project_id: summary.project_id,
       poc_title: summary.poc_title,
@@ -81,9 +84,7 @@ export function loadIntelligenceSummary(): IntelligenceSummaryLoadResult {
       key_findings: summary.key_findings.filter(
         (item): item is string => typeof item === "string",
       ),
-      priority_items: summary.priority_items.filter(
-        (item): item is string => typeof item === "string",
-      ),
+      priority_items: summary.priority_items.filter(isPriorityItem),
       validation_result: summary.validation_result,
       weak_case_count: summary.weak_case_count,
       limitations: summary.limitations.filter(
@@ -99,7 +100,7 @@ export function loadIntelligenceSummary(): IntelligenceSummaryLoadResult {
   } catch {
     return {
       status: "error",
-      message: "Unable to load intelligence summary.",
+      message: "Unable to load the approved intelligence summary.",
     };
   }
 }

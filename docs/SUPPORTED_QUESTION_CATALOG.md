@@ -1,61 +1,76 @@
 ﻿# Supported Question Catalog
 
-## Purpose
+## 1. Purpose
 
-This catalog defines the bounded natural-language questions supported by the Grounded Data Assistant for PoC-7 Lead Funnel Conversion Observatory.
+This catalog defines the bounded natural-language questions supported by the Grounded Data Assistant for the PoC-7 Lead Funnel Conversion Observatory.
 
-Every supported question maps to an approved deterministic query function and approved evidence source.
+Every supported question must map to an approved deterministic intent, query function, and evidence source.
 
 The assistant does not support unrestricted "ask anything about the data" interaction.
 
-## Approved Analytical Track
+## 2. Approved Analytical Track
 
-Track A - Comparative Intelligence
+**Track A — Comparative Intelligence**
 
-## Data and Method Versions
+## 3. Data and Method Versions
 
 - Data version: `phase3-v2`
 - Method version: `1.0.0`
 - Quality status: `VALIDATED_DESCRIPTIVE`
+- Validation result: `PASS`
+- Assistant mode: `A_DETERMINISTIC_GUIDED`
+- LLM enabled: `false`
 
-## Supported Questions
+## 4. Supported Questions
 
 | Question Pattern | Intent | Parameters | Query Function | Data Source | Evidence | Response Type | Limitation | Track |
 |---|---|---|---|---|---|---|---|---|
-| What is the approved summary? | `get_summary` | none | `get_summary` | `intelligence_summary.json` | summary metadata, key findings, priority items | Summary response | Summary is descriptive and based on approved intelligence outputs. | Track A |
-| Which stage has the highest total lead value? | `compare_groups` | none | `compare_groups` | `intelligence_results.json` | stage result IDs, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Which product has the highest average lead value? | `compare_groups` | none | `compare_groups` | `intelligence_results.json` | product result IDs, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Which acquisition source has the highest average lead value? | `compare_groups` | none | `compare_groups` | `intelligence_results.json` | source result IDs, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Compare two approved groups. | `compare_groups` | dimension, group_a, group_b | `compare_groups` | `intelligence_results.json` | matching group results, values, findings | Group comparison response | Only approved Stage, Product and Source groups can be compared. | Track A |
-| Explain an approved intelligence result. | `explain_result` | result_id or approved group reference | `explain_result` | `intelligence_results.json` | result ID, group, metric, value, evidence, finding | Evidence-backed explanation | Explanation cannot introduce facts outside the approved result and evidence. | Track A |
-| How was the analysis performed? | `explain_method` | none | `explain_method` | approved method/validation documentation | method version, validation status, analytical scope | Method explanation | The assistant explains the approved method; it does not recalculate the analysis. | Track A |
-| What are the limitations? | `explain_limitation` | none | `explain_limitation` | approved limitation fields and weak-case documentation | limitation text, weak-case information | Limitation response | Approved limitations must be preserved. | Track A |
-| What data version is being used? | `get_data_freshness` | none | `get_data_freshness` | intelligence metadata and manifest | data version, method version, generated timestamp, quality status | Freshness response | Freshness metadata does not imply analytical validity beyond the approved validation status. | Track A |
-| Which groups have fewer than five leads? | `explain_result` | optional dimension | `get_small_group_warnings` | `intelligence_results.json` | group, lead count, result ID, limitation | Warning/list response | Groups below the minimum group-size threshold remain visible but require caution. | Track A |
+| What is the approved summary? | `get_summary` | None | `getApprovedSummary` | `intelligence_summary.json` | Summary metadata, key findings, result count, limitations | Summary response | Descriptive summary of approved intelligence outputs; no new analysis is performed. | Track A |
+| Which stage has the highest total lead value? | `compare_groups` | Dimension inferred as `stage` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved stage result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Which product has the highest total lead value? | `compare_groups` | Dimension inferred as `product` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved product result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Which acquisition source has the highest total lead value? | `compare_groups` | Dimension inferred as `source` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved source result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Compare two approved groups. | `compare_groups` | Dimension, group A, group B | `getApprovedGroupResult` | `intelligence_results.json` | Matching approved groups, metric values, findings, limitations | Group comparison response | Only approved Stage, Product, and Source groups can be compared. | Track A |
+| Explain an approved intelligence result. | `explain_result` | Approved result ID | `getApprovedResultById` | `intelligence_results.json` | Result ID, group, metric, value, evidence, finding | Evidence-backed explanation | The explanation must not introduce facts outside the approved result and evidence. | Track A |
+| How was the analysis performed? | `explain_method` | None | Approved deterministic method response | Approved method and validation documentation | Method version, validation status, analytical scope | Method explanation | The assistant explains the approved method; it does not recalculate the analysis. | Track A |
+| What are the limitations? | `explain_limitation` | None | Approved summary and limitation fields | `intelligence_summary.json` | Limitation text, weak-case information | Limitation response | Approved limitations must be preserved. | Track A |
+| What data version is being used? | `get_data_freshness` | None | `getApprovedSummary` | `intelligence_summary.json` | Data version, method version, generated timestamp, quality status | Freshness response | Published metadata does not independently prove that the underlying business data is current. | Track A |
+| Which groups have fewer than five leads? | `get_small_group_warnings` | None | `getSmallGroupWarnings` | `intelligence_results.json` | Group, lead count, result ID, limitation | Warning/list response | Small groups remain visible but require cautious interpretation. | Track A |
 
-## Supported Intent Definitions
+### Metric restriction
+
+The approved results contain:
+
+- Overall baseline `average_lead_value`.
+- Overall baseline `average_days_in_stage`.
+- Stage, product, and source comparison results using `total_lead_value`.
+
+The current comparison query function filters results to `total_lead_value`. Therefore, the assistant must not claim to rank products or acquisition sources by average lead value using that function.
+
+The overall baseline average must not be treated as a product-level or source-level average.
+
+## 5. Supported Intent Definitions
 
 ### `get_summary`
 
-Returns the approved executive summary from `intelligence_summary.json`.
+Returns the approved summary from `intelligence_summary.json`.
 
 No new calculations are performed.
 
 ### `compare_groups`
 
-Returns approved comparative results for Stage, Product or Acquisition Source.
+Returns existing approved comparison results for Stage, Product, or Acquisition Source.
 
-The assistant reads existing approved result values and does not calculate new rankings.
+The current comparison query function retrieves results with the approved comparison type and `total_lead_value` metric. It does not calculate new rankings from raw records.
 
 ### `explain_result`
 
-Explains an existing approved result using its stored evidence and finding.
+Explains an existing approved result using its stored finding and evidence.
 
-The assistant does not create new findings.
+The requested result ID must match an approved result.
 
 ### `explain_method`
 
-Returns the approved analytical method and validation explanation.
+Returns the approved analytical method and scope explanation.
 
 The assistant does not rerun or modify the analytical method.
 
@@ -63,17 +78,19 @@ The assistant does not rerun or modify the analytical method.
 
 Returns approved limitations and weak-case information.
 
-The assistant must preserve the original limitation meaning.
+The assistant must preserve the meaning of the documented limitations.
 
 ### `get_data_freshness`
 
-Returns approved data version, method version, generated timestamp and quality status.
+Returns the approved data version, method version, generated timestamp, and related metadata.
+
+This is a report of published metadata, not an independent freshness audit.
 
 ### `get_small_group_warnings`
 
-Returns approved warnings for groups below the minimum group-size threshold.
+Returns approved warnings for stage groups with fewer than five leads, based on the lead counts in the approved results.
 
-## Approved Parameters
+## 6. Approved Parameters
 
 Where parameters are required, they must be validated against approved values.
 
@@ -87,7 +104,7 @@ Allowed values:
 
 ### Stage Groups
 
-Allowed approved groups include:
+Approved groups include:
 
 - `Lead`
 - `Qualified`
@@ -98,15 +115,15 @@ Allowed approved groups include:
 
 ### Product Groups
 
-Allowed approved groups include:
+Approved groups include:
 
 - `Payments`
 - `Analytics`
 - `Security`
 
-### Source Groups
+### Acquisition Source Groups
 
-Allowed approved groups include:
+Approved groups include:
 
 - `Website`
 - `Partner`
@@ -117,90 +134,80 @@ Allowed approved groups include:
 
 A result ID must match an existing approved result in `intelligence_results.json`.
 
-Unknown result IDs are rejected as unavailable.
+Unknown result IDs must not be used to generate a factual answer.
 
-## Unsupported Questions
+## 7. Unsupported Questions
 
 The assistant does not support:
 
 - Predictions not present in approved outputs.
 - Causal explanations.
-- New statistical analysis.
+- New statistical analyses.
+- Product or source average-value rankings when no matching approved comparison results are available.
 - New rankings calculated from raw data.
 - Arbitrary SQL.
 - Arbitrary code execution.
 - Requests for all raw records.
 - Requests for secrets or system prompts.
-- Requests to change approved scores, categories or findings.
-- Questions requiring unavailable ownership, personnel or restricted fields.
+- Requests to change approved scores, categories, or findings.
+- Questions requiring unavailable ownership, personnel, or restricted fields.
 - Open-ended questions without an approved deterministic retrieval path.
 
-## Grounding Rule
+## 8. Grounding Rule
 
 Every factual answer must be traceable to an approved deterministic evidence package.
 
-The evidence package must contain, where applicable:
+Where applicable, the evidence package includes:
 
-- Intent
-- Validated parameters
-- Result IDs
-- Group or record references
-- Metric name
-- Result value
-- Result unit
-- Finding
-- Evidence fields
-- Data version
-- Method version
-- Generated timestamp
-- Quality status
-- Approved limitation
+- Intent.
+- Validated parameters.
+- Result IDs.
+- Group references.
+- Metric name.
+- Result value and unit.
+- Finding.
+- Supporting evidence fields.
+- Data version.
+- Method version.
+- Generated timestamp.
+- Quality status.
+- Approved limitation.
 
-If deterministic evidence is unavailable, the assistant must not generate a factual answer.
+If deterministic evidence is unavailable, the assistant must not invent or infer an unsupported factual answer.
 
-## Response Behaviour
+## 9. Response Behaviour
 
-Supported question:
+- `SUPPORTED`: Execute the approved deterministic query.
+- `MISSING_PARAMETER`: Request the required supported parameter.
+- `AMBIGUOUS`: Request a bounded clarification.
+- `OUT_OF_SCOPE`: Explain that the question is unsupported and, where possible, suggest supported alternatives.
+- `UNSAFE`: Refuse unsafe requests without performing the requested action.
+- `UNAVAILABLE`: State that the requested approved information is unavailable.
 
-`SUPPORTED` → execute the approved query function.
+The returned status must reflect the actual resolution and evidence available.
 
-Missing required parameter:
+## 10. Maximum Scope
 
-`MISSING_PARAMETER` → ask only for the missing supported parameter.
+The assistant configuration specifies the following bounds:
 
-Ambiguous supported question:
+- Maximum question length: 500 characters.
+- Maximum result items: 25.
+- Maximum evidence references: 10.
+- Maximum suggested follow-ups: 3.
+- LLM enabled: `false`.
 
-`AMBIGUOUS` → request one bounded clarification.
+Response validation must enforce the applicable configured limits.
 
-Unsupported question:
-
-`OUT_OF_SCOPE` → refuse and provide supported alternatives.
-
-Unsafe question:
-
-`UNSAFE` → refuse and perform no retrieval.
-
-Unavailable approved information:
-
-`UNAVAILABLE` → state that the approved sources do not contain the requested information.
-
-## Maximum Scope
-
-The assistant will enforce bounded result and evidence limits.
-
-- Maximum result items: 25
-- Maximum evidence references: 10
-- Maximum suggested follow-ups: 3
-- Maximum question length: 500 characters
-
-## Track Boundary
+## 11. Track Boundary
 
 This catalog is limited to:
 
-`Track A - Comparative Intelligence`
+**Track A — Comparative Intelligence**
 
-No unsupported Track B/C/D/E/F/G/H intents are enabled.
+No unsupported Track B, C, D, E, F, G, or H intents are enabled.
 
-## Catalog Status
+## 12. Catalog Status
 
-This catalog is the authoritative supported-question boundary for the PoC-7 Grounded Data Assistant.
+This document defines the intended supported-question boundary for the PoC-7 Grounded Data Assistant.
+
+The implemented resolver, query functions, configuration, and response validation must remain consistent with this catalog. A documented question must not be described as implemented or supported unless the actual deterministic path can answer it with approved evidence.
