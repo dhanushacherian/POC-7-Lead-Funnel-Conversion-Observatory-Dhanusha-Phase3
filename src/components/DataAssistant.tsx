@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, type FormEvent } from "react";
@@ -24,6 +25,8 @@ type AssistantReply = {
   status: string;
   intent?: string | null;
   answer: string;
+  explanation?: string | null;
+  explanation_status?: "AVAILABLE" | "UNAVAILABLE";
   evidence_references?: EvidenceReference[];
   key_values?: Record<string, string | number | boolean | null>;
   metadata?: {
@@ -76,10 +79,10 @@ export default function DataAssistant() {
       return;
     }
 
-    setQuestion(submittedQuestion);
     setLoading(true);
     setError("");
     setReply(null);
+    setQuestion(submittedQuestion);
 
     try {
       const response = await fetch("/api/assistant", {
@@ -95,9 +98,15 @@ export default function DataAssistant() {
       }
 
       setReply(data);
+
+      if (!response.ok && data.status === "UNAVAILABLE") {
+        setError(
+          "The assistant service is currently unavailable. Review the response and try again later.",
+        );
+      }
     } catch {
       setError(
-        "The assistant could not be reached. Please try again after the application is running.",
+        "Unable to contact the assistant. Check that the development server is running and try again.",
       );
     } finally {
       setLoading(false);
@@ -105,74 +114,64 @@ export default function DataAssistant() {
   }
 
   return (
-    <section
-      aria-labelledby="data-assistant-title"
-      className="mt-8 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
-    >
-      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2
-            id="data-assistant-title"
-            className="text-xl font-semibold text-slate-900"
-          >
-            Grounded Data Assistant
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Ask questions about approved Track A intelligence results.
-          </p>
-        </div>
-
-        <span className="rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700">
-          Deterministic · No LLM
-        </span>
+    <section className="space-y-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900">
+          Grounded Data Assistant
+        </h2>
+        <p className="mt-1 text-sm leading-6 text-slate-600">
+          Ask questions about approved Track A results. Answers are based on
+          validated descriptive evidence; Gemini may provide an optional
+          explanation.
+        </p>
       </div>
 
-      <form onSubmit={(event) => submitQuestion(event)} className="space-y-3">
+      <form
+        onSubmit={(event) => void submitQuestion(event)}
+        className="space-y-3"
+      >
         <label
           htmlFor="assistant-question"
-          className="block text-sm font-medium text-slate-700"
+          className="block text-sm font-medium text-slate-800"
         >
           Your question
         </label>
-
         <textarea
           id="assistant-question"
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           maxLength={500}
           rows={3}
-          placeholder="Example: Which stage has the highest total lead value?"
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+          placeholder="Ask about the approved results..."
+          disabled={loading}
+          className="w-full rounded-lg border border-slate-300 p-3 text-sm text-slate-900 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200 disabled:bg-slate-50"
         />
-
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500">
             {question.length}/500 characters
-          </span>
-
+          </p>
           <button
             type="submit"
-            disabled={loading || !question.trim()}
+            disabled={loading}
             className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Checking approved data..." : "Ask assistant"}
+            {loading ? "Thinking..." : "Ask assistant"}
           </button>
         </div>
       </form>
 
-      <div className="mt-5">
-        <h3 className="mb-2 text-sm font-semibold text-slate-800">
+      <div>
+        <h3 className="text-sm font-semibold text-slate-900">
           Suggested questions
         </h3>
-
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {SUGGESTED_QUESTIONS.map((suggestion) => (
             <button
               key={suggestion}
               type="button"
               disabled={loading}
               onClick={() => void submitQuestion(undefined, suggestion)}
-              className="rounded-full border border-slate-300 px-3 py-1.5 text-left text-xs text-slate-700 hover:bg-slate-100 disabled:opacity-50"
+              className="rounded-full border border-slate-300 px-3 py-1.5 text-left text-xs text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {suggestion}
             </button>
@@ -180,24 +179,27 @@ export default function DataAssistant() {
         </div>
       </div>
 
+      {loading && (
+        <div
+          role="status"
+          className="rounded-lg bg-slate-50 p-4 text-sm text-slate-600"
+        >
+          Checking approved results and preparing the response...
+        </div>
+      )}
+
       {error && (
-        <p
+        <div
           role="alert"
-          className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900"
         >
           {error}
-        </p>
+        </div>
       )}
 
       {reply && (
-        <div
-          aria-live="polite"
-          className="mt-6 space-y-4 border-t border-slate-200 pt-5"
-        >
+        <div className="space-y-5 border-t border-slate-200 pt-5">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Status
-            </span>
             <span className="rounded-full border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-800">
               {reply.status}
             </span>
@@ -209,10 +211,34 @@ export default function DataAssistant() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-slate-900">Answer</h3>
+            <h3 className="text-sm font-semibold text-slate-900">
+              Deterministic answer
+            </h3>
             <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
               {reply.answer}
             </p>
+          </div>
+
+          <div className="rounded-lg border border-slate-200 p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Gemini explanation
+              </h3>
+              <span className="rounded-full border border-slate-300 px-2 py-1 text-xs text-slate-700">
+                {reply.explanation_status ?? "UNAVAILABLE"}
+              </span>
+            </div>
+            {reply.explanation_status === "AVAILABLE" && reply.explanation ? (
+              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                {reply.explanation}
+              </p>
+            ) : (
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                An optional Gemini explanation is unavailable. The
+                deterministic answer and approved evidence remain the primary
+                response.
+              </p>
+            )}
           </div>
 
           {reply.key_values &&
@@ -263,13 +289,17 @@ export default function DataAssistant() {
                         {evidence.group && (
                           <div>
                             <dt className="text-slate-500">Group</dt>
-                            <dd className="text-slate-800">{evidence.group}</dd>
+                            <dd className="break-words text-slate-800">
+                              {evidence.group}
+                            </dd>
                           </div>
                         )}
                         {evidence.metric && (
                           <div>
                             <dt className="text-slate-500">Metric</dt>
-                            <dd className="text-slate-800">{evidence.metric}</dd>
+                            <dd className="break-words text-slate-800">
+                              {evidence.metric}
+                            </dd>
                           </div>
                         )}
                         {evidence.value !== undefined && (
@@ -282,11 +312,15 @@ export default function DataAssistant() {
                         )}
                         <div>
                           <dt className="text-slate-500">Data version</dt>
-                          <dd className="text-slate-800">{evidence.data_version}</dd>
+                          <dd className="text-slate-800">
+                            {evidence.data_version}
+                          </dd>
                         </div>
                         <div>
                           <dt className="text-slate-500">Method version</dt>
-                          <dd className="text-slate-800">{evidence.method_version}</dd>
+                          <dd className="text-slate-800">
+                            {evidence.method_version}
+                          </dd>
                         </div>
                         {evidence.quality_status && (
                           <div>

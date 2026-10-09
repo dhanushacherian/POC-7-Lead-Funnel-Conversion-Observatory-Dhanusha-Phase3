@@ -45,13 +45,15 @@ export type AssistantResponse = {
   status: AssistantStatus;
   intent: AssistantIntent | null;
   answer: string;
+  explanation: string | null;
+  explanation_status: "AVAILABLE" | "UNAVAILABLE";
   evidence_references: AssistantEvidenceReference[];
   key_values: Record<string, string | number | boolean | null>;
   metadata: {
     assistant_id: string;
     assistant_version: string;
     mode: "A_DETERMINISTIC_GUIDED";
-    llm_enabled: false;
+    llm_enabled: boolean;
     data_version: string;
     method_version: string;
     quality_status: IntelligenceResult["quality_status"];

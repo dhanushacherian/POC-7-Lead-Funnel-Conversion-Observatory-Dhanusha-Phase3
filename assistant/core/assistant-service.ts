@@ -1,4 +1,5 @@
 
+
 import config from "../config/assistant.config.json";
 
 import type {
@@ -44,20 +45,21 @@ function makeResponse(
     status,
     intent,
     answer,
+    explanation: null,
+    explanation_status: "UNAVAILABLE",
     evidence_references: options.evidence ?? [],
     key_values: options.keyValues ?? {},
-   
-metadata: {
-  assistant_id: config.assistant_id,
-  assistant_version: config.assistant_version,
-  mode: "A_DETERMINISTIC_GUIDED",
-  llm_enabled: false,
-  data_version: summary.data_version,
-  method_version: summary.method_version,
-  quality_status: QUALITY_STATUS,
-  validation_result: summary.validation_result,
-  generated_at: summary.generated_at,
-},
+    metadata: {
+      assistant_id: config.assistant_id,
+      assistant_version: config.assistant_version,
+      mode: "A_DETERMINISTIC_GUIDED",
+      llm_enabled: false,
+      data_version: summary.data_version,
+      method_version: summary.method_version,
+      quality_status: QUALITY_STATUS,
+      validation_result: summary.validation_result,
+      generated_at: summary.generated_at,
+    },
     limitation: options.limitation ?? null,
     suggested_follow_ups: options.followUps ?? [
       "What is the approved summary?",
