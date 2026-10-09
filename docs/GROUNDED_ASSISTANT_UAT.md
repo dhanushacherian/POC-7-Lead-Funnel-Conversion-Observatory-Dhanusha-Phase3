@@ -1,140 +1,178 @@
-\# Grounded Data Assistant — User Acceptance Testing (UAT)
 
+# Grounded Data Assistant — User Acceptance Testing (UAT)
 
+## 1. Purpose
 
-\## 1. Purpose
+Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory, including deterministic answers, optional Gemini explanations, evidence references, limitations, and safe handling of unsupported requests.
 
+## 2. Implementation Summary
 
+- **Mode:** A — Deterministic Guided Assistant
+- **LLM integration:** Gemini optional explanation enabled
+- **Data version:** `phase3-v2`
+- **Method version:** `1.0.0`
+- **Quality status:** `VALIDATED_DESCRIPTIVE`
+- **Browser automation:** Playwright with Chromium
 
-Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory.
+The assistant retrieves approved intelligence results and does not generate new statistical analyses, predictions, or causal conclusions. Gemini provides an optional explanation; the deterministic answer and approved evidence remain the primary response.
 
-
-
-\## 2. Implementation Decision
-
-
-
-\- \*\*Mode:\*\* A — Deterministic Guided Assistant
-
-\- \*\*LLM enabled:\*\* No
-
-\- \*\*Data version:\*\* `phase3-v2`
-
-\- \*\*Method version:\*\* `1.0.0`
-
-\- \*\*Quality status:\*\* `VALIDATED\_DESCRIPTIVE`
-
-
-
-The assistant retrieves approved intelligence results and does not generate new statistical analyses, predictions, or causal conclusions.
-
-
-
-\## 3. Test Results
-
-
+## 3. Test Results
 
 | Test | Result |
-
 |---|---|
+| Grounded summary response | PASS — previously recorded service test |
+| Approved data and method versions | PASS — previously recorded service test |
+| Approved analytical method explanation | PASS — previously recorded service test |
+| Documented limitations | PASS — previously recorded service test |
+| Small-group warnings with evidence | PASS — previously recorded service test |
+| Supported product ranking | PASS — previously recorded service test |
+| Missing question handled safely | PASS — previously recorded service test |
+| Unsupported prediction rejected | PASS — service and browser tests |
+| Prompt-injection attempt rejected | PASS — previously recorded service test |
+| Arbitrary code execution request rejected | PASS — previously recorded service test |
+| Oversized question rejected | PASS — previously recorded service test |
+| Non-string input handled safely | PASS — previously recorded service test |
+| Supported-question browser test | PASS — Playwright/Chromium |
+| Unsupported-prediction browser test | PASS — Playwright/Chromium |
+| TypeScript compilation | PASS — previously recorded |
+| ESLint | PASS — previously recorded |
+| Intelligence contract validation | PASS — previously recorded |
+| Production build | PASS — previously recorded |
+| API supported-question response | PASS — manually verified |
+| Gemini-unavailable browser fallback | NOT YET VERIFIED |
+| Full operational-page regression | NOT YET VERIFIED |
 
-| Grounded summary response | PASS |
+## 4. Browser UAT Evidence
 
-| Approved data and method versions | PASS |
+Browser tests were implemented in:
 
-| Approved analytical method explanation | PASS |
+`tests/browser/assistant-uat.spec.ts`
 
-| Documented limitations | PASS |
+Playwright configuration:
 
-| Small-group warnings with evidence | PASS |
+`playwright.config.ts`
 
-| Supported product ranking | PASS |
+Browser test command:
 
-| Missing question handled safely | PASS |
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
 
-| Unsupported prediction rejected | PASS |
+Recorded execution result:
 
-| Prompt-injection attempt rejected | PASS |
+```text
+Running 2 tests using 1 worker
 
-| Arbitrary code execution request rejected | PASS |
+✓ supported question displays grounded answer and Gemini status
+✓ unsupported prediction request is safely rejected
 
-| Oversized question rejected | PASS |
+2 passed (2.6s)
+```
 
-| Non-string input handled safely | PASS |
+### Test 1: Supported question
 
-| TypeScript compilation | PASS |
+Question:
 
-| ESLint | PASS |
+`Which stage has the highest total lead value?`
 
-| Intelligence contract validation | PASS |
+Verified UI behavior:
 
-| Production build | PASS |
+- Response status: `SUPPORTED`
+- Intent: `compare_groups`
+- Deterministic answer identifies the Won stage.
+- Recorded total lead value: `949000`
+- Gemini explanation status: `AVAILABLE`
+- Evidence reference: `stage_won_total_value`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Quality status: `VALIDATED_DESCRIPTIVE`
+- Limitation disclosure is displayed.
 
-| API summary response | PASS |
+### Test 2: Unsupported prediction
 
+Question:
 
+`Predict next year's revenue using a machine learning model`
 
-\## 4. API Verification
+Verified UI behavior:
 
+- Response status: `OUT_OF_SCOPE`
+- Deterministic-answer section is displayed.
+- The request is rejected rather than treated as an approved prediction.
 
+## 5. API Verification
 
-A POST request to `/api/assistant` using the question `What is the approved summary?` returned:
+A direct POST request to `/api/assistant` with the supported stage-comparison question returned a successful JSON response.
 
+Recorded response fields:
 
+- Status: `SUPPORTED`
+- Intent: `compare_groups`
+- Validation result: `PASS`
+- LLM enabled: `true`
+- Explanation status: `AVAILABLE`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Evidence references: Present
+- Limitation: Present
+- Suggested follow-ups: Present
 
-\- Status: `SUPPORTED`
+The approved result identifies Won as the highest-ranked stage for total lead value, with a recorded value of `949000` across 10 leads.
 
-\- Intent: `get\_summary`
+**Disclosure:** The sample is synthetic, the analysis is descriptive, and small groups require cautious interpretation. The reported value must not be interpreted as a forecast or a causal conclusion.
 
-\- Quality status: `VALIDATED\_DESCRIPTIVE`
+## 6. Analytical and Security Boundaries
 
-\- Validation result: `PASS`
+The assistant must:
 
-\- LLM enabled: `false`
+1. Use approved intelligence results as the source of analytical claims.
+2. Keep the deterministic answer separate from the optional Gemini explanation.
+3. Include available evidence references and limitations.
+4. Reject unsupported predictive or causal requests.
+5. Reject prompt injection and arbitrary-code execution requests.
+6. Avoid sending the complete canonical dataset to Gemini.
+7. Keep the Gemini API key on the server, outside browser code and committed files.
+8. Avoid persistent conversational memory.
+9. Preserve deterministic response behavior when an optional explanation is unavailable.
 
-\- Data version: `phase3-v2`
+## 7. Acceptance Assessment
 
-\- Method version: `1.0.0`
+The recorded service tests, browser UAT tests, TypeScript compilation, ESLint, intelligence contract validation, production build, and direct API verification have passed.
 
-\- Evidence references: Present
+The supported-question and unsupported-prediction browser tests both passed in the recorded Playwright run.
 
-\- Limitations: Present
+**Current assessment:** The tested assistant behaviors passed.
 
-\- Suggested follow-ups: Present
+**Remaining release checks:**
 
+- Verify deterministic fallback when Gemini is unavailable.
+- Run the final regression checks.
+- Regenerate `repomix-output.xml` without secrets.
+- Review the final documentation and Git changes.
+- Commit and push the completed changes.
 
+The overall release should not be marked fully accepted until the remaining checks are completed.
 
-\## 5. Analytical Disclosure
+## 8. Reproducibility
 
+Run the browser tests with:
 
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
 
-The response identifies the dataset as synthetic and describes the available sample as 30 source CRM leads. It states that the analysis is descriptive, does not establish causation, and is not predictive. Small stage groups require cautious interpretation.
+Previously recorded project checks include:
 
+```powershell
+npm.cmd run lint
+npm.cmd run test:intelligence
+npm.cmd run build
+```
 
+These checks should be rerun against the final working tree before release.
 
-\## 6. Acceptance Assessment
+## 9. Final Status
 
+**Browser UAT:** PASS — 2 of 2 tests.
 
-
-The implemented deterministic assistant passed the recorded service tests, TypeScript compilation, lint checks, intelligence contract tests, production build, and manual API summary verification.
-
-
-
-\*\*Current assessment:\*\* Implementation validation passed for the checks listed above.
-
-
-
-\*\*Remaining release checks:\*\* Review the complete supported-question catalog and response contract, confirm UI and operational-page regression evidence, generate a fresh Repomix artifact, and commit and push the final implementation.
-
-
-
-\## 7. Evidence and Reproducibility
-
-
-
-The test results should be reproducible using the repository's assistant service tests, intelligence contract tests, TypeScript compiler, ESLint, production build, and API endpoint.
-
-
-
-This report records the checks actually run during implementation. It does not claim that separate Selenium tests or a full independent UI acceptance session were completed.
-
+**Full release acceptance:** PENDING — fallback verification, final regression, documentation review, Repomix regeneration, and Git delivery remain.

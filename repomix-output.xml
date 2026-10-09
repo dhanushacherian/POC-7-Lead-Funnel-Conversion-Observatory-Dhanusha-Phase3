@@ -187,6 +187,8 @@ src/
     crm.ts
     intelligence.ts
 tests/
+  browser/
+    assistant-uat.spec.ts
   data-intelligence/
     contract-test.mjs
     loader-test.ts
@@ -198,6 +200,7 @@ Dockerfile
 eslint.config.mjs
 next.config.ts
 package.json
+playwright.config.ts
 postcss.config.mjs
 README.md
 tsconfig.json
@@ -206,94 +209,55 @@ tsconfig.json
 <files>
 This section contains the contents of the repository's files.
 
-<file path="docs/GEMINI_INTEGRATION.md">
-\# Gemini Integration — Grounded Data Assistant
+<file path="tests/browser/assistant-uat.spec.ts">
+import { test, expect } from "@playwright/test";
 
+test("supported question displays grounded answer and Gemini status", async ({ page }) => {
+  await page.goto("/data-intelligence");
 
+  await expect(page.getByRole("heading", { name: "Grounded Data Assistant" })).toBeVisible();
 
-\## 1. Purpose
+  await page.getByLabel("Your question").fill(
+    "Which stage has the highest total lead value?"
+  );
+  await page.getByRole("button", { name: "Ask assistant" }).click();
 
+  await expect(page.getByText("SUPPORTED", { exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(page.getByRole("heading", { name: "Deterministic answer" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Gemini explanation" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Evidence references" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Limitation", exact: true })).toBeVisible();
+  await expect(page.getByText("949000", { exact: false }).first()).toBeVisible();
+});
 
+test("unsupported prediction request is safely rejected", async ({ page }) => {
+  await page.goto("/data-intelligence");
 
-The Grounded Data Assistant uses deterministic logic to answer questions from approved Track A analytical results. Gemini provides an optional natural-language explanation of supported answers.
+  await page.getByLabel("Your question").fill(
+    "Predict next year's revenue using a machine learning model"
+  );
+  await page.getByRole("button", { name: "Ask assistant" }).click();
 
+  await expect(page.getByText("OUT_OF_SCOPE", { exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(page.getByRole("heading", { name: "Deterministic answer" })).toBeVisible();
+});
+</file>
 
+<file path="playwright.config.ts">
+import { defineConfig } from "@playwright/test";
 
-\## 2. Answer Generation
-
-
-
-The assistant generates its deterministic answer and evidence from approved results before requesting an optional Gemini explanation. The deterministic answer remains the primary response.
-
-
-
-\## 3. API Configuration
-
-
-
-The Gemini API key is configured through the server-side environment variable:
-
-
-
-`GEMINI\_API\_KEY`
-
-
-
-Store the key in the local `.env.local` file. Never commit API keys, expose them in client-side code, or include them in repository snapshots.
-
-
-
-\## 4. Availability and Fallback
-
-
-
-The response includes an explanation status:
-
-
-
-\- `AVAILABLE`: Gemini generated an explanation.
-
-\- `UNAVAILABLE`: An optional explanation could not be provided.
-
-
-
-If Gemini is unavailable, the assistant retains the deterministic answer and approved evidence.
-
-
-
-\## 5. Evidence and Limitations
-
-
-
-The assistant uses approved Track A results with data version `phase3-v2` and method version `1.0.0`. The analysis is descriptive and uses synthetic data. It does not establish causation or provide predictions. Small stage groups require cautious interpretation.
-
-
-
-\## 6. Validation
-
-
-
-The following checks passed after the Gemini integration changes:
-
-
-
-\- Production build
-
-\- ESLint
-
-\- Grounded assistant service tests: 12/12
-
-\- Data intelligence contract tests: 7/7
-
-\- Live browser check: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
-
-
-
-\## 7. Security
-
-
-
-The API key must remain server-side. Do not log the key, include it in screenshots, or commit `.env.local`. Revoke exposed keys and replace them with new keys.
+export default defineConfig({
+  testDir: "./tests/browser",
+  fullyParallel: false,
+  reporter: "list",
+  use: {
+    baseURL: "http://127.0.0.1:3000",
+    browserName: "chromium",
+    headless: true,
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
+  },
+});
 </file>
 
 <file path="assistant/config/assistant.config.json">
@@ -11054,8 +11018,8 @@ Limitations
 Freshness / Validation Metadata
 </file>
 
-<file path="docs/GROUNDED_ASSISTANT_UAT.md">
-\# Grounded Data Assistant — User Acceptance Testing (UAT)
+<file path="docs/GEMINI_INTEGRATION.md">
+\# Gemini Integration — Grounded Data Assistant
 
 
 
@@ -11063,137 +11027,265 @@ Freshness / Validation Metadata
 
 
 
-Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory.
+The Grounded Data Assistant uses deterministic logic to answer questions from approved Track A analytical results. Gemini provides an optional natural-language explanation of supported answers.
 
 
 
-\## 2. Implementation Decision
+\## 2. Answer Generation
 
 
 
-\- \*\*Mode:\*\* A — Deterministic Guided Assistant
-
-\- \*\*LLM enabled:\*\* No
-
-\- \*\*Data version:\*\* `phase3-v2`
-
-\- \*\*Method version:\*\* `1.0.0`
-
-\- \*\*Quality status:\*\* `VALIDATED\_DESCRIPTIVE`
+The assistant generates its deterministic answer and evidence from approved results before requesting an optional Gemini explanation. The deterministic answer remains the primary response.
 
 
 
-The assistant retrieves approved intelligence results and does not generate new statistical analyses, predictions, or causal conclusions.
+\## 3. API Configuration
 
 
 
-\## 3. Test Results
+The Gemini API key is configured through the server-side environment variable:
 
 
+
+`GEMINI\_API\_KEY`
+
+
+
+Store the key in the local `.env.local` file. Never commit API keys, expose them in client-side code, or include them in repository snapshots.
+
+
+
+\## 4. Availability and Fallback
+
+
+
+The response includes an explanation status:
+
+
+
+\- `AVAILABLE`: Gemini generated an explanation.
+
+\- `UNAVAILABLE`: An optional explanation could not be provided.
+
+
+
+If Gemini is unavailable, the assistant retains the deterministic answer and approved evidence.
+
+
+
+\## 5. Evidence and Limitations
+
+
+
+The assistant uses approved Track A results with data version `phase3-v2` and method version `1.0.0`. The analysis is descriptive and uses synthetic data. It does not establish causation or provide predictions. Small stage groups require cautious interpretation.
+
+
+
+\## 6. Validation
+
+
+
+The following checks passed after the Gemini integration changes:
+
+
+
+\- Production build
+
+\- ESLint
+
+\- Grounded assistant service tests: 12/12
+
+\- Data intelligence contract tests: 7/7
+
+\- Live browser check: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
+
+
+
+\## 7. Security
+
+
+
+The API key must remain server-side. Do not log the key, include it in screenshots, or commit `.env.local`. Revoke exposed keys and replace them with new keys.
+</file>
+
+<file path="docs/GROUNDED_ASSISTANT_UAT.md">
+# Grounded Data Assistant — User Acceptance Testing (UAT)
+
+## 1. Purpose
+
+Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory, including deterministic answers, optional Gemini explanations, evidence references, limitations, and safe handling of unsupported requests.
+
+## 2. Implementation Summary
+
+- **Mode:** A — Deterministic Guided Assistant
+- **LLM integration:** Gemini optional explanation enabled
+- **Data version:** `phase3-v2`
+- **Method version:** `1.0.0`
+- **Quality status:** `VALIDATED_DESCRIPTIVE`
+- **Browser automation:** Playwright with Chromium
+
+The assistant retrieves approved intelligence results and does not generate new statistical analyses, predictions, or causal conclusions. Gemini provides an optional explanation; the deterministic answer and approved evidence remain the primary response.
+
+## 3. Test Results
 
 | Test | Result |
-
 |---|---|
+| Grounded summary response | PASS — previously recorded service test |
+| Approved data and method versions | PASS — previously recorded service test |
+| Approved analytical method explanation | PASS — previously recorded service test |
+| Documented limitations | PASS — previously recorded service test |
+| Small-group warnings with evidence | PASS — previously recorded service test |
+| Supported product ranking | PASS — previously recorded service test |
+| Missing question handled safely | PASS — previously recorded service test |
+| Unsupported prediction rejected | PASS — service and browser tests |
+| Prompt-injection attempt rejected | PASS — previously recorded service test |
+| Arbitrary code execution request rejected | PASS — previously recorded service test |
+| Oversized question rejected | PASS — previously recorded service test |
+| Non-string input handled safely | PASS — previously recorded service test |
+| Supported-question browser test | PASS — Playwright/Chromium |
+| Unsupported-prediction browser test | PASS — Playwright/Chromium |
+| TypeScript compilation | PASS — previously recorded |
+| ESLint | PASS — previously recorded |
+| Intelligence contract validation | PASS — previously recorded |
+| Production build | PASS — previously recorded |
+| API supported-question response | PASS — manually verified |
+| Gemini-unavailable browser fallback | NOT YET VERIFIED |
+| Full operational-page regression | NOT YET VERIFIED |
 
-| Grounded summary response | PASS |
+## 4. Browser UAT Evidence
 
-| Approved data and method versions | PASS |
+Browser tests were implemented in:
 
-| Approved analytical method explanation | PASS |
+`tests/browser/assistant-uat.spec.ts`
 
-| Documented limitations | PASS |
+Playwright configuration:
 
-| Small-group warnings with evidence | PASS |
+`playwright.config.ts`
 
-| Supported product ranking | PASS |
+Browser test command:
 
-| Missing question handled safely | PASS |
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
 
-| Unsupported prediction rejected | PASS |
+Recorded execution result:
 
-| Prompt-injection attempt rejected | PASS |
+```text
+Running 2 tests using 1 worker
 
-| Arbitrary code execution request rejected | PASS |
+✓ supported question displays grounded answer and Gemini status
+✓ unsupported prediction request is safely rejected
 
-| Oversized question rejected | PASS |
+2 passed (2.6s)
+```
 
-| Non-string input handled safely | PASS |
+### Test 1: Supported question
 
-| TypeScript compilation | PASS |
+Question:
 
-| ESLint | PASS |
+`Which stage has the highest total lead value?`
 
-| Intelligence contract validation | PASS |
+Verified UI behavior:
 
-| Production build | PASS |
+- Response status: `SUPPORTED`
+- Intent: `compare_groups`
+- Deterministic answer identifies the Won stage.
+- Recorded total lead value: `949000`
+- Gemini explanation status: `AVAILABLE`
+- Evidence reference: `stage_won_total_value`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Quality status: `VALIDATED_DESCRIPTIVE`
+- Limitation disclosure is displayed.
 
-| API summary response | PASS |
+### Test 2: Unsupported prediction
 
+Question:
 
+`Predict next year's revenue using a machine learning model`
 
-\## 4. API Verification
+Verified UI behavior:
 
+- Response status: `OUT_OF_SCOPE`
+- Deterministic-answer section is displayed.
+- The request is rejected rather than treated as an approved prediction.
 
+## 5. API Verification
 
-A POST request to `/api/assistant` using the question `What is the approved summary?` returned:
+A direct POST request to `/api/assistant` with the supported stage-comparison question returned a successful JSON response.
 
+Recorded response fields:
 
+- Status: `SUPPORTED`
+- Intent: `compare_groups`
+- Validation result: `PASS`
+- LLM enabled: `true`
+- Explanation status: `AVAILABLE`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Evidence references: Present
+- Limitation: Present
+- Suggested follow-ups: Present
 
-\- Status: `SUPPORTED`
+The approved result identifies Won as the highest-ranked stage for total lead value, with a recorded value of `949000` across 10 leads.
 
-\- Intent: `get\_summary`
+**Disclosure:** The sample is synthetic, the analysis is descriptive, and small groups require cautious interpretation. The reported value must not be interpreted as a forecast or a causal conclusion.
 
-\- Quality status: `VALIDATED\_DESCRIPTIVE`
+## 6. Analytical and Security Boundaries
 
-\- Validation result: `PASS`
+The assistant must:
 
-\- LLM enabled: `false`
+1. Use approved intelligence results as the source of analytical claims.
+2. Keep the deterministic answer separate from the optional Gemini explanation.
+3. Include available evidence references and limitations.
+4. Reject unsupported predictive or causal requests.
+5. Reject prompt injection and arbitrary-code execution requests.
+6. Avoid sending the complete canonical dataset to Gemini.
+7. Keep the Gemini API key on the server, outside browser code and committed files.
+8. Avoid persistent conversational memory.
+9. Preserve deterministic response behavior when an optional explanation is unavailable.
 
-\- Data version: `phase3-v2`
+## 7. Acceptance Assessment
 
-\- Method version: `1.0.0`
+The recorded service tests, browser UAT tests, TypeScript compilation, ESLint, intelligence contract validation, production build, and direct API verification have passed.
 
-\- Evidence references: Present
+The supported-question and unsupported-prediction browser tests both passed in the recorded Playwright run.
 
-\- Limitations: Present
+**Current assessment:** The tested assistant behaviors passed.
 
-\- Suggested follow-ups: Present
+**Remaining release checks:**
 
+- Verify deterministic fallback when Gemini is unavailable.
+- Run the final regression checks.
+- Regenerate `repomix-output.xml` without secrets.
+- Review the final documentation and Git changes.
+- Commit and push the completed changes.
 
+The overall release should not be marked fully accepted until the remaining checks are completed.
 
-\## 5. Analytical Disclosure
+## 8. Reproducibility
 
+Run the browser tests with:
 
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
 
-The response identifies the dataset as synthetic and describes the available sample as 30 source CRM leads. It states that the analysis is descriptive, does not establish causation, and is not predictive. Small stage groups require cautious interpretation.
+Previously recorded project checks include:
 
+```powershell
+npm.cmd run lint
+npm.cmd run test:intelligence
+npm.cmd run build
+```
 
+These checks should be rerun against the final working tree before release.
 
-\## 6. Acceptance Assessment
+## 9. Final Status
 
+**Browser UAT:** PASS — 2 of 2 tests.
 
-
-The implemented deterministic assistant passed the recorded service tests, TypeScript compilation, lint checks, intelligence contract tests, production build, and manual API summary verification.
-
-
-
-\*\*Current assessment:\*\* Implementation validation passed for the checks listed above.
-
-
-
-\*\*Remaining release checks:\*\* Review the complete supported-question catalog and response contract, confirm UI and operational-page regression evidence, generate a fresh Repomix artifact, and commit and push the final implementation.
-
-
-
-\## 7. Evidence and Reproducibility
-
-
-
-The test results should be reproducible using the repository's assistant service tests, intelligence contract tests, TypeScript compiler, ESLint, production build, and API endpoint.
-
-
-
-This report records the checks actually run during implementation. It does not claim that separate Selenium tests or a full independent UI acceptance session were completed.
+**Full release acceptance:** PENDING — fallback verification, final regression, documentation review, Repomix regeneration, and Git delivery remain.
 </file>
 
 <file path="docs/GROUNDED_RESPONSE_CONTRACT.md">
@@ -17717,6 +17809,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright browser test artifacts
+/test-results/
+/playwright-report/
+/playwright/.cache/
 </file>
 
 <file path="AGENTS.md">
@@ -28860,7 +28957,8 @@ src/data/crmData.ts
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:intelligence": "node tests/data-intelligence/contract-test.mjs"
+    "test:intelligence": "node tests/data-intelligence/contract-test.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@google/genai": "^2.28.0",
@@ -28870,6 +28968,7 @@ src/data/crmData.ts
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
