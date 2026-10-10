@@ -28,29 +28,50 @@ export async function POST(request: Request) {
     const question = (body as { question: unknown }).question;
     const response = answerQuestion(question);
 
-    // Only supported answers with approved evidence are sent for explanation.
+    // Keep the approved deterministic answer even if Gemini is slow.
     if (
       response.status === "SUPPORTED" &&
       response.evidence_references.length > 0 &&
       typeof question === "string"
     ) {
-      const gemini = await explainWithGemini({
-        question,
-        deterministicAnswer: response.answer,
-        evidenceReferences: response.evidence_references,
-        limitation: response.limitation,
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+      const gemini = await Promise.race([
+        explainWithGemini({
+          question,
+          deterministicAnswer: response.answer,
+          evidenceReferences: response.evidence_references,
+          limitation: response.limitation,
+        }),
+        new Promise<{
+          explanation: null;
+          explanation_status: "UNAVAILABLE";
+        }>((resolve) => {
+          timeoutId = setTimeout(
+            () =>
+              resolve({
+                explanation: null,
+                explanation_status: "UNAVAILABLE",
+              }),
+            8000,
+          );
+        }),
+      ]).finally(() => {
+        if (timeoutId) clearTimeout(timeoutId);
       });
 
       response.explanation = gemini.explanation;
-response.metadata.llm_enabled =
-  gemini.explanation_status === "AVAILABLE";
+      response.metadata.llm_enabled =
+        gemini.explanation_status === "AVAILABLE";
       response.explanation_status = gemini.explanation_status;
     }
 
     return NextResponse.json(response, {
       status: response.status === "UNAVAILABLE" ? 503 : 200,
     });
-  } catch {
+  } catch (error) {
+    console.error("[Assistant API]", error);
+
     return NextResponse.json(
       {
         status: "UNAVAILABLE",
