@@ -1,7 +1,7 @@
-
 import { NextResponse } from "next/server";
 import { answerQuestion } from "../../../../assistant/core/assistant-service";
 import { explainWithGemini } from "../../../../assistant/core/gemini-explainer";
+import config from "../../../../assistant/config/assistant.config.json";
 
 export const runtime = "nodejs";
 
@@ -28,8 +28,9 @@ export async function POST(request: Request) {
     const question = (body as { question: unknown }).question;
     const response = answerQuestion(question);
 
-    // Keep the approved deterministic answer even if Gemini is slow.
+    // Mode A is deterministic-only. Call Gemini only when explicitly enabled.
     if (
+      config.llm_enabled === true &&
       response.status === "SUPPORTED" &&
       response.evidence_references.length > 0 &&
       typeof question === "string"
