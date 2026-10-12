@@ -49,10 +49,12 @@ export type AssistantResponse = {
   explanation_status: "AVAILABLE" | "UNAVAILABLE";
   evidence_references: AssistantEvidenceReference[];
   key_values: Record<string, string | number | boolean | null>;
-  metadata: {
+    metadata: {
     assistant_id: string;
     assistant_version: string;
-    mode: "A_DETERMINISTIC_GUIDED";
+    mode:
+      | "A_DETERMINISTIC_GUIDED"
+      | "B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION";
     llm_enabled: boolean;
     data_version: string;
     method_version: string;

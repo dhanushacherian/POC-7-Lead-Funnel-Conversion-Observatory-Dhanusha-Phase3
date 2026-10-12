@@ -52,8 +52,8 @@ function makeResponse(
     metadata: {
       assistant_id: config.assistant_id,
       assistant_version: config.assistant_version,
-      mode: "A_DETERMINISTIC_GUIDED",
-      llm_enabled: false,
+        mode: config.mode as AssistantResponse["metadata"]["mode"],
+  llm_enabled: config.llm_enabled === true,
       data_version: summary.data_version,
       method_version: summary.method_version,
       quality_status: QUALITY_STATUS,

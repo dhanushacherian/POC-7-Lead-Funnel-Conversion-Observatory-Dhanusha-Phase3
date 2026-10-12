@@ -202,3 +202,11 @@ The project has more than five meaningful supported questions and the assistant 
 ## Result
 
 DETERMINISTIC ASSISTANT SUITABLE — LLM NOT REQUIRED
+
+## Post #5 implementation update - 2026-10-12
+
+The original suitability assessment evaluated the deterministic-only Mode A design. Following maintainer direction for Post #5, the current implementation uses Mode B: deterministic retrieval with an optional Gemini explanation. The deterministic answer, approved evidence, and documented limitations remain authoritative.
+
+A live API smoke test returned status SUPPORTED, mode B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION, llm_enabled true, and explanation_status AVAILABLE, with one evidence reference. The deterministic result identified Won with total lead value 949000 across 10 leads; the explanation retained the descriptive-analysis and synthetic-sample cautions.
+
+Validation after the Mode B changes: production build passed and all 36 Playwright browser tests passed. Provider-error testing also showed that the deterministic answer can be retained when the explanation is unavailable. Comprehensive testing of every missing-key, quota, and API-failure condition remains outstanding.

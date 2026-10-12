@@ -1,4 +1,4 @@
-﻿# Supported Question Catalog
+# Supported Question Catalog
 
 ## 1. Purpose
 
@@ -18,7 +18,7 @@ The assistant does not support unrestricted "ask anything about the data" intera
 - Method version: `1.0.0`
 - Quality status: `VALIDATED_DESCRIPTIVE`
 - Validation result: `PASS`
-- Assistant mode: `A_DETERMINISTIC_GUIDED`
+- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
 - LLM enabled: `false`
 
 ## 4. Supported Questions

@@ -6,7 +6,7 @@ The Grounded Data Assistant provides a bounded natural-language interface to app
 
 ## 2. Selected Mode
 
-**Mode A - Deterministic Guided Assistant**
+**Mode B - Deterministic Retrieval + LLM Explanation**
 
 LLM use is not required.
 

@@ -76,7 +76,7 @@ The following checks passed after the Gemini integration changes:
 
 \- Data intelligence contract tests: 7/7
 
-\- Live browser check: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
+\- Live API smoke test: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
 
 
 

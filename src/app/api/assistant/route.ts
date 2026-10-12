@@ -54,7 +54,7 @@ export async function POST(request: Request) {
                 explanation: null,
                 explanation_status: "UNAVAILABLE",
               }),
-            8000,
+          45000,
           );
         }),
       ]).finally(() => {

@@ -220,8 +220,8 @@ This section contains the contents of the repository's files.
 {
   "assistant_id": "poc7-grounded-data-assistant",
   "assistant_version": "1.0.0",
-  "mode": "A_DETERMINISTIC_GUIDED",
-  "llm_enabled": false,
+  "mode": "B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION",
+"llm_enabled": true,
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
@@ -279,7 +279,7 @@ const MAX_QUESTION_LENGTH = 500;
 const MAX_EVIDENCE_REFERENCES = 10;
 const MAX_TEXT_LENGTH = 1200;
 const MAX_EXPLANATION_LENGTH = 2000;
-const RETRY_DELAY_MS = 1500;
+const RETRY_DELAY_MS = 3000;
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -323,8 +323,13 @@ export async function explainWithGemini(
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
-
+const ai = new GoogleGenAI({
+  apiKey,
+  httpOptions: {
+    timeout: 20000,
+    retryOptions: { attempts: 1 },
+  },
+});
     const evidence = input.evidenceReferences
       .slice(0, MAX_EVIDENCE_REFERENCES)
       .map((item) => ({
@@ -340,7 +345,7 @@ export async function explainWithGemini(
       }));
 
     const request = {
-      model: "gemini-3.8-flash",
+     model: "gemini-3.1-flash-lite",
       contents: JSON.stringify({
         question: input.question,
         approved_answer: input.deterministicAnswer,
@@ -7069,7 +7074,7 @@ The Grounded Data Assistant provides a bounded natural-language interface to app
 
 ## 2. Selected Mode
 
-**Mode A - Deterministic Guided Assistant**
+**Mode B - Deterministic Retrieval + LLM Explanation**
 
 LLM use is not required.
 
@@ -7618,6 +7623,14 @@ The project has more than five meaningful supported questions and the assistant 
 ## Result
 
 DETERMINISTIC ASSISTANT SUITABLE — LLM NOT REQUIRED
+
+## Post #5 implementation update - 2026-10-12
+
+The original suitability assessment evaluated the deterministic-only Mode A design. Following maintainer direction for Post #5, the current implementation uses Mode B: deterministic retrieval with an optional Gemini explanation. The deterministic answer, approved evidence, and documented limitations remain authoritative.
+
+A live API smoke test returned status SUPPORTED, mode B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION, llm_enabled true, and explanation_status AVAILABLE, with one evidence reference. The deterministic result identified Won with total lead value 949000 across 10 leads; the explanation retained the descriptive-analysis and synthetic-sample cautions.
+
+Validation after the Mode B changes: production build passed and all 36 Playwright browser tests passed. Provider-error testing also showed that the deterministic answer can be retained when the explanation is unavailable. Comprehensive testing of every missing-key, quota, and API-failure condition remains outstanding.
 </file>
 
 <file path="docs/CANONICAL_DATA_PACKAGE_VALIDATION.md">
@@ -11053,7 +11066,7 @@ The following checks passed after the Gemini integration changes:
 
 \- Data intelligence contract tests: 7/7
 
-\- Live browser check: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
+\- Live API smoke test: Gemini explanation returned `AVAILABLE`, with `LLM enabled: Yes`
 
 
 
@@ -18244,8 +18257,8 @@ function makeResponse(
     metadata: {
       assistant_id: config.assistant_id,
       assistant_version: config.assistant_version,
-      mode: "A_DETERMINISTIC_GUIDED",
-      llm_enabled: false,
+        mode: config.mode as AssistantResponse["metadata"]["mode"],
+  llm_enabled: config.llm_enabled === true,
       data_version: summary.data_version,
       method_version: summary.method_version,
       quality_status: QUALITY_STATUS,
@@ -18587,10 +18600,12 @@ export type AssistantResponse = {
   explanation_status: "AVAILABLE" | "UNAVAILABLE";
   evidence_references: AssistantEvidenceReference[];
   key_values: Record<string, string | number | boolean | null>;
-  metadata: {
+    metadata: {
     assistant_id: string;
     assistant_version: string;
-    mode: "A_DETERMINISTIC_GUIDED";
+    mode:
+      | "A_DETERMINISTIC_GUIDED"
+      | "B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION";
     llm_enabled: boolean;
     data_version: string;
     method_version: string;
@@ -24085,7 +24100,7 @@ The assistant does not support unrestricted "ask anything about the data" intera
 - Method version: `1.0.0`
 - Quality status: `VALIDATED_DESCRIPTIVE`
 - Validation result: `PASS`
-- Assistant mode: `A_DETERMINISTIC_GUIDED`
+- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
 - LLM enabled: `false`
 
 ## 4. Supported Questions
@@ -27741,96 +27756,6 @@ next-env.d.ts
 }
 </file>
 
-<file path="src/app/api/assistant/route.ts">
-import { NextResponse } from "next/server";
-import { answerQuestion } from "../../../../assistant/core/assistant-service";
-import { explainWithGemini } from "../../../../assistant/core/gemini-explainer";
-import config from "../../../../assistant/config/assistant.config.json";
-
-export const runtime = "nodejs";
-
-export async function POST(request: Request) {
-  try {
-    const body: unknown = await request.json();
-
-    if (
-      typeof body !== "object" ||
-      body === null ||
-      !("question" in body)
-    ) {
-      return NextResponse.json(
-        {
-          status: "MISSING_PARAMETER",
-          answer: "Please provide a question.",
-          explanation: null,
-          explanation_status: "UNAVAILABLE",
-        },
-        { status: 400 },
-      );
-    }
-
-    const question = (body as { question: unknown }).question;
-    const response = answerQuestion(question);
-
-    // Mode A is deterministic-only. Call Gemini only when explicitly enabled.
-    if (
-      config.llm_enabled === true &&
-      response.status === "SUPPORTED" &&
-      response.evidence_references.length > 0 &&
-      typeof question === "string"
-    ) {
-      let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-      const gemini = await Promise.race([
-        explainWithGemini({
-          question,
-          deterministicAnswer: response.answer,
-          evidenceReferences: response.evidence_references,
-          limitation: response.limitation,
-        }),
-        new Promise<{
-          explanation: null;
-          explanation_status: "UNAVAILABLE";
-        }>((resolve) => {
-          timeoutId = setTimeout(
-            () =>
-              resolve({
-                explanation: null,
-                explanation_status: "UNAVAILABLE",
-              }),
-            8000,
-          );
-        }),
-      ]).finally(() => {
-        if (timeoutId) clearTimeout(timeoutId);
-      });
-
-      response.explanation = gemini.explanation;
-      response.metadata.llm_enabled =
-        gemini.explanation_status === "AVAILABLE";
-      response.explanation_status = gemini.explanation_status;
-    }
-
-    return NextResponse.json(response, {
-      status: response.status === "UNAVAILABLE" ? 503 : 200,
-    });
-  } catch (error) {
-    console.error("[Assistant API]", error);
-
-    return NextResponse.json(
-      {
-        status: "UNAVAILABLE",
-        answer:
-          "The assistant could not process this request. Please try an approved question again.",
-        explanation: null,
-        explanation_status: "UNAVAILABLE",
-      },
-      { status: 500 },
-    );
-  }
-}
-</file>
-
 <file path="src/app/data-intelligence/page.tsx">
 "use client";
 
@@ -29591,6 +29516,96 @@ The current Phase 2 CRM data source is:
 
 ```text
 src/data/crmData.ts
+</file>
+
+<file path="src/app/api/assistant/route.ts">
+import { NextResponse } from "next/server";
+import { answerQuestion } from "../../../../assistant/core/assistant-service";
+import { explainWithGemini } from "../../../../assistant/core/gemini-explainer";
+import config from "../../../../assistant/config/assistant.config.json";
+
+export const runtime = "nodejs";
+
+export async function POST(request: Request) {
+  try {
+    const body: unknown = await request.json();
+
+    if (
+      typeof body !== "object" ||
+      body === null ||
+      !("question" in body)
+    ) {
+      return NextResponse.json(
+        {
+          status: "MISSING_PARAMETER",
+          answer: "Please provide a question.",
+          explanation: null,
+          explanation_status: "UNAVAILABLE",
+        },
+        { status: 400 },
+      );
+    }
+
+    const question = (body as { question: unknown }).question;
+    const response = answerQuestion(question);
+
+    // Mode A is deterministic-only. Call Gemini only when explicitly enabled.
+    if (
+      config.llm_enabled === true &&
+      response.status === "SUPPORTED" &&
+      response.evidence_references.length > 0 &&
+      typeof question === "string"
+    ) {
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+      const gemini = await Promise.race([
+        explainWithGemini({
+          question,
+          deterministicAnswer: response.answer,
+          evidenceReferences: response.evidence_references,
+          limitation: response.limitation,
+        }),
+        new Promise<{
+          explanation: null;
+          explanation_status: "UNAVAILABLE";
+        }>((resolve) => {
+          timeoutId = setTimeout(
+            () =>
+              resolve({
+                explanation: null,
+                explanation_status: "UNAVAILABLE",
+              }),
+          45000,
+          );
+        }),
+      ]).finally(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+      });
+
+      response.explanation = gemini.explanation;
+      response.metadata.llm_enabled =
+        gemini.explanation_status === "AVAILABLE";
+      response.explanation_status = gemini.explanation_status;
+    }
+
+    return NextResponse.json(response, {
+      status: response.status === "UNAVAILABLE" ? 503 : 200,
+    });
+  } catch (error) {
+    console.error("[Assistant API]", error);
+
+    return NextResponse.json(
+      {
+        status: "UNAVAILABLE",
+        answer:
+          "The assistant could not process this request. Please try an approved question again.",
+        explanation: null,
+        explanation_status: "UNAVAILABLE",
+      },
+      { status: 500 },
+    );
+  }
+}
 </file>
 
 <file path="package.json">

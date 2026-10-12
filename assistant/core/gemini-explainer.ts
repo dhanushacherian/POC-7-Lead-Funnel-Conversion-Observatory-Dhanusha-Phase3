@@ -27,7 +27,7 @@ const MAX_QUESTION_LENGTH = 500;
 const MAX_EVIDENCE_REFERENCES = 10;
 const MAX_TEXT_LENGTH = 1200;
 const MAX_EXPLANATION_LENGTH = 2000;
-const RETRY_DELAY_MS = 1500;
+const RETRY_DELAY_MS = 3000;
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,8 +71,13 @@ export async function explainWithGemini(
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
-
+const ai = new GoogleGenAI({
+  apiKey,
+  httpOptions: {
+    timeout: 20000,
+    retryOptions: { attempts: 1 },
+  },
+});
     const evidence = input.evidenceReferences
       .slice(0, MAX_EVIDENCE_REFERENCES)
       .map((item) => ({
@@ -88,7 +93,7 @@ export async function explainWithGemini(
       }));
 
     const request = {
-      model: "gemini-3.8-flash",
+     model: "gemini-3.1-flash-lite",
       contents: JSON.stringify({
         question: input.question,
         approved_answer: input.deterministicAnswer,

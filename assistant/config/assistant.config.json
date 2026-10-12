@@ -2,8 +2,8 @@
 {
   "assistant_id": "poc7-grounded-data-assistant",
   "assistant_version": "1.0.0",
-  "mode": "A_DETERMINISTIC_GUIDED",
-  "llm_enabled": false,
+  "mode": "B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION",
+"llm_enabled": true,
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
