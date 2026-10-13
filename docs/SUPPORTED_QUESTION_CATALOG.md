@@ -1,3 +1,4 @@
+﻿
 # Supported Question Catalog
 
 ## 1. Purpose
@@ -7,6 +8,8 @@ This catalog defines the bounded natural-language questions supported by the Gro
 Every supported question must map to an approved deterministic intent, query function, and evidence source.
 
 The assistant does not support unrestricted "ask anything about the data" interaction.
+
+The assistant uses deterministic retrieval for its authoritative answers. Gemini provides a supplementary explanation when available and only when the explanation passes grounding validation.
 
 ## 2. Approved Analytical Track
 
@@ -19,7 +22,9 @@ The assistant does not support unrestricted "ask anything about the data" intera
 - Quality status: `VALIDATED_DESCRIPTIVE`
 - Validation result: `PASS`
 - Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
-- LLM enabled: `false`
+- LLM enabled: `true`
+
+LLM availability is not guaranteed for every request. The deterministic answer and its approved evidence remain authoritative when Gemini is unavailable or an explanation fails grounding validation.
 
 ## 4. Supported Questions
 
@@ -67,6 +72,8 @@ The current comparison query function retrieves results with the approved compar
 Explains an existing approved result using its stored finding and evidence.
 
 The requested result ID must match an approved result.
+
+When a Gemini explanation is available, it is supplementary to the deterministic result and must be grounded in its approved evidence.
 
 ### `explain_method`
 
@@ -153,6 +160,8 @@ The assistant does not support:
 - Questions requiring unavailable ownership, personnel, or restricted fields.
 - Open-ended questions without an approved deterministic retrieval path.
 
+Enabling Gemini explanations does not expand the approved analytical scope or make unsupported questions supported.
+
 ## 8. Grounding Rule
 
 Every factual answer must be traceable to an approved deterministic evidence package.
@@ -173,9 +182,17 @@ Where applicable, the evidence package includes:
 - Quality status.
 - Approved limitation.
 
+Gemini explanations must be validated against the approved deterministic answer and evidence before being returned.
+
+The explanation must not introduce unsupported numerical claims, rankings, winning-group claims, findings, or other factual statements.
+
 If deterministic evidence is unavailable, the assistant must not invent or infer an unsupported factual answer.
 
+If Gemini is unavailable or its explanation fails grounding validation, the assistant must preserve the supported deterministic answer, evidence references, and limitation. Only the supplementary explanation is marked unavailable.
+
 ## 9. Response Behaviour
+
+The main response status describes the deterministic question resolution:
 
 - `SUPPORTED`: Execute the approved deterministic query.
 - `MISSING_PARAMETER`: Request the required supported parameter.
@@ -186,6 +203,17 @@ If deterministic evidence is unavailable, the assistant must not invent or infer
 
 The returned status must reflect the actual resolution and evidence available.
 
+### Gemini explanation behaviour
+
+- **Explanation available:** Return the supplementary explanation only after it passes grounding validation against the approved deterministic answer and evidence.
+- **Missing API key:** Mark the explanation unavailable. Preserve any supported deterministic answer and its approved evidence.
+- **Quota exhaustion or provider error:** Mark the explanation unavailable when a valid explanation cannot be obtained. Do not replace the deterministic answer with invented content.
+- **Grounding validation failure:** Reject the unsupported explanation and mark it unavailable.
+- **Deterministic answer preservation:** Failure to produce a Gemini explanation must not change the deterministic answer, evidence references, or limitation.
+- **Explanation status:** Use `explanation_status` to report whether the supplementary explanation is available. An unavailable explanation does not by itself mean the deterministic answer is unavailable.
+
+When the explanation cannot be returned, the explanation value must be `null` and the explanation status must be `UNAVAILABLE`, consistent with the implemented response contract.
+
 ## 10. Maximum Scope
 
 The assistant configuration specifies the following bounds:
@@ -194,9 +222,12 @@ The assistant configuration specifies the following bounds:
 - Maximum result items: 25.
 - Maximum evidence references: 10.
 - Maximum suggested follow-ups: 3.
-- LLM enabled: `false`.
+- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`.
+- LLM enabled: `true`.
 
 Response validation must enforce the applicable configured limits.
+
+The enabled LLM setting does not guarantee that the external provider is available for every request. Deterministic retrieval and approved evidence remain the authority for factual answers.
 
 ## 11. Track Boundary
 
@@ -210,4 +241,8 @@ No unsupported Track B, C, D, E, F, G, or H intents are enabled.
 
 This document defines the intended supported-question boundary for the PoC-7 Grounded Data Assistant.
 
-The implemented resolver, query functions, configuration, and response validation must remain consistent with this catalog. A documented question must not be described as implemented or supported unless the actual deterministic path can answer it with approved evidence.
+The implemented resolver, query functions, configuration, explanation grounding validation, fallback behaviour, and response validation must remain consistent with this catalog.
+
+A documented question must not be described as implemented or supported unless the actual deterministic path can answer it with approved evidence.
+
+Gemini explanation availability must not be represented as a guarantee of answer availability. If the explanation fails, the supported deterministic answer and its approved evidence must remain intact.
