@@ -25,7 +25,7 @@ function run(): void {
     assert.ok(response.evidence_references.length > 0);
     assert.equal(response.metadata.data_version, "phase3-v2");
     assert.equal(response.metadata.method_version, "1.0.0");
-    assert.equal(response.metadata.llm_enabled, false);
+    assert.equal(response.metadata.llm_enabled, true);
   });
 
   // 2. Data freshness and version

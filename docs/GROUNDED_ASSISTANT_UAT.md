@@ -176,3 +176,28 @@ These checks should be rerun against the final working tree before release.
 **Browser UAT:** PASS — 2 of 2 tests.
 
 **Full release acceptance:** PENDING — fallback verification, final regression, documentation review, Repomix regeneration, and Git delivery remain.
+## Mode B Live Integration Retest — 12 October 2026
+
+**Selected mode:** `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
+
+**Live Gemini API smoke test:** PASS
+
+A real supported-question API request returned `status: SUPPORTED`, `metadata.llm_enabled: true`, and `explanation_status: AVAILABLE`.
+
+**Question:** Which stage has the highest total lead value?
+
+**Deterministic answer:** The approved results identify Won as the highest-ranked group for total lead value in the stage comparison. The recorded value is 949000 currency_unspecified.
+
+**Evidence:** One approved evidence reference was returned.
+
+**Gemini explanation:** The generated explanation identified the Won stage, reported the value of 949000 across 10 leads, and retained the caution about descriptive comparisons and the synthetic sample.
+
+**Full Playwright browser suite:** PASS — 36/36 tests.
+
+**Production build:** PASS — data validation, data publishing, TypeScript checks, compilation, and page generation succeeded.
+
+**Provider-failure fallback observation:** Actual Gemini 503 and 504 errors were observed during testing. The API retained the deterministic answer and returned `explanation_status: UNAVAILABLE` rather than inventing an explanation.
+
+**Remaining validation:** Dedicated missing-API-key and explicit quota-error scenarios have not been independently verified. Numeric fidelity has been checked against the approved results for the example above; comprehensive LLM numeric-fidelity coverage remains outstanding.
+
+**Review status:** Pending maintainer review and closure of outstanding validation and UI-evidence requirements.
