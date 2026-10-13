@@ -1,10 +1,10 @@
-This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
 
 <file_summary>
 This section contains a summary of this file.
 
 <purpose>
-This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
 </purpose>
@@ -32,7 +32,6 @@ The content is organized as follows:
 <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Files matching these patterns are excluded: .env.local, .env, .env.*, !.env.example, node_modules/**, .next/**, out/**, build/**, coverage/**, .git/**
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
@@ -201,6 +200,7 @@ tests/
   data-intelligence/
     contract-test.mjs
     loader-test.ts
+  assistant-api-fallback-test.ts
   assistant-service-test.ts
   gemini-explainer-grounding-test.ts
   gemini-fallback-test.ts
@@ -17374,6 +17374,86 @@ try {
 }
 </file>
 
+<file path="tests/assistant-api-fallback-test.ts">
+import assert from "node:assert/strict";
+import {
+  createPostHandler,
+  POST,
+} from "../src/app/api/assistant/route";
+import { answerQuestion } from "../assistant/core/assistant-service";
+import { explainWithGemini } from "../assistant/core/gemini-explainer";
+
+async function main() {
+  const question = "Which product has the highest lead value?";
+  const expected = answerQuestion(question);
+
+  // First, check the normal API route.
+  const normalRequest = new Request(
+    "http://localhost/api/assistant",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    },
+  );
+
+  const normalResponse = await POST(normalRequest);
+  const normalResult = await normalResponse.json();
+
+  assert.equal(normalResponse.status, 200);
+  assert.equal(normalResult.status, "SUPPORTED");
+  assert.equal(normalResult.answer, expected.answer);
+  assert.deepEqual(
+    normalResult.evidence_references,
+    expected.evidence_references,
+  );
+
+  // Now simulate Gemini failing inside the actual API route.
+  const fallbackHandler = createPostHandler({
+    answerQuestion,
+    explainWithGemini: (input) =>
+      explainWithGemini(input, {
+        generateContent: async () => {
+          throw new Error("Mock Gemini provider error: HTTP 429");
+        },
+      }),
+  });
+
+  const fallbackRequest = new Request(
+    "http://localhost/api/assistant",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    },
+  );
+
+  const fallbackResponse = await fallbackHandler(fallbackRequest);
+  const fallbackResult = await fallbackResponse.json();
+
+  assert.equal(fallbackResponse.status, 200);
+  assert.equal(fallbackResult.status, "SUPPORTED");
+  assert.equal(fallbackResult.answer, expected.answer);
+  assert.deepEqual(
+    fallbackResult.evidence_references,
+    expected.evidence_references,
+  );
+  assert.equal(fallbackResult.explanation, null);
+  assert.equal(fallbackResult.explanation_status, "UNAVAILABLE");
+  assert.equal(fallbackResult.limitation, expected.limitation);
+
+  console.log("PASS: Normal API route preserves the approved answer.");
+  console.log("PASS: Simulated Gemini failure preserves the answer.");
+  console.log("PASS: Evidence and limitations remain available.");
+  console.log("ALL API FALLBACK TESTS PASSED.");
+}
+
+main().catch((error) => {
+  console.error("API fallback test failed:", error);
+  process.exitCode = 1;
+});
+</file>
+
 <file path="tests/gemini-explainer-grounding-test.ts">
 import assert from "node:assert/strict";
 import { answerQuestion } from "../assistant/core/assistant-service";
@@ -22543,402 +22623,6 @@ data-science/
 └── models/
 </file>
 
-<file path="docs/ASSISTANT_ARCHITECTURE.md">
-#
-
-# \# Grounded Data Assistant Architecture
-
-#
-
-# \## 1. Purpose
-
-#
-
-# The Grounded Data Assistant provides a bounded natural-language interface to approved Track A Comparative Intelligence outputs. It complements the existing Operational View and Data Intelligence page and does not replace filters, tables, findings, evidence, methodology, or limitations.
-
-#
-
-# \## 2. Selected Mode
-
-#
-
-# \*\*Mode B - Deterministic Retrieval + LLM Explanation\*\*
-
-#
-
-# The assistant uses approved deterministic queries to produce the authoritative answer and evidence. Gemini may generate an additional natural-language explanation, which must be validated against the approved deterministic answer and evidence before it is returned.
-
-#
-
-# The LLM does not replace deterministic calculations or independently establish analytical findings.
-
-#
-
-# If Gemini is unavailable, its API key is missing, a provider error occurs, or its explanation contains unsupported claims, the explanation is marked unavailable. The approved deterministic answer, evidence references, and limitations must remain available and unchanged.
-
-#
-
-# Flow:
-
-# 1\. Classify the question.
-
-# 2\. Validate supported parameters.
-
-# 3\. Resolve an approved intent.
-
-# 4\. Execute only an approved deterministic query.
-
-# 5\. Build the deterministic answer and evidence package.
-
-# 6\. Validate the deterministic response and its approved metadata.
-
-# 7\. Request an optional Gemini explanation.
-
-# 8\. Validate the explanation against the approved answer and evidence.
-
-# 9\. Return the deterministic response with the validated explanation when available, together with versions, quality information, and limitations.
-
-#
-
-# \## 3. Approved Analytical Scope
-
-#
-
-# \- Track: Track A - Comparative Intelligence
-
-# \- Data version: phase3-v2
-
-# \- Method version: 1.0.0
-
-# \- Quality: VALIDATED\_DESCRIPTIVE
-
-# \- Dimensions: Stage, Product, Acquisition Source
-
-#
-
-# \## 4. Architecture Flow
-
-#
-
-# User Question
-
-# \-> Scope Guard
-
-# \-> Intent Resolver
-
-# \-> Parameter Validator
-
-# \-> Approved Query Function
-
-# \-> Approved Intelligence Data
-
-# \-> Deterministic Answer and Evidence Builder
-
-# \-> Deterministic Response Validation
-
-# \-> Gemini Explanation
-
-# \-> Explanation Grounding Validation
-
-# \-> Final Response
-
-#
-
-# Gemini explanation generation is a supplementary step. Failure or rejection of the explanation must not invalidate or replace a supported deterministic answer.
-
-#
-
-# Scope outcomes are SUPPORTED, MISSING\_PARAMETER, AMBIGUOUS, OUT\_OF\_SCOPE, UNSAFE, and UNAVAILABLE.
-
-#
-
-# \## 5. Core Components
-
-#
-
-# \### Scope Guard
-
-#
-
-# Classifies the question before retrieval. Unsafe requests cause a safe refusal with no retrieval.
-
-#
-
-# \### Intent Resolver
-
-#
-
-# Supported intents:
-
-#
-
-# \- get\_summary
-
-# \- compare\_groups
-
-# \- explain\_result
-
-# \- explain\_method
-
-# \- explain\_limitation
-
-# \- get\_data\_freshness
-
-# \- get\_small\_group\_warnings
-
-#
-
-# \### Parameter Validator
-
-#
-
-# Allowed dimensions are stage, product, and source. Unknown groups and result IDs are rejected.
-
-#
-
-# \### Deterministic Query Layer
-
-#
-
-# Only approved query functions may retrieve information. The assistant must not generate arbitrary SQL, execute arbitrary code, calculate new rankings from raw data, create new statistical analyses, or modify approved findings.
-
-#
-
-# \### Evidence Builder
-
-#
-
-# Every factual response must be traceable to an evidence package containing applicable intent, validated parameters, result IDs, group or record references, metric, value, unit, finding, evidence fields, data version, method version, generated timestamp, quality status, and limitation, where applicable.
-
-#
-
-# \### Deterministic Response Validator
-
-#
-
-# Validates the deterministic response against the approved evidence and response contract. The deterministic answer and evidence remain the authoritative source for factual claims.
-
-#
-
-# \### Gemini Explanation and Grounding Validator
-
-#
-
-# Gemini provides an additional explanation of the already-established deterministic result. The explanation must be checked against the approved answer and evidence.
-
-#
-
-# Unsupported numerical claims, unsupported winning-group claims, and other ungrounded statements must not be returned as approved explanations.
-
-#
-
-# When the explanation fails validation or Gemini is unavailable, the explanation is marked UNAVAILABLE. The deterministic answer, evidence references, and limitation must remain unchanged.
-
-#
-
-# Provider failures such as quota exhaustion, service unavailability, and gateway errors must not cause the assistant to invent an answer or discard approved deterministic results. A missing Gemini API key must also leave the deterministic response available.
-
-#
-
-# \## 6. Approved Data Sources
-
-#
-
-# Primary sources:
-
-#
-
-# \- src/data/intelligence/intelligence\_results.json
-
-# \- src/data/intelligence/intelligence\_summary.json
-
-#
-
-# Supporting sources:
-
-#
-
-# \- approved method documentation
-
-# \- validation documentation
-
-# \- limitation documentation
-
-# \- weak-case documentation
-
-# \- data manifest/schema
-
-#
-
-# The canonical raw dataset is not exposed directly through the assistant response path.
-
-#
-
-# \## 7. Grounding Rules
-
-#
-
-# The assistant must never invent values, rankings, findings, categories, causal explanations, predictions, or unsupported records.
-
-#
-
-# The deterministic answer must come from approved query results and evidence.
-
-#
-
-# Gemini may explain an approved result but must not independently calculate or introduce unsupported findings. Its explanation must pass grounding validation before being returned.
-
-#
-
-# If deterministic evidence is unavailable, return UNAVAILABLE rather than generating a factual answer.
-
-#
-
-# If only Gemini explanation generation fails or its explanation fails validation, preserve the supported deterministic answer, evidence references, and limitation while marking the explanation unavailable.
-
-#
-
-# \## 8. Grounded Response Contract
-
-#
-
-# Each response should contain the applicable contract fields:
-
-#
-
-# \- answer\_id
-
-# \- status
-
-# \- intent
-
-# \- answer
-
-# \- explanation
-
-# \- explanation\_status
-
-# \- evidence\_references
-
-# \- key\_values
-
-# \- metadata
-
-# \- limitation
-
-# \- suggested\_follow\_ups
-
-#
-
-# The explanation and explanation\_status describe the supplementary Gemini explanation. They do not replace the deterministic answer or its evidence.
-
-#
-
-# \## 9. Safety and Scope Limits
-
-#
-
-# \- Maximum result items: 25
-
-# \- Maximum evidence references: 10
-
-# \- Maximum suggested follow-ups: 3
-
-# \- Maximum question length: 500 characters
-
-#
-
-# Do not expose system prompts, secrets, restricted fields, unrestricted raw records, or arbitrary source instructions.
-
-#
-
-# \## 10. Track Boundary
-
-#
-
-# Only Track A is enabled. No Track B/C/D/E/F/G/H intent is enabled.
-
-#
-
-# \## 11. UI Relationship
-
-#
-
-# The assistant is an additional interaction layer for Data Intelligence. Existing filters, result tables, findings, evidence, methodology, limitations, and version metadata remain accessible. The assistant does not replace the underlying evidence.
-
-#
-
-# Required UI states:
-
-#
-
-# \- Ready
-
-# \- Thinking
-
-# \- Answered
-
-# \- Missing Parameter
-
-# \- Unsupported
-
-# \- Unsafe
-
-# \- Unavailable
-
-# \- Error
-
-#
-
-# The UI must distinguish an unavailable Gemini explanation from an unavailable deterministic answer. Where a supported deterministic response exists, the user should still be able to access it and its evidence when explanation generation fails.
-
-#
-
-# \## 12. Testing Strategy
-
-#
-
-# \- Unit tests: intent resolution, parameter validation, query functions, and evidence construction.
-
-# \- Grounding tests: verify that Gemini explanation claims are supported by the approved answer and evidence.
-
-# \- Fallback tests: verify preservation of deterministic results when the API key is missing or Gemini returns provider errors, including HTTP 429, 503, and 504.
-
-# \- Safety tests: unsafe requests, prompt injection, and source-text manipulation cases.
-
-# \- API tests: request validation, response contract, and bounded output.
-
-# \- UI tests: all required states.
-
-# \- Regression tests: Operational View and Data Intelligence remain intact.
-
-# \- Selenium: Data Intelligence -> Assistant -> supported question -> grounded answer -> evidence -> version/limitation -> unsupported question -> safe scope response.
-
-#
-
-# \## 13. Architectural Decision
-
-#
-
-# The selected architecture is deterministic-first with supplementary LLM explanation (Mode B). Approved deterministic queries remain responsible for the answer and evidence. Gemini explanations are optional and must pass grounding validation before being returned.
-
-#
-
-# The design preserves auditability, approved analytical results, evidence traceability, safety controls, and limitations. An explanation failure must not change the underlying deterministic finding.
-
-#
-
-# \## 14. Status
-
-#
-
-# Mode B is the selected architecture. Implementation, grounding validation, fallback testing, regression results, and UAT evidence must be recorded accurately in the corresponding project documentation.
-
-#
-
-# Final test results and refreshed Repomix output should be recorded or generated after all documentation corrections are complete.
-</file>
-
 <file path="docs/ASSISTANT_SUITABILITY_ASSESSMENT.md">
 # Assistant Suitability Assessment
 
@@ -27772,510 +27456,400 @@ export async function explainWithGemini(
 }
 </file>
 
-<file path="docs/GROUNDED_ASSISTANT_UAT.md">
-# Grounded Data Assistant â€” User Acceptance Testing (UAT)
+<file path="docs/ASSISTANT_ARCHITECTURE.md">
+#
 
-## 1. Purpose
+# \# Grounded Data Assistant Architecture
 
-Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory, including deterministic answers, optional Gemini explanations, evidence references, limitations, and safe handling of unsupported requests.
+#
 
-## 2. Implementation Summary
+# \## 1. Purpose
 
-- **Mode:** B â€” Deterministic Retrieval + LLM Explanation
-- **Assistant configuration:** `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
-- **LLM integration:** Gemini supplementary explanation enabled
-- **Data version:** `phase3-v2`
-- **Method version:** `1.0.0`
-- **Quality status:** `VALIDATED_DESCRIPTIVE`
-- **Browser automation:** Playwright with Chromium
+#
 
-The assistant retrieves approved intelligence results through deterministic query functions. It does not generate new statistical analyses, predictions, or causal conclusions.
+# The Grounded Data Assistant provides a bounded natural-language interface to approved Track A Comparative Intelligence outputs. It complements the existing Operational View and Data Intelligence page and does not replace filters, tables, findings, evidence, methodology, or limitations.
 
-Gemini provides an optional natural-language explanation of an already-established deterministic answer. The explanation must pass grounding validation against the approved answer and evidence. The deterministic answer, evidence references, and limitations remain authoritative.
+#
 
-If Gemini is unavailable, the API key is missing, a provider error occurs, or an explanation fails grounding validation, the explanation is marked unavailable. A supported deterministic answer and its approved evidence must remain unchanged.
+# \## 2. Selected Mode
 
-## 3. Test Results
+#
 
-| Test | Result |
-|---|---|
-| Grounded summary response | PASS â€” previously recorded service test |
-| Approved data and method versions | PASS â€” previously recorded service test |
-| Approved analytical method explanation | PASS â€” previously recorded service test |
-| Documented limitations | PASS â€” previously recorded service test |
-| Small-group warnings with evidence | PASS â€” previously recorded service test |
-| Supported product ranking | PASS â€” previously recorded service test |
-| Missing question handled safely | PASS â€” previously recorded service test |
-| Unsupported prediction rejected | PASS â€” service and browser tests |
-| Prompt-injection attempt rejected | PASS â€” previously recorded service test |
-| Arbitrary code execution request rejected | PASS â€” previously recorded service test |
-| Oversized question rejected | PASS â€” previously recorded service test |
-| Non-string input handled safely | PASS â€” previously recorded service test |
-| Supported-question browser test | PASS â€” previously recorded Playwright/Chromium test |
-| Unsupported-prediction browser test | PASS â€” previously recorded Playwright/Chromium test |
-| TypeScript compilation | PASS â€” previously recorded |
-| ESLint | PASS â€” rerun on 13 October 2026 |
-| Intelligence contract validation | PASS â€” previously recorded |
-| Production build | PASS â€” verified on 13 October 2026 |
-| API supported-question response | PASS â€” previously manually verified |
-| Missing Gemini API key fallback test | PASS â€” dedicated fallback test |
-| HTTP 429 quota-error fallback test | PASS â€” dedicated fallback test |
-| HTTP 503 provider-error fallback test | PASS â€” dedicated fallback test; one retry verified |
-| HTTP 504 gateway-error fallback test | PASS â€” dedicated fallback test |
-| Preservation of deterministic answer, evidence, and limitation in fallback tests | PASS â€” dedicated fallback test |
-| Gemini-unavailable browser fallback | NOT YET VERIFIED |
-| Full operational-page regression after final documentation edits | NOT YET VERIFIED |
+# \*\*Mode B - Deterministic Retrieval + LLM Explanation\*\*
 
-The dedicated fallback tests exercise `explainWithGemini` with mocked provider failures and verify that the deterministic response remains unchanged. They do not independently exercise the full API route for every failure scenario.
+#
 
-## 4. Browser UAT Evidence
+# The assistant uses approved deterministic queries to produce the authoritative answer and evidence. Gemini may generate an additional natural-language explanation, which must be validated against the approved deterministic answer and evidence before it is returned.
 
-Browser tests are implemented in:
+#
 
-`tests/browser/assistant-uat.spec.ts`
+# The LLM does not replace deterministic calculations or independently establish analytical findings.
 
-Playwright configuration:
+#
 
-`playwright.config.ts`
+# If Gemini is unavailable, its API key is missing, a provider error occurs, or its explanation contains unsupported claims, the explanation is marked unavailable. The approved deterministic answer, evidence references, and limitations must remain available and unchanged.
 
-Browser test command:
+#
 
-```powershell
-npm.cmd run test:browser -- --timeout=90000 --workers=1
-```
+# Flow:
 
-Previously recorded execution result:
+# 1\. Classify the question.
 
-```text
-Running 2 tests using 1 worker
+# 2\. Validate supported parameters.
 
-âœ“ supported question displays grounded answer and Gemini status
-âœ“ unsupported prediction request is safely rejected
+# 3\. Resolve an approved intent.
 
-2 passed (2.6s)
-```
+# 4\. Execute only an approved deterministic query.
 
-### Test 1: Supported question
+# 5\. Build the deterministic answer and evidence package.
 
-Question:
+# 6\. Validate the deterministic response and its approved metadata.
 
-`Which stage has the highest total lead value?`
+# 7\. Request an optional Gemini explanation.
 
-Previously verified UI behavior:
+# 8\. Validate the explanation against the approved answer and evidence.
 
-- Response status: `SUPPORTED`
-- Intent: `compare_groups`
-- Deterministic answer identifies the Won stage.
-- Recorded total lead value: `949000`
-- Gemini explanation status: `AVAILABLE`
-- Evidence reference: `stage_won_total_value`
-- Data version: `phase3-v2`
-- Method version: `1.0.0`
-- Quality status: `VALIDATED_DESCRIPTIVE`
-- Limitation disclosure is displayed.
+# 9\. Return the deterministic response with the validated explanation when available, together with versions, quality information, and limitations.
 
-### Test 2: Unsupported prediction
+#
 
-Question:
+# \## 3. Approved Analytical Scope
 
-`Predict next year's revenue using a machine learning model`
+#
 
-Previously verified UI behavior:
+# \- Track: Track A - Comparative Intelligence
 
-- Response status: `OUT_OF_SCOPE`
-- The request is rejected rather than treated as an approved prediction.
+# \- Data version: phase3-v2
 
-## 5. API Verification
+# \- Method version: 1.0.0
 
-A previously recorded direct POST request to `/api/assistant` with the supported stage-comparison question returned a successful JSON response.
+# \- Quality: VALIDATED\_DESCRIPTIVE
 
-Recorded response fields:
+# \- Dimensions: Stage, Product, Acquisition Source
 
-- Status: `SUPPORTED`
-- Intent: `compare_groups`
-- Validation result: `PASS`
-- LLM enabled: `true`
-- Explanation status: `AVAILABLE`
-- Data version: `phase3-v2`
-- Method version: `1.0.0`
-- Evidence references: Present
-- Limitation: Present
-- Suggested follow-ups: Present
+#
 
-The approved result identifies Won as the highest-ranked stage for total lead value, with a recorded value of `949000` across 10 leads.
+# \## 4. Architecture Flow
 
-**Disclosure:** The sample is synthetic, the analysis is descriptive, and small groups require cautious interpretation. The reported value must not be interpreted as a forecast or a causal conclusion.
+#
 
-## 6. Analytical and Security Boundaries
+# User Question
 
-The assistant must:
+# \-> Scope Guard
 
-1. Use approved intelligence results as the source of analytical claims.
-2. Keep the deterministic answer separate from the optional Gemini explanation.
-3. Include available evidence references and limitations.
-4. Reject unsupported predictive or causal requests.
-5. Reject prompt injection and arbitrary-code execution requests.
-6. Avoid sending the complete canonical dataset to Gemini.
-7. Keep the Gemini API key on the server, outside browser code and committed files.
-8. Avoid persistent conversational memory.
-9. Preserve deterministic response behavior when an optional explanation is unavailable.
-10. Validate Gemini explanations against the approved deterministic answer and evidence before returning them.
-11. Reject unsupported numerical claims and unsupported winning-group claims.
-12. Mark a rejected or unavailable explanation as `null` with explanation status `UNAVAILABLE`, while preserving the supported deterministic answer and its approved evidence and limitation.
+# \-> Intent Resolver
 
-## 7. Acceptance Assessment
+# \-> Parameter Validator
 
-The following checks have passed at their recorded checkpoints:
+# \-> Approved Query Function
 
-- Previously recorded service tests
-- Previously recorded browser UAT tests
-- TypeScript compilation
-- ESLint, rerun on 13 October 2026
-- Intelligence contract validation
-- Production build, verified on 13 October 2026
-- Previously recorded direct API verification
-- Dedicated Gemini fallback tests
+# \-> Approved Intelligence Data
 
-The dedicated Gemini fallback tests passed for:
+# \-> Deterministic Answer and Evidence Builder
 
-- Missing `GEMINI_API_KEY`
-- HTTP 429 quota exhaustion
-- HTTP 503 provider failure, including exactly one retry
-- HTTP 504 gateway error
+# \-> Deterministic Response Validation
 
-These tests verify preservation of the deterministic answer, evidence references, and limitation when the explanation is unavailable.
+# \-> Gemini Explanation
 
-**Current assessment:** The recorded tests and dedicated Gemini fallback tests passed. This does not establish that every browser fallback scenario or the entire final release has been accepted.
+# \-> Explanation Grounding Validation
 
-**Remaining release checks:**
+# \-> Final Response
 
-- Verify Gemini-unavailable fallback through the browser or full API integration path.
-- Run the final regression checks against the final working tree.
-- Regenerate `repomix-output.xml` after all documentation corrections, without including secrets.
-- Review the final documentation and Git changes.
-- Commit and push the completed documentation and refreshed project output.
+#
 
-The overall release should not be marked fully accepted until the remaining checks are completed.
+# Gemini explanation generation is a supplementary step. Failure or rejection of the explanation must not invalidate or replace a supported deterministic answer.
 
-## 8. Reproducibility
+#
 
-Run the dedicated fallback tests with:
+# Scope outcomes are SUPPORTED, MISSING\_PARAMETER, AMBIGUOUS, OUT\_OF\_SCOPE, UNSAFE, and UNAVAILABLE.
 
-```powershell
-npx.cmd tsx .\tests\gemini-fallback-test.ts
-```
+#
 
-Run the browser tests with:
+# \## 5. Core Components
 
-```powershell
-npm.cmd run test:browser -- --timeout=90000 --workers=1
-```
+#
 
-Run the project checks with:
+# \### Scope Guard
 
-```powershell
-npm.cmd run lint
-npm.cmd run test:intelligence
-npm.cmd run build
-```
+#
 
-These checks should be rerun against the final working tree before release.
+# Classifies the question before retrieval. Unsafe requests cause a safe refusal with no retrieval.
 
-## 9. Final Status
+#
 
-**Selected architecture:** Mode B â€” Deterministic Retrieval + LLM Explanation.
+# \### Intent Resolver
 
-**ESLint:** PASS â€” rerun on 13 October 2026.
+#
 
-**Dedicated Gemini fallback tests:** PASS â€” missing API key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
+# Supported intents:
 
-**Production build:** PASS â€” data validation, data publishing, TypeScript checks, compilation, and page generation succeeded on 13 October 2026.
+#
 
-**Previously recorded browser UAT:** PASS â€” 2 of 2 tests.
+# \- get\_summary
 
-**Previously recorded full Playwright suite:** PASS â€” 36/36 tests.
+# \- compare\_groups
 
-**Full release acceptance:** PENDING â€” final documentation review, browser/API fallback integration verification, final regression, Repomix regeneration, and Git delivery remain.
+# \- explain\_result
 
-## 10. Mode B Live Integration Retest â€” 12 October 2026
+# \- explain\_method
 
-**Selected mode:** `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
+# \- explain\_limitation
 
-**Live Gemini API smoke test:** PASS â€” previously recorded.
+# \- get\_data\_freshness
 
-A real supported-question API request returned `status: SUPPORTED`, `metadata.llm_enabled: true`, and `explanation_status: AVAILABLE`.
+# \- get\_small\_group\_warnings
 
-**Question:** Which stage has the highest total lead value?
+#
 
-**Deterministic answer:** The approved results identify Won as the highest-ranked group for total lead value in the stage comparison. The recorded value is `949000` currency_unspecified.
+# \### Parameter Validator
 
-**Evidence:** One approved evidence reference was returned.
+#
 
-**Gemini explanation:** The generated explanation identified the Won stage, reported the value of `949000` across 10 leads, and retained the caution about descriptive comparisons and the synthetic sample.
+# Allowed dimensions are stage, product, and source. Unknown groups and result IDs are rejected.
 
-**Previously recorded full Playwright browser suite:** PASS â€” 36/36 tests.
+#
 
-**Production build after fallback test changes:** PASS â€” verified on 13 October 2026.
+# \### Deterministic Query Layer
 
-**ESLint:** PASS â€” rerun on 13 October 2026.
+#
 
-**Provider-failure fallback observation:** Actual Gemini 503 and 504 errors were observed during earlier testing. The API retained the deterministic answer and returned `explanation_status: UNAVAILABLE` rather than inventing an explanation.
+# Only approved query functions may retrieve information. The assistant must not generate arbitrary SQL, execute arbitrary code, calculate new rankings from raw data, create new statistical analyses, or modify approved findings.
 
-**Dedicated fallback test update:** Missing API key, HTTP 429, HTTP 503, and HTTP 504 scenarios passed in `tests/gemini-fallback-test.ts`. The HTTP 503 test verified exactly one retry. These dedicated tests use mocked provider failures and are not a substitute for full browser/API integration testing.
+#
 
-**Grounding validation:** The dedicated grounding test rejects an unsupported numerical claim and accepts a grounded explanation matching the approved value.
+# \### Evidence Builder
 
-**Review status:** Pending final regression, documentation review, Repomix regeneration, browser/API fallback integration verification, and Git delivery.
-</file>
+#
 
-<file path="docs/SUPPORTED_QUESTION_CATALOG.md">
-# Supported Question Catalog
+# Every factual response must be traceable to an evidence package containing applicable intent, validated parameters, result IDs, group or record references, metric, value, unit, finding, evidence fields, data version, method version, generated timestamp, quality status, and limitation, where applicable.
 
-## 1. Purpose
+#
 
-This catalog defines the bounded natural-language questions supported by the Grounded Data Assistant for the PoC-7 Lead Funnel Conversion Observatory.
+# \### Deterministic Response Validator
 
-Every supported question must map to an approved deterministic intent, query function, and evidence source.
+#
 
-The assistant does not support unrestricted "ask anything about the data" interaction.
+# Validates the deterministic response against the approved evidence and response contract. The deterministic answer and evidence remain the authoritative source for factual claims.
 
-The assistant uses deterministic retrieval for its authoritative answers. Gemini provides a supplementary explanation when available and only when the explanation passes grounding validation.
+#
 
-## 2. Approved Analytical Track
+# \### Gemini Explanation and Grounding Validator
 
-**Track A — Comparative Intelligence**
+#
 
-## 3. Data and Method Versions
+# Gemini provides an additional explanation of the already-established deterministic result. The explanation must be checked against the approved answer and evidence.
 
-- Data version: `phase3-v2`
-- Method version: `1.0.0`
-- Quality status: `VALIDATED_DESCRIPTIVE`
-- Validation result: `PASS`
-- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
-- LLM enabled: `true`
+#
 
-LLM availability is not guaranteed for every request. The deterministic answer and its approved evidence remain authoritative when Gemini is unavailable or an explanation fails grounding validation.
+# Unsupported numerical claims, unsupported winning-group claims, and other ungrounded statements must not be returned as approved explanations.
 
-## 4. Supported Questions
+#
 
-| Question Pattern | Intent | Parameters | Query Function | Data Source | Evidence | Response Type | Limitation | Track |
-|---|---|---|---|---|---|---|---|---|
-| What is the approved summary? | `get_summary` | None | `getApprovedSummary` | `intelligence_summary.json` | Summary metadata, key findings, result count, limitations | Summary response | Descriptive summary of approved intelligence outputs; no new analysis is performed. | Track A |
-| Which stage has the highest total lead value? | `compare_groups` | Dimension inferred as `stage` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved stage result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Which product has the highest total lead value? | `compare_groups` | Dimension inferred as `product` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved product result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Which acquisition source has the highest total lead value? | `compare_groups` | Dimension inferred as `source` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved source result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
-| Compare two approved groups. | `compare_groups` | Dimension, group A, group B | `getApprovedGroupResult` | `intelligence_results.json` | Matching approved groups, metric values, findings, limitations | Group comparison response | Only approved Stage, Product, and Source groups can be compared. | Track A |
-| Explain an approved intelligence result. | `explain_result` | Approved result ID | `getApprovedResultById` | `intelligence_results.json` | Result ID, group, metric, value, evidence, finding | Evidence-backed explanation | The explanation must not introduce facts outside the approved result and evidence. | Track A |
-| How was the analysis performed? | `explain_method` | None | Approved deterministic method response | Approved method and validation documentation | Method version, validation status, analytical scope | Method explanation | The assistant explains the approved method; it does not recalculate the analysis. | Track A |
-| What are the limitations? | `explain_limitation` | None | Approved summary and limitation fields | `intelligence_summary.json` | Limitation text, weak-case information | Limitation response | Approved limitations must be preserved. | Track A |
-| What data version is being used? | `get_data_freshness` | None | `getApprovedSummary` | `intelligence_summary.json` | Data version, method version, generated timestamp, quality status | Freshness response | Published metadata does not independently prove that the underlying business data is current. | Track A |
-| Which groups have fewer than five leads? | `get_small_group_warnings` | None | `getSmallGroupWarnings` | `intelligence_results.json` | Group, lead count, result ID, limitation | Warning/list response | Small groups remain visible but require cautious interpretation. | Track A |
+# When the explanation fails validation or Gemini is unavailable, the explanation is marked UNAVAILABLE. The deterministic answer, evidence references, and limitation must remain unchanged.
 
-### Metric restriction
+#
 
-The approved results contain:
+# Provider failures such as quota exhaustion, service unavailability, and gateway errors must not cause the assistant to invent an answer or discard approved deterministic results. A missing Gemini API key must also leave the deterministic response available.
 
-- Overall baseline `average_lead_value`.
-- Overall baseline `average_days_in_stage`.
-- Stage, product, and source comparison results using `total_lead_value`.
+#
 
-The current comparison query function filters results to `total_lead_value`. Therefore, the assistant must not claim to rank products or acquisition sources by average lead value using that function.
+# \## 6. Approved Data Sources
 
-The overall baseline average must not be treated as a product-level or source-level average.
+#
 
-## 5. Supported Intent Definitions
+# Primary sources:
 
-### `get_summary`
+#
 
-Returns the approved summary from `intelligence_summary.json`.
+# \- src/data/intelligence/intelligence\_results.json
 
-No new calculations are performed.
+# \- src/data/intelligence/intelligence\_summary.json
 
-### `compare_groups`
+#
 
-Returns existing approved comparison results for Stage, Product, or Acquisition Source.
+# Supporting sources:
 
-The current comparison query function retrieves results with the approved comparison type and `total_lead_value` metric. It does not calculate new rankings from raw records.
+#
 
-### `explain_result`
+# \- approved method documentation
 
-Explains an existing approved result using its stored finding and evidence.
+# \- validation documentation
 
-The requested result ID must match an approved result.
+# \- limitation documentation
 
-When a Gemini explanation is available, it is supplementary to the deterministic result and must be grounded in its approved evidence.
+# \- weak-case documentation
 
-### `explain_method`
+# \- data manifest/schema
 
-Returns the approved analytical method and scope explanation.
+#
 
-The assistant does not rerun or modify the analytical method.
+# The canonical raw dataset is not exposed directly through the assistant response path.
 
-### `explain_limitation`
+#
 
-Returns approved limitations and weak-case information.
+# \## 7. Grounding Rules
 
-The assistant must preserve the meaning of the documented limitations.
+#
 
-### `get_data_freshness`
+# The assistant must never invent values, rankings, findings, categories, causal explanations, predictions, or unsupported records.
 
-Returns the approved data version, method version, generated timestamp, and related metadata.
+#
 
-This is a report of published metadata, not an independent freshness audit.
+# The deterministic answer must come from approved query results and evidence.
 
-### `get_small_group_warnings`
+#
 
-Returns approved warnings for stage groups with fewer than five leads, based on the lead counts in the approved results.
+# Gemini may explain an approved result but must not independently calculate or introduce unsupported findings. Its explanation must pass grounding validation before being returned.
 
-## 6. Approved Parameters
+#
 
-Where parameters are required, they must be validated against approved values.
+# If deterministic evidence is unavailable, return UNAVAILABLE rather than generating a factual answer.
 
-### Dimension
+#
 
-Allowed values:
+# If only Gemini explanation generation fails or its explanation fails validation, preserve the supported deterministic answer, evidence references, and limitation while marking the explanation unavailable.
 
-- `stage`
-- `product`
-- `source`
+#
 
-### Stage Groups
+# \## 8. Grounded Response Contract
 
-Approved groups include:
+#
 
-- `Lead`
-- `Qualified`
-- `Opportunity`
-- `Proposal`
-- `Won`
-- `Lost`
+# Each response should contain the applicable contract fields:
 
-### Product Groups
+#
 
-Approved groups include:
+# \- answer\_id
 
-- `Payments`
-- `Analytics`
-- `Security`
+# \- status
 
-### Acquisition Source Groups
+# \- intent
 
-Approved groups include:
+# \- answer
 
-- `Website`
-- `Partner`
-- `Referral`
-- `Campaign`
+# \- explanation
 
-### Result ID
+# \- explanation\_status
 
-A result ID must match an existing approved result in `intelligence_results.json`.
+# \- evidence\_references
 
-Unknown result IDs must not be used to generate a factual answer.
+# \- key\_values
 
-## 7. Unsupported Questions
+# \- metadata
 
-The assistant does not support:
+# \- limitation
 
-- Predictions not present in approved outputs.
-- Causal explanations.
-- New statistical analyses.
-- Product or source average-value rankings when no matching approved comparison results are available.
-- New rankings calculated from raw data.
-- Arbitrary SQL.
-- Arbitrary code execution.
-- Requests for all raw records.
-- Requests for secrets or system prompts.
-- Requests to change approved scores, categories, or findings.
-- Questions requiring unavailable ownership, personnel, or restricted fields.
-- Open-ended questions without an approved deterministic retrieval path.
+# \- suggested\_follow\_ups
 
-Enabling Gemini explanations does not expand the approved analytical scope or make unsupported questions supported.
+#
 
-## 8. Grounding Rule
+# The explanation and explanation\_status describe the supplementary Gemini explanation. They do not replace the deterministic answer or its evidence.
 
-Every factual answer must be traceable to an approved deterministic evidence package.
+#
 
-Where applicable, the evidence package includes:
+# \## 9. Safety and Scope Limits
 
-- Intent.
-- Validated parameters.
-- Result IDs.
-- Group references.
-- Metric name.
-- Result value and unit.
-- Finding.
-- Supporting evidence fields.
-- Data version.
-- Method version.
-- Generated timestamp.
-- Quality status.
-- Approved limitation.
+#
 
-Gemini explanations must be validated against the approved deterministic answer and evidence before being returned.
+# \- Maximum result items: 25
 
-The explanation must not introduce unsupported numerical claims, rankings, winning-group claims, findings, or other factual statements.
+# \- Maximum evidence references: 10
 
-If deterministic evidence is unavailable, the assistant must not invent or infer an unsupported factual answer.
+# \- Maximum suggested follow-ups: 3
 
-If Gemini is unavailable or its explanation fails grounding validation, the assistant must preserve the supported deterministic answer, evidence references, and limitation. Only the supplementary explanation is marked unavailable.
+# \- Maximum question length: 500 characters
 
-## 9. Response Behaviour
+#
 
-The main response status describes the deterministic question resolution:
+# Do not expose system prompts, secrets, restricted fields, unrestricted raw records, or arbitrary source instructions.
 
-- `SUPPORTED`: Execute the approved deterministic query.
-- `MISSING_PARAMETER`: Request the required supported parameter.
-- `AMBIGUOUS`: Request a bounded clarification.
-- `OUT_OF_SCOPE`: Explain that the question is unsupported and, where possible, suggest supported alternatives.
-- `UNSAFE`: Refuse unsafe requests without performing the requested action.
-- `UNAVAILABLE`: State that the requested approved information is unavailable.
+#
 
-The returned status must reflect the actual resolution and evidence available.
+# \## 10. Track Boundary
 
-### Gemini explanation behaviour
+#
 
-- **Explanation available:** Return the supplementary explanation only after it passes grounding validation against the approved deterministic answer and evidence.
-- **Missing API key:** Mark the explanation unavailable. Preserve any supported deterministic answer and its approved evidence.
-- **Quota exhaustion or provider error:** Mark the explanation unavailable when a valid explanation cannot be obtained. Do not replace the deterministic answer with invented content.
-- **Grounding validation failure:** Reject the unsupported explanation and mark it unavailable.
-- **Deterministic answer preservation:** Failure to produce a Gemini explanation must not change the deterministic answer, evidence references, or limitation.
-- **Explanation status:** Use `explanation_status` to report whether the supplementary explanation is available. An unavailable explanation does not by itself mean the deterministic answer is unavailable.
+# Only Track A is enabled. No Track B/C/D/E/F/G/H intent is enabled.
 
-When the explanation cannot be returned, the explanation value must be `null` and the explanation status must be `UNAVAILABLE`, consistent with the implemented response contract.
+#
 
-## 10. Maximum Scope
+# \## 11. UI Relationship
 
-The assistant configuration specifies the following bounds:
+#
 
-- Maximum question length: 500 characters.
-- Maximum result items: 25.
-- Maximum evidence references: 10.
-- Maximum suggested follow-ups: 3.
-- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`.
-- LLM enabled: `true`.
+# The assistant is an additional interaction layer for Data Intelligence. Existing filters, result tables, findings, evidence, methodology, limitations, and version metadata remain accessible. The assistant does not replace the underlying evidence.
 
-Response validation must enforce the applicable configured limits.
+#
 
-The enabled LLM setting does not guarantee that the external provider is available for every request. Deterministic retrieval and approved evidence remain the authority for factual answers.
+# Required UI states:
 
-## 11. Track Boundary
+#
 
-This catalog is limited to:
+# \- Ready
 
-**Track A — Comparative Intelligence**
+# \- Thinking
 
-No unsupported Track B, C, D, E, F, G, or H intents are enabled.
+# \- Answered
 
-## 12. Catalog Status
+# \- Missing Parameter
 
-This document defines the intended supported-question boundary for the PoC-7 Grounded Data Assistant.
+# \- Unsupported
 
-The implemented resolver, query functions, configuration, explanation grounding validation, fallback behaviour, and response validation must remain consistent with this catalog.
+# \- Unsafe
 
-A documented question must not be described as implemented or supported unless the actual deterministic path can answer it with approved evidence.
+# \- Unavailable
 
-Gemini explanation availability must not be represented as a guarantee of answer availability. If the explanation fails, the supported deterministic answer and its approved evidence must remain intact.
+# \- Error
+
+#
+
+# The UI must distinguish an unavailable Gemini explanation from an unavailable deterministic answer. Where a supported deterministic response exists, the user should still be able to access it and its evidence when explanation generation fails.
+
+#
+
+# \## 12. Testing Strategy
+
+#
+
+# \- Unit tests: intent resolution, parameter validation, query functions, and evidence construction.
+
+# \- Grounding tests: verify that Gemini explanation claims are supported by the approved answer and evidence.
+
+# \- Fallback tests: verify preservation of deterministic results when the API key is missing or Gemini returns provider errors, including HTTP 429, 503, and 504.
+
+# \- Safety tests: unsafe requests, prompt injection, and source-text manipulation cases.
+
+# \- API tests: request validation, response contract, and bounded output.
+
+# \- UI tests: all required states.
+
+# \- Regression tests: Operational View and Data Intelligence remain intact.
+
+# \- Selenium: Data Intelligence -> Assistant -> supported question -> grounded answer -> evidence -> version/limitation -> unsupported question -> safe scope response.
+
+#
+
+# \## 13. Architectural Decision
+
+#
+
+# The selected architecture is deterministic-first with supplementary LLM explanation (Mode B). Approved deterministic queries remain responsible for the answer and evidence. Gemini explanations are optional and must pass grounding validation before being returned.
+
+#
+
+# The design preserves auditability, approved analytical results, evidence traceability, safety controls, and limitations. An explanation failure must not change the underlying deterministic finding.
+
+#
+
+# \## 14. Status
+
+#
+
+# Mode B is the selected architecture. Implementation, grounding validation, fallback testing, regression results, and UAT evidence must be recorded accurately in the corresponding project documentation.
+
+#
+
+# Final test results and refreshed Repomix output should be recorded or generated after all documentation corrections are complete.
 </file>
 
 <file path="notebooks/01_canonical_data_validation_and_readiness.ipynb">
@@ -30268,6 +29842,512 @@ The current Phase 2 CRM data source is:
 src/data/crmData.ts
 </file>
 
+<file path="docs/GROUNDED_ASSISTANT_UAT.md">
+# Grounded Data Assistant â€” User Acceptance Testing (UAT)
+
+## 1. Purpose
+
+Validate the Post #5 Grounded Natural-Language Data Assistant integrated into the Lead Funnel Conversion Observatory, including deterministic answers, optional Gemini explanations, evidence references, limitations, and safe handling of unsupported requests.
+
+## 2. Implementation Summary
+
+- **Mode:** B â€” Deterministic Retrieval + LLM Explanation
+- **Assistant configuration:** `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
+- **LLM integration:** Gemini supplementary explanation enabled
+- **Data version:** `phase3-v2`
+- **Method version:** `1.0.0`
+- **Quality status:** `VALIDATED_DESCRIPTIVE`
+- **Browser automation:** Playwright with Chromium
+
+The assistant retrieves approved intelligence results through deterministic query functions. It does not generate new statistical analyses, predictions, or causal conclusions.
+
+Gemini provides an optional natural-language explanation of an already-established deterministic answer. The explanation must pass grounding validation against the approved answer and evidence. The deterministic answer, evidence references, and limitations remain authoritative.
+
+If Gemini is unavailable, the API key is missing, a provider error occurs, or an explanation fails grounding validation, the explanation is marked unavailable. A supported deterministic answer and its approved evidence must remain unchanged.
+
+## 3. Test Results
+
+| Test | Result |
+|---|---|
+| Grounded summary response | PASS â€” previously recorded service test |
+| Approved data and method versions | PASS â€” previously recorded service test |
+| Approved analytical method explanation | PASS â€” previously recorded service test |
+| Documented limitations | PASS â€” previously recorded service test |
+| Small-group warnings with evidence | PASS â€” previously recorded service test |
+| Supported product ranking | PASS â€” previously recorded service test |
+| Missing question handled safely | PASS â€” previously recorded service test |
+| Unsupported prediction rejected | PASS â€” service and browser tests |
+| Prompt-injection attempt rejected | PASS â€” previously recorded service test |
+| Arbitrary code execution request rejected | PASS â€” previously recorded service test |
+| Oversized question rejected | PASS â€” previously recorded service test |
+| Non-string input handled safely | PASS â€” previously recorded service test |
+| Supported-question browser test | PASS â€” previously recorded Playwright/Chromium test |
+| Unsupported-prediction browser test | PASS â€” previously recorded Playwright/Chromium test |
+| TypeScript compilation | PASS â€” previously recorded |
+| ESLint | PASS â€” rerun on 13 October 2026 |
+| Intelligence contract validation | PASS â€” previously recorded |
+| Production build | PASS â€” verified on 13 October 2026 |
+| API supported-question response | PASS â€” previously manually verified |
+| Missing Gemini API key fallback test | PASS â€” dedicated fallback test |
+| HTTP 429 quota-error fallback test | PASS â€” dedicated fallback test |
+| HTTP 503 provider-error fallback test | PASS â€” dedicated fallback test; one retry verified |
+| HTTP 504 gateway-error fallback test | PASS â€” dedicated fallback test |
+| Preservation of deterministic answer, evidence, and limitation in fallback tests | PASS â€” dedicated fallback test |
+| Gemini-unavailable browser fallback | NOT YET VERIFIED |
+| Full operational-page regression after final documentation edits | NOT YET VERIFIED |
+
+The dedicated fallback tests exercise `explainWithGemini` with mocked provider failures and verify that the deterministic response remains unchanged. They do not independently exercise the full API route for every failure scenario.
+
+## 4. Browser UAT Evidence
+
+Browser tests are implemented in:
+
+`tests/browser/assistant-uat.spec.ts`
+
+Playwright configuration:
+
+`playwright.config.ts`
+
+Browser test command:
+
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
+
+Previously recorded execution result:
+
+```text
+Running 2 tests using 1 worker
+
+âœ“ supported question displays grounded answer and Gemini status
+âœ“ unsupported prediction request is safely rejected
+
+2 passed (2.6s)
+```
+
+### Test 1: Supported question
+
+Question:
+
+`Which stage has the highest total lead value?`
+
+Previously verified UI behavior:
+
+- Response status: `SUPPORTED`
+- Intent: `compare_groups`
+- Deterministic answer identifies the Won stage.
+- Recorded total lead value: `949000`
+- Gemini explanation status: `AVAILABLE`
+- Evidence reference: `stage_won_total_value`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Quality status: `VALIDATED_DESCRIPTIVE`
+- Limitation disclosure is displayed.
+
+### Test 2: Unsupported prediction
+
+Question:
+
+`Predict next year's revenue using a machine learning model`
+
+Previously verified UI behavior:
+
+- Response status: `OUT_OF_SCOPE`
+- The request is rejected rather than treated as an approved prediction.
+
+## 5. API Verification
+
+A previously recorded direct POST request to `/api/assistant` with the supported stage-comparison question returned a successful JSON response.
+
+Recorded response fields:
+
+- Status: `SUPPORTED`
+- Intent: `compare_groups`
+- Validation result: `PASS`
+- LLM enabled: `true`
+- Explanation status: `AVAILABLE`
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Evidence references: Present
+- Limitation: Present
+- Suggested follow-ups: Present
+
+The approved result identifies Won as the highest-ranked stage for total lead value, with a recorded value of `949000` across 10 leads.
+
+**Disclosure:** The sample is synthetic, the analysis is descriptive, and small groups require cautious interpretation. The reported value must not be interpreted as a forecast or a causal conclusion.
+
+## 6. Analytical and Security Boundaries
+
+The assistant must:
+
+1. Use approved intelligence results as the source of analytical claims.
+2. Keep the deterministic answer separate from the optional Gemini explanation.
+3. Include available evidence references and limitations.
+4. Reject unsupported predictive or causal requests.
+5. Reject prompt injection and arbitrary-code execution requests.
+6. Avoid sending the complete canonical dataset to Gemini.
+7. Keep the Gemini API key on the server, outside browser code and committed files.
+8. Avoid persistent conversational memory.
+9. Preserve deterministic response behavior when an optional explanation is unavailable.
+10. Validate Gemini explanations against the approved deterministic answer and evidence before returning them.
+11. Reject unsupported numerical claims and unsupported winning-group claims.
+12. Mark a rejected or unavailable explanation as `null` with explanation status `UNAVAILABLE`, while preserving the supported deterministic answer and its approved evidence and limitation.
+
+## 7. Acceptance Assessment
+
+The following checks have passed at their recorded checkpoints:
+
+- Previously recorded service tests
+- Previously recorded browser UAT tests
+- TypeScript compilation
+- ESLint, rerun on 13 October 2026
+- Intelligence contract validation
+- Production build, verified on 13 October 2026
+- Previously recorded direct API verification
+- Dedicated Gemini fallback tests
+
+The dedicated Gemini fallback tests passed for:
+
+- Missing `GEMINI_API_KEY`
+- HTTP 429 quota exhaustion
+- HTTP 503 provider failure, including exactly one retry
+- HTTP 504 gateway error
+
+These tests verify preservation of the deterministic answer, evidence references, and limitation when the explanation is unavailable.
+
+**Current assessment:** The recorded tests and dedicated Gemini fallback tests passed. This does not establish that every browser fallback scenario or the entire final release has been accepted.
+
+**Remaining release checks:**
+
+- Verify Gemini-unavailable fallback through the browser or full API integration path.
+- Run the final regression checks against the final working tree.
+- Regenerate `repomix-output.xml` after all documentation corrections, without including secrets.
+- Review the final documentation and Git changes.
+- Commit and push the completed documentation and refreshed project output.
+
+The overall release should not be marked fully accepted until the remaining checks are completed.
+
+## 8. Reproducibility
+
+Run the dedicated fallback tests with:
+
+```powershell
+npx.cmd tsx .\tests\gemini-fallback-test.ts
+```
+
+Run the browser tests with:
+
+```powershell
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+```
+
+Run the project checks with:
+
+```powershell
+npm.cmd run lint
+npm.cmd run test:intelligence
+npm.cmd run build
+```
+
+These checks should be rerun against the final working tree before release.
+
+## 9. Final Status
+
+**Selected architecture:** Mode B â€” Deterministic Retrieval + LLM Explanation.
+
+**ESLint:** PASS â€” rerun on 13 October 2026.
+
+**Dedicated Gemini fallback tests:** PASS â€” missing API key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
+
+**Production build:** PASS â€” data validation, data publishing, TypeScript checks, compilation, and page generation succeeded on 13 October 2026.
+
+**Previously recorded browser UAT:** PASS â€” 2 of 2 tests.
+
+**Previously recorded full Playwright suite:** PASS â€” 36/36 tests.
+
+**Full release acceptance:** PENDING â€” final documentation review, browser/API fallback integration verification, final regression, Repomix regeneration, and Git delivery remain.
+
+## 10. Mode B Live Integration Retest â€” 12 October 2026
+
+**Selected mode:** `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
+
+**Live Gemini API smoke test:** PASS â€” previously recorded.
+
+A real supported-question API request returned `status: SUPPORTED`, `metadata.llm_enabled: true`, and `explanation_status: AVAILABLE`.
+
+**Question:** Which stage has the highest total lead value?
+
+**Deterministic answer:** The approved results identify Won as the highest-ranked group for total lead value in the stage comparison. The recorded value is `949000` currency_unspecified.
+
+**Evidence:** One approved evidence reference was returned.
+
+**Gemini explanation:** The generated explanation identified the Won stage, reported the value of `949000` across 10 leads, and retained the caution about descriptive comparisons and the synthetic sample.
+
+**Previously recorded full Playwright browser suite:** PASS â€” 36/36 tests.
+
+**Production build after fallback test changes:** PASS â€” verified on 13 October 2026.
+
+**ESLint:** PASS â€” rerun on 13 October 2026.
+
+**Provider-failure fallback observation:** Actual Gemini 503 and 504 errors were observed during earlier testing. The API retained the deterministic answer and returned `explanation_status: UNAVAILABLE` rather than inventing an explanation.
+
+**Dedicated fallback test update:** Missing API key, HTTP 429, HTTP 503, and HTTP 504 scenarios passed in `tests/gemini-fallback-test.ts`. The HTTP 503 test verified exactly one retry. These dedicated tests use mocked provider failures and are not a substitute for full browser/API integration testing.
+
+**Grounding validation:** The dedicated grounding test rejects an unsupported numerical claim and accepts a grounded explanation matching the approved value.
+
+**Review status:** Pending final regression, documentation review, Repomix regeneration, browser/API fallback integration verification, and Git delivery.
+</file>
+
+<file path="docs/SUPPORTED_QUESTION_CATALOG.md">
+# Supported Question Catalog
+
+## 1. Purpose
+
+This catalog defines the bounded natural-language questions supported by the Grounded Data Assistant for the PoC-7 Lead Funnel Conversion Observatory.
+
+Every supported question must map to an approved deterministic intent, query function, and evidence source.
+
+The assistant does not support unrestricted "ask anything about the data" interaction.
+
+The assistant uses deterministic retrieval for its authoritative answers. Gemini provides a supplementary explanation when available and only when the explanation passes grounding validation.
+
+## 2. Approved Analytical Track
+
+**Track A — Comparative Intelligence**
+
+## 3. Data and Method Versions
+
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Quality status: `VALIDATED_DESCRIPTIVE`
+- Validation result: `PASS`
+- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`
+- LLM enabled: `true`
+
+LLM availability is not guaranteed for every request. The deterministic answer and its approved evidence remain authoritative when Gemini is unavailable or an explanation fails grounding validation.
+
+## 4. Supported Questions
+
+| Question Pattern | Intent | Parameters | Query Function | Data Source | Evidence | Response Type | Limitation | Track |
+|---|---|---|---|---|---|---|---|---|
+| What is the approved summary? | `get_summary` | None | `getApprovedSummary` | `intelligence_summary.json` | Summary metadata, key findings, result count, limitations | Summary response | Descriptive summary of approved intelligence outputs; no new analysis is performed. | Track A |
+| Which stage has the highest total lead value? | `compare_groups` | Dimension inferred as `stage` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved stage result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Which product has the highest total lead value? | `compare_groups` | Dimension inferred as `product` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved product result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Which acquisition source has the highest total lead value? | `compare_groups` | Dimension inferred as `source` | `getApprovedResultsByDimension` | `intelligence_results.json` | Approved source result ID, group, metric, value, finding | Comparison response | Descriptive comparison; not causal or predictive. | Track A |
+| Compare two approved groups. | `compare_groups` | Dimension, group A, group B | `getApprovedGroupResult` | `intelligence_results.json` | Matching approved groups, metric values, findings, limitations | Group comparison response | Only approved Stage, Product, and Source groups can be compared. | Track A |
+| Explain an approved intelligence result. | `explain_result` | Approved result ID | `getApprovedResultById` | `intelligence_results.json` | Result ID, group, metric, value, evidence, finding | Evidence-backed explanation | The explanation must not introduce facts outside the approved result and evidence. | Track A |
+| How was the analysis performed? | `explain_method` | None | Approved deterministic method response | Approved method and validation documentation | Method version, validation status, analytical scope | Method explanation | The assistant explains the approved method; it does not recalculate the analysis. | Track A |
+| What are the limitations? | `explain_limitation` | None | Approved summary and limitation fields | `intelligence_summary.json` | Limitation text, weak-case information | Limitation response | Approved limitations must be preserved. | Track A |
+| What data version is being used? | `get_data_freshness` | None | `getApprovedSummary` | `intelligence_summary.json` | Data version, method version, generated timestamp, quality status | Freshness response | Published metadata does not independently prove that the underlying business data is current. | Track A |
+| Which groups have fewer than five leads? | `get_small_group_warnings` | None | `getSmallGroupWarnings` | `intelligence_results.json` | Group, lead count, result ID, limitation | Warning/list response | Small groups remain visible but require cautious interpretation. | Track A |
+
+### Metric restriction
+
+The approved results contain:
+
+- Overall baseline `average_lead_value`.
+- Overall baseline `average_days_in_stage`.
+- Stage, product, and source comparison results using `total_lead_value`.
+
+The current comparison query function filters results to `total_lead_value`. Therefore, the assistant must not claim to rank products or acquisition sources by average lead value using that function.
+
+The overall baseline average must not be treated as a product-level or source-level average.
+
+## 5. Supported Intent Definitions
+
+### `get_summary`
+
+Returns the approved summary from `intelligence_summary.json`.
+
+No new calculations are performed.
+
+### `compare_groups`
+
+Returns existing approved comparison results for Stage, Product, or Acquisition Source.
+
+The current comparison query function retrieves results with the approved comparison type and `total_lead_value` metric. It does not calculate new rankings from raw records.
+
+### `explain_result`
+
+Explains an existing approved result using its stored finding and evidence.
+
+The requested result ID must match an approved result.
+
+When a Gemini explanation is available, it is supplementary to the deterministic result and must be grounded in its approved evidence.
+
+### `explain_method`
+
+Returns the approved analytical method and scope explanation.
+
+The assistant does not rerun or modify the analytical method.
+
+### `explain_limitation`
+
+Returns approved limitations and weak-case information.
+
+The assistant must preserve the meaning of the documented limitations.
+
+### `get_data_freshness`
+
+Returns the approved data version, method version, generated timestamp, and related metadata.
+
+This is a report of published metadata, not an independent freshness audit.
+
+### `get_small_group_warnings`
+
+Returns approved warnings for stage groups with fewer than five leads, based on the lead counts in the approved results.
+
+## 6. Approved Parameters
+
+Where parameters are required, they must be validated against approved values.
+
+### Dimension
+
+Allowed values:
+
+- `stage`
+- `product`
+- `source`
+
+### Stage Groups
+
+Approved groups include:
+
+- `Lead`
+- `Qualified`
+- `Opportunity`
+- `Proposal`
+- `Won`
+- `Lost`
+
+### Product Groups
+
+Approved groups include:
+
+- `Payments`
+- `Analytics`
+- `Security`
+
+### Acquisition Source Groups
+
+Approved groups include:
+
+- `Website`
+- `Partner`
+- `Referral`
+- `Campaign`
+
+### Result ID
+
+A result ID must match an existing approved result in `intelligence_results.json`.
+
+Unknown result IDs must not be used to generate a factual answer.
+
+## 7. Unsupported Questions
+
+The assistant does not support:
+
+- Predictions not present in approved outputs.
+- Causal explanations.
+- New statistical analyses.
+- Product or source average-value rankings when no matching approved comparison results are available.
+- New rankings calculated from raw data.
+- Arbitrary SQL.
+- Arbitrary code execution.
+- Requests for all raw records.
+- Requests for secrets or system prompts.
+- Requests to change approved scores, categories, or findings.
+- Questions requiring unavailable ownership, personnel, or restricted fields.
+- Open-ended questions without an approved deterministic retrieval path.
+
+Enabling Gemini explanations does not expand the approved analytical scope or make unsupported questions supported.
+
+## 8. Grounding Rule
+
+Every factual answer must be traceable to an approved deterministic evidence package.
+
+Where applicable, the evidence package includes:
+
+- Intent.
+- Validated parameters.
+- Result IDs.
+- Group references.
+- Metric name.
+- Result value and unit.
+- Finding.
+- Supporting evidence fields.
+- Data version.
+- Method version.
+- Generated timestamp.
+- Quality status.
+- Approved limitation.
+
+Gemini explanations must be validated against the approved deterministic answer and evidence before being returned.
+
+The explanation must not introduce unsupported numerical claims, rankings, winning-group claims, findings, or other factual statements.
+
+If deterministic evidence is unavailable, the assistant must not invent or infer an unsupported factual answer.
+
+If Gemini is unavailable or its explanation fails grounding validation, the assistant must preserve the supported deterministic answer, evidence references, and limitation. Only the supplementary explanation is marked unavailable.
+
+## 9. Response Behaviour
+
+The main response status describes the deterministic question resolution:
+
+- `SUPPORTED`: Execute the approved deterministic query.
+- `MISSING_PARAMETER`: Request the required supported parameter.
+- `AMBIGUOUS`: Request a bounded clarification.
+- `OUT_OF_SCOPE`: Explain that the question is unsupported and, where possible, suggest supported alternatives.
+- `UNSAFE`: Refuse unsafe requests without performing the requested action.
+- `UNAVAILABLE`: State that the requested approved information is unavailable.
+
+The returned status must reflect the actual resolution and evidence available.
+
+### Gemini explanation behaviour
+
+- **Explanation available:** Return the supplementary explanation only after it passes grounding validation against the approved deterministic answer and evidence.
+- **Missing API key:** Mark the explanation unavailable. Preserve any supported deterministic answer and its approved evidence.
+- **Quota exhaustion or provider error:** Mark the explanation unavailable when a valid explanation cannot be obtained. Do not replace the deterministic answer with invented content.
+- **Grounding validation failure:** Reject the unsupported explanation and mark it unavailable.
+- **Deterministic answer preservation:** Failure to produce a Gemini explanation must not change the deterministic answer, evidence references, or limitation.
+- **Explanation status:** Use `explanation_status` to report whether the supplementary explanation is available. An unavailable explanation does not by itself mean the deterministic answer is unavailable.
+
+When the explanation cannot be returned, the explanation value must be `null` and the explanation status must be `UNAVAILABLE`, consistent with the implemented response contract.
+
+## 10. Maximum Scope
+
+The assistant configuration specifies the following bounds:
+
+- Maximum question length: 500 characters.
+- Maximum result items: 25.
+- Maximum evidence references: 10.
+- Maximum suggested follow-ups: 3.
+- Assistant mode: `B_DETERMINISTIC_RETRIEVAL_LLM_EXPLANATION`.
+- LLM enabled: `true`.
+
+Response validation must enforce the applicable configured limits.
+
+The enabled LLM setting does not guarantee that the external provider is available for every request. Deterministic retrieval and approved evidence remain the authority for factual answers.
+
+## 11. Track Boundary
+
+This catalog is limited to:
+
+**Track A — Comparative Intelligence**
+
+No unsupported Track B, C, D, E, F, G, or H intents are enabled.
+
+## 12. Catalog Status
+
+This document defines the intended supported-question boundary for the PoC-7 Grounded Data Assistant.
+
+The implemented resolver, query functions, configuration, explanation grounding validation, fallback behaviour, and response validation must remain consistent with this catalog.
+
+A documented question must not be described as implemented or supported unless the actual deterministic path can answer it with approved evidence.
+
+Gemini explanation availability must not be represented as a guarantee of answer availability. If the explanation fails, the supported deterministic answer and its approved evidence must remain intact.
+</file>
+
 <file path="src/app/api/assistant/route.ts">
 import { NextResponse } from "next/server";
 import { answerQuestion } from "../../../../assistant/core/assistant-service";
@@ -30276,86 +30356,99 @@ import config from "../../../../assistant/config/assistant.config.json";
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
-  try {
-    const body: unknown = await request.json();
+type RouteDependencies = {
+  answerQuestion: typeof answerQuestion;
+  explainWithGemini: typeof explainWithGemini;
+};
 
-    if (
-      typeof body !== "object" ||
-      body === null ||
-      !("question" in body)
-    ) {
+export function createPostHandler(
+  dependencies: RouteDependencies = {
+    answerQuestion,
+    explainWithGemini,
+  },
+) {
+  return async function POST(request: Request) {
+    try {
+      const body: unknown = await request.json();
+
+      if (
+        typeof body !== "object" ||
+        body === null ||
+        !("question" in body)
+      ) {
+        return NextResponse.json(
+          {
+            status: "MISSING_PARAMETER",
+            answer: "Please provide a question.",
+            explanation: null,
+            explanation_status: "UNAVAILABLE",
+          },
+          { status: 400 },
+        );
+      }
+
+      const question = (body as { question: unknown }).question;
+      const response = dependencies.answerQuestion(question);
+
+      if (
+        config.llm_enabled === true &&
+        response.status === "SUPPORTED" &&
+        response.evidence_references.length > 0 &&
+        typeof question === "string"
+      ) {
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+        const gemini = await Promise.race([
+          dependencies.explainWithGemini({
+            question,
+            deterministicAnswer: response.answer,
+            evidenceReferences: response.evidence_references,
+            limitation: response.limitation,
+          }),
+          new Promise<{
+            explanation: null;
+            explanation_status: "UNAVAILABLE";
+          }>((resolve) => {
+            timeoutId = setTimeout(
+              () =>
+                resolve({
+                  explanation: null,
+                  explanation_status: "UNAVAILABLE",
+                }),
+              45000,
+            );
+          }),
+        ]).finally(() => {
+          if (timeoutId) clearTimeout(timeoutId);
+        });
+
+        response.explanation = gemini.explanation;
+        response.metadata.llm_enabled =
+          gemini.explanation_status === "AVAILABLE";
+        response.explanation_status = gemini.explanation_status;
+      }
+
+      return NextResponse.json(response, {
+        status: response.status === "UNAVAILABLE" ? 503 : 200,
+      });
+    } catch (error) {
+      console.error("[Assistant API]", error);
+
       return NextResponse.json(
         {
-          status: "MISSING_PARAMETER",
-          answer: "Please provide a question.",
+          status: "UNAVAILABLE",
+          answer:
+            "The assistant could not process this request. Please try an approved question again.",
           explanation: null,
           explanation_status: "UNAVAILABLE",
         },
-        { status: 400 },
+        { status: 500 },
       );
     }
-
-    const question = (body as { question: unknown }).question;
-    const response = answerQuestion(question);
-
-    // Mode A is deterministic-only. Call Gemini only when explicitly enabled.
-    if (
-      config.llm_enabled === true &&
-      response.status === "SUPPORTED" &&
-      response.evidence_references.length > 0 &&
-      typeof question === "string"
-    ) {
-      let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-      const gemini = await Promise.race([
-        explainWithGemini({
-          question,
-          deterministicAnswer: response.answer,
-          evidenceReferences: response.evidence_references,
-          limitation: response.limitation,
-        }),
-        new Promise<{
-          explanation: null;
-          explanation_status: "UNAVAILABLE";
-        }>((resolve) => {
-          timeoutId = setTimeout(
-            () =>
-              resolve({
-                explanation: null,
-                explanation_status: "UNAVAILABLE",
-              }),
-          45000,
-          );
-        }),
-      ]).finally(() => {
-        if (timeoutId) clearTimeout(timeoutId);
-      });
-
-      response.explanation = gemini.explanation;
-      response.metadata.llm_enabled =
-        gemini.explanation_status === "AVAILABLE";
-      response.explanation_status = gemini.explanation_status;
-    }
-
-    return NextResponse.json(response, {
-      status: response.status === "UNAVAILABLE" ? 503 : 200,
-    });
-  } catch (error) {
-    console.error("[Assistant API]", error);
-
-    return NextResponse.json(
-      {
-        status: "UNAVAILABLE",
-        answer:
-          "The assistant could not process this request. Please try an approved question again.",
-        explanation: null,
-        explanation_status: "UNAVAILABLE",
-      },
-      { status: 500 },
-    );
-  }
+  };
 }
+
+export const POST = createPostHandler();
 </file>
 
 <file path="package.json">
