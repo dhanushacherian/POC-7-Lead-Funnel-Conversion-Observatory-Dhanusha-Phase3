@@ -2,9 +2,9 @@
 
 ## Release Identity
 - Project: POC-7 Lead Funnel Conversion Observatory
-- Phase: 3 — Grounded Data Assistant
+- Phase: 3 â€” Grounded Data Assistant
 - Data package version: `phase3-v2`
-- Manifest status: `IN PROGRESS — RELEASE NOT CERTIFIED`
+- Manifest status: `IN PROGRESS â€” RELEASE NOT CERTIFIED`
 - Git repository: https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3
 
 ## Canonical Data Package
@@ -52,7 +52,7 @@
 - Dashboard and Data Intelligence routes: HTTP 200.
 - Assistant API valid-question test: PASS; response status `SUPPORTED`, metadata validation `PASS`.
 - Docker runtime evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
-- Final clean-clone validation: Not yet documented.
+- Final clean-clone validation: PASS against commit fe7bbb52bf754cfceb226c818621cab505bb0160; see docs/CLEAN_CLONE_VALIDATION_REPORT.md.
 - Final reports, handover guide, and initial evidence files: Present; final evidence review and clean-clone validation remain pending.
 - Final release commit and tag: Not yet created.
 
@@ -66,7 +66,7 @@ This manifest records the known Phase 3 package identity and validation evidence
 The commit above is the latest known commit at preparation time, not the final release commit.
 
 
-## Post-Dependency-Update Validation — 2026-10-16
+## Post-Dependency-Update Validation â€” 2026-10-16
 
 ### Updated Dependencies
 - Next.js: 16.4.2
@@ -94,14 +94,14 @@ The commit above is the latest known commit at preparation time, not the final r
 
 ### Remaining Release Gates
 - Full development dependency audit findings: review and document accepted risk or resolve without breaking the supported dependency set.
-- Clean-clone validation of the final proposed commit: PENDING.
+- Clean-clone validation of release-candidate commit fe7bbb52bf754cfceb226c818621cab505bb0160: PASS.
 - Public deployment URL and remote smoke test: NOT VERIFIED.
 - Final release commit and tag: NOT CREATED.
 - Final release approval: PENDING.
 
-The successful local tests and Docker checks do not certify a public deployment or a final release. Manifest status remains `IN PROGRESS — RELEASE NOT CERTIFIED`.
+The successful local tests and Docker checks do not certify a public deployment or a final release. Manifest status remains `IN PROGRESS â€” RELEASE NOT CERTIFIED`.
 
-## Development Dependency Security Assessment — 2026-10-16
+## Development Dependency Security Assessment â€” 2026-10-16
 
 - Production audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
 - Full development audit: OUTSTANDING; npm reports five high-severity findings associated with `braces@3.0.3`.
