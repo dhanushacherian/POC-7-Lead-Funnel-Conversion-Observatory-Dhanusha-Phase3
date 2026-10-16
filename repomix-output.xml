@@ -106,9 +106,11 @@ docs/
   ASSISTANT_ARCHITECTURE.md
   ASSISTANT_QUERY_CONTRACT.md
   ASSISTANT_SUITABILITY_ASSESSMENT.md
+  BUILD_AND_ENVIRONMENT_VALIDATION.md
   CANONICAL_DATA_MAPPING.md
   CANONICAL_DATA_PACKAGE_VALIDATION.md
   CANONICAL_DATA_PROFILE.md
+  CLEAN_CLONE_VALIDATION_REPORT.md
   DATA_ARCHETYPE_CONFIRMATION.md
   DATA_INTELLIGENCE_PAGE_PLAN.md
   DATA_INTELLIGENCE_SELENIUM_EVIDENCE.md
@@ -117,6 +119,12 @@ docs/
   DATA_INTELLIGENCE_UI_SPEC.md
   DATA_QUALITY_ASSESSMENT.md
   DATA_SOURCE_INVENTORY.md
+  DEPLOYMENT_VALIDATION_REPORT.md
+  FINAL_ANALYTICAL_REVALIDATION.md
+  FINAL_ASSISTANT_VALIDATION.md
+  FINAL_AUTOMATED_TEST_REPORT.md
+  FINAL_DATA_INTELLIGENCE_VALIDATION.md
+  FINAL_OPERATIONAL_REGRESSION_REPORT.md
   GEMINI_INTEGRATION.md
   GROUNDED_ASSISTANT_UAT.md
   GROUNDED_RESPONSE_CONTRACT.md
@@ -125,11 +133,19 @@ docs/
   INTELLIGENCE_OUTPUT_CONTRACT.md
   OPERATIONAL_PAGE_REGRESSION_EVIDENCE.md
   OPERATIONAL_PAGE_REGRESSION_REPORT.md
+  PHASE3_COMPLETION_REPORT.md
+  PHASE3_FINAL_ARCHITECTURE.md
+  PHASE3_FINAL_UAT.md
+  PHASE3_HANDOVER_GUIDE.md
+  PHASE3_RELEASE_MANIFEST.md
   REPRESENTATIVENESS_ASSESSMENT.md
   SAMPLING_AND_REDUCTION_REPORT.md
   SUPPORTED_QUESTION_CATALOG.md
   TRACK_A_COMPARATIVE_ANALYSIS.md
   WEAK_CASE_AND_LIMITATION_REVIEW.md
+final-evidence/
+  ASSISTANT_TEST_VALIDATION.md
+  DOCKER_RUNTIME_VALIDATION.md
 notebooks/
   01_canonical_data_validation_and_readiness.ipynb
 public/
@@ -204,6 +220,7 @@ tests/
   assistant-service-test.ts
   gemini-explainer-grounding-test.ts
   gemini-fallback-test.ts
+.dockerignore
 .gitignore
 AGENTS.md
 CLAUDE.md
@@ -219,6 +236,837 @@ tsconfig.json
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="docs/BUILD_AND_ENVIRONMENT_VALIDATION.md">
+# Build and Environment Validation Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Validation scope: Clean clone of the currently committed `main` branch
+- Tested commit: `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`
+- Commit message: `Complete grounded assistant fallback validation`
+
+## 2. Environment Validation Results
+
+| Check | Result | Evidence |
+|---|---|---|
+| Clean clone | PASS | Clone completed successfully |
+| Git working tree | PASS | `git status --short --branch` showed no changes |
+| Dependency installation | PASS WITH WARNINGS | `npm ci` installed 405 packages |
+| Canonical data validation | PASS | 60 records and 20 columns |
+| Published data generation | PASS | 60 records published to JSON |
+| Production build | PASS | Next.js compilation and TypeScript checks completed |
+| ESLint | PASS | `npm run lint` completed without reported errors |
+| npm security audit | REVIEW REQUIRED | 9 vulnerabilities reported: 8 high and 1 critical |
+| Install-script approval | REVIEW REQUIRED | Four packages were listed by npm as awaiting install-script approval |
+
+## 3. Production Build
+Command:
+`npm.cmd run build --prefix "$env:TEMP\POC7-Phase3-CleanClone"`
+
+The build completed successfully using Next.js 16.3.4. Static pages were generated for `/` and `/data-intelligence`; `/api/assistant` was identified as a dynamic route.
+
+## 4. Lint
+Command:
+`npm.cmd run lint --prefix "$env:TEMP\POC7-Phase3-CleanClone"`
+
+ESLint completed without reporting errors.
+
+## 5. Security and Environment Caveats
+The dependency installation reported 9 vulnerabilities, comprising 8 high and 1 critical. The detailed advisory information has not been reviewed in this report. No claim is made that the dependencies are vulnerability-free.
+
+npm also reported four packages with install scripts awaiting approval. Their approval status and runtime impact require separate review.
+
+## 6. Scope Limitation
+These checks apply to the committed remote version at the tested commit. They do not validate uncommitted final-release changes, the final release commit, public deployment, or Docker runtime operation.
+
+## 7. Decision
+- Clean-clone production build: PASS
+- Clean-clone lint: PASS
+- Environment security review: PENDING
+- Final-release build validation: PENDING
+</file>
+
+<file path="docs/CLEAN_CLONE_VALIDATION_REPORT.md">
+# Phase 3 Clean-Clone Validation Report
+
+
+## Previously Verified
+- A clean clone was created from remote main at commit 8507f59316dd0a558383c5ec8db2dd1d46ed52e7.
+- Dependency installation completed successfully in that clone.
+- Lint and production build passed for that checkout.
+
+
+## Limitations
+- These results apply to the earlier commit, not the current uncommitted working tree.
+- Final clean-clone validation against the release commit has not been completed.
+- Final data and analytics regeneration, browser tests, assistant tests, and release-commit verification remain pending.
+
+## Certification Decision
+Final clean-clone validation is PENDING. This report does not certify the final release.
+</file>
+
+<file path="docs/DEPLOYMENT_VALIDATION_REPORT.md">
+# Phase 3 Deployment Validation Report
+
+## Current Status
+- Public deployment URL: NOT VERIFIED.
+- Local Docker image build: PASS.
+- Local Docker container startup: PASS.
+- Dashboard route (/): HTTP 200.
+- Data Intelligence route (/data-intelligence): HTTP 200.
+- Assistant API valid-question test: PASS.
+- Assistant response status: SUPPORTED.
+- Assistant metadata validation result: PASS.
+- Data package version: phase3-v2.
+- Public deployment smoke test: PENDING; no verified public URL is available.
+
+## Certification Decision
+Local Docker runtime validation has passed for the tested routes and assistant API.
+Public deployment validation remains PENDING. This report does not certify a public
+deployment. The assistant's deterministic answer is supported by approved evidence;
+the optional LLM explanation was unavailable during this test.
+</file>
+
+<file path="docs/FINAL_ANALYTICAL_REVALIDATION.md">
+# Final Analytical Revalidation Report
+
+## 1. Release Context
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+- Analytical track: Track A — Comparative Intelligence
+- Canonical dataset: `data/canonical/intelligence_data.csv`
+
+## 2. Revalidation Basis
+The existing `docs/ANALYTICAL_VALIDATION_REPORT.md` records successful independent reconstruction and comparison of Track A analytical results. The latest clean-clone production build also passed canonical data validation and publication.
+
+## 3. Analytical Results
+| Measure | Verified result |
+|---|---:|
+| Canonical records | 60 |
+| Canonical columns | 20 |
+| Source leads analysed | 30 |
+| Total observed lead value | 2,023,000.00 |
+| Average lead value | 67,433.33 |
+| Average days in stage | 13.10 |
+| Median days in stage | 10.00 |
+| Numerical or dimensional discrepancies in documented validation | 0 |
+
+## 4. Comparative Findings
+- Highest observed value by stage: Won — 949,000.00.
+- Highest observed value by product: Payments — 942,000.00.
+- Highest observed value by acquisition source: Website — 689,000.00.
+- Missing group values: 0 for stage, product, and source.
+- Weak-case items identified: 4.
+- Minimum group-size sensitivity threshold: 5 observations.
+- The documented validation reported stable rankings among groups retained after sensitivity filtering.
+
+## 5. Validation Evidence
+The existing analytical validation report documents PASS results for:
+- Canonical schema and data version.
+- Independent reconstruction of 30 analytical leads.
+- Stage, product, and source calculation accuracy.
+- Analytical dataset comparison.
+- Ranking stability and missing-group review.
+- Weak-case review.
+
+The reusable validation script is `data-science/scripts/validate_analytical_track.py`. Its historical execution is documented in `docs/ANALYTICAL_VALIDATION_REPORT.md`.
+
+## 6. Revalidation Status and Scope
+The latest clean-clone build passed canonical validation (60 records, 20 columns), published 60 records, and completed the production build successfully.
+
+This report consolidates existing analytical validation evidence. It does not claim that the analytical validation script was rerun during preparation of this document. The current final-release outputs must be rechecked before release approval.
+
+## 7. Limitations
+- The dataset is synthetic and represents 30 source leads.
+- Results are descriptive and comparative, not causal or predictive.
+- Some funnel-stage groups contain fewer than five leads.
+- Team and location are embedded in `text_value`, not dedicated analytical fields.
+- The available data is not a complete longitudinal time series.
+- Small-group findings require caution.
+
+## 8. Final Decision
+**Documented analytical validation: PASS.**
+
+**Final-release analytical revalidation: PENDING** until the latest release outputs are regenerated or checked and the validation script is executed against the intended final-release working tree.
+</file>
+
+<file path="docs/FINAL_ASSISTANT_VALIDATION.md">
+# Final Assistant Validation Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+
+## 2. Previously Verified Evidence
+- Assistant API fallback test: PASS.
+- Normal API route preserved the approved answer: PASS.
+- Simulated Gemini provider failure preserved the approved answer: PASS.
+- Evidence and limitations remained available during fallback: PASS.
+- Browser test suite: 36/36 PASS, including previously recorded assistant safety and grounding checks.
+- Production build: PASS.
+- ESLint: PASS.
+
+## 3. Grounding and Safety
+The documented assistant behavior preserves the approved analytical answer when Gemini explanation generation fails. Evidence references and limitations remain available. Unsupported or contradictory explanations are subject to grounding validation.
+
+## 4. Evidence and Limitations
+Previously recorded evidence includes:
+- `docs/ASSISTANT_ARCHITECTURE.md`
+- `docs/ASSISTANT_QUERY_CONTRACT.md`
+- `docs/GROUNDED_RESPONSE_CONTRACT.md`
+- `docs/GROUNDED_ASSISTANT_UAT.md`
+- `docs/GEMINI_INTEGRATION.md`
+- `docs/SUPPORTED_QUESTION_CATALOG.md`
+
+The underlying dataset is synthetic and the analytical outputs are descriptive, not predictive or causal. Assistant responses must retain those limitations.
+
+## 5. Final-Release Status
+The results above summarize previously recorded tests; they do not claim a new test run against the final release working tree.
+
+- Previously recorded assistant fallback tests: PASS.
+- Previously recorded browser suite: PASS.
+- Final-release assistant regression: PENDING.
+- Public deployment verification: NOT CONFIRMED.
+- Docker runtime validation: BLOCKED during earlier checks because Docker Engine was not running.
+
+## 6. Decision
+Previously documented assistant fallback and browser checks passed. Final release approval requires rerunning the relevant assistant tests against the final committed release.
+</file>
+
+<file path="docs/FINAL_AUTOMATED_TEST_REPORT.md">
+# Final Automated Test Report
+
+## Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Tested commit for clean-clone checks: `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`
+
+## Previously Recorded Results
+
+| Test | Result |
+|---|---|
+| Intelligence contract tests | PASS — 7/7 |
+| Browser tests | PASS — 36/36 |
+| Assistant API fallback tests | PASS |
+| ESLint | PASS |
+| Production build | PASS |
+| Canonical data validation | PASS — 60 records, 20 columns |
+| Data quality assessment | PASS — zero blocking issues |
+| Representativeness assessment | PASS — 8/8 core coverage checks |
+| Analytical track validation | PASS |
+
+## Clean-Clone Verification
+- Repository clone: PASS
+- Clean working tree: PASS
+- Dependency installation: PASS with warnings
+- Production build: PASS
+- ESLint: PASS
+- npm audit findings: 9 vulnerabilities reported (8 high, 1 critical); review required.
+- Four package install scripts were reported as awaiting approval.
+
+## Scope and Limitations
+These results are based on previously recorded test outputs. They do not establish that the full suite has been rerun against the final-release working tree.
+
+- Final-release automated test run: PENDING
+- Public deployment verification: NOT CONFIRMED
+- Docker runtime validation: BLOCKED during earlier checks because Docker Engine was not running.
+
+## Decision
+Previously recorded tests passed. Final release approval requires rerunning the required tests against the intended final committed release and reviewing the outstanding dependency security findings.
+</file>
+
+<file path="docs/FINAL_DATA_INTELLIGENCE_VALIDATION.md">
+# Final Data Intelligence Validation Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+
+## 2. Previously Verified Checks
+
+| Check | Previously recorded result |
+|---|---|
+| Canonical data validation | PASS — 60 records, 20 columns |
+| Intelligence contract tests | PASS — 7/7 |
+| Browser tests | PASS — 36/36 |
+| ESLint | PASS |
+| Production build | PASS |
+| Results JSON synchronization | Verified by matching hashes |
+| Summary JSON synchronization | Verified by matching hashes |
+| Manual Data Intelligence page check | PASS — fresh timestamp and validation status displayed |
+
+## 3. Data and Results
+The Data Intelligence page uses the canonical Phase 3 dataset and presents descriptive comparative results for stage, product, and acquisition source. The previously verified generated summary displayed 16 analytical results with validation status `PASS`.
+
+The analysis is descriptive, not predictive or causal. The dataset is synthetic and represents 30 source leads.
+
+## 4. Assistant and Evidence
+Previously recorded assistant checks included:
+- Approved answer preserved when the simulated Gemini provider failed.
+- Evidence and limitations remained available.
+- Prompt-injection and grounding checks passed in the browser suite.
+
+Supporting documentation:
+- `docs/DATA_INTELLIGENCE_TEST_EVIDENCE.md`
+- `docs/DATA_INTELLIGENCE_SELENIUM_EVIDENCE.md`
+- `docs/DATA_INTELLIGENCE_UAT.md`
+- `docs/GROUNDED_ASSISTANT_UAT.md`
+- `docs/INTELLIGENCE_OUTPUT_CONTRACT.md`
+
+## 5. Limitations
+- Small groups require cautious interpretation.
+- The data is synthetic.
+- The analysis does not establish causality or provide predictions.
+- Public deployment has not been verified.
+- Docker runtime validation was blocked because Docker Engine was not running during earlier checks.
+
+## 6. Final-Release Status
+The checks above summarize previously recorded evidence. They are not a claim that all checks were rerun against the final release working tree.
+
+- Previously recorded Data Intelligence checks: PASS
+- Final-release validation: PENDING
+- Public deployment verification: NOT CONFIRMED
+
+## 7. Decision
+The previously tested Data Intelligence page and assistant passed their documented checks. Final release approval requires revalidation after all release changes are committed.
+</file>
+
+<file path="docs/FINAL_OPERATIONAL_REGRESSION_REPORT.md">
+# Final Operational Regression Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Scope: Operational dashboard regression
+
+## 2. Previously Verified Manual Checks
+The following checks were reported as successful during local testing:
+- Operational dashboard loads.
+- Product filters update displayed records and metrics.
+- Reset Filters restores the default view.
+- CSV and JSON downloads complete.
+- Navigation from the Operational View to Data Intelligence works.
+- Browser back navigation works.
+- Data Intelligence page displays analytical results and validation metadata.
+
+## 3. Observed Dashboard Metrics
+The manually reviewed dashboard displayed:
+- Synthetic CRM records: 30
+- Active opportunities: 5
+- Wins: 10
+- Conversion rate: approximately 33.33%
+- Average stage age: 13.1 days
+- Won pipeline value: 949,000
+
+## 4. Presentation Note
+The displayed conversion rate was observed as `33.33333333333333%`. Consider rounding the displayed percentage for readability without changing the underlying calculation.
+
+## 5. Evidence and Scope
+Existing supporting documentation includes:
+- `docs/OPERATIONAL_PAGE_REGRESSION_EVIDENCE.md`
+- `docs/OPERATIONAL_PAGE_REGRESSION_REPORT.md`
+- `docs/DATA_INTELLIGENCE_UAT.md`
+- `docs/GROUNDED_ASSISTANT_UAT.md`
+
+The checks above reflect previously reported local testing. This document does not claim that a new full regression run was performed while preparing this report.
+
+## 6. Final-Release Status
+- Previously reported operational checks: PASS
+- Regression against final-release changes: PENDING
+- Public deployment verification: NOT CONFIRMED
+- Docker runtime validation: BLOCKED because Docker Engine was not running during earlier checks.
+
+## 7. Decision
+Operational regression has supporting historical evidence, but final-release regression approval remains pending until the final working tree is validated.
+</file>
+
+<file path="docs/PHASE3_COMPLETION_REPORT.md">
+# Phase 3 Completion Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3 — Grounded Data Assistant
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+
+## 2. Scope Delivered
+- Canonical data package with 60 records and 20 columns.
+- Data validation and publication pipeline.
+- Track A descriptive comparative analysis.
+- Data Intelligence page.
+- Grounded assistant API and fallback behavior.
+- Supporting analytical, quality, testing, and architecture documentation.
+
+## 3. Previously Recorded Validation Results
+- Canonical data validation: PASS.
+- Data quality assessment: PASS; zero blocking issues.
+- Representativeness assessment: PASS; 8/8 core coverage checks.
+- Analytical track validation: PASS.
+- Intelligence contract tests: 7/7 PASS.
+- Browser tests: 36/36 PASS.
+- Assistant API fallback tests: PASS.
+- ESLint: PASS.
+- Production build: PASS.
+- Clean-clone build and lint: PASS for commit `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`.
+
+## 4. Outstanding Items
+- Final-release tests against the intended final commit: PENDING.
+- Final evidence pack: INCOMPLETE.
+- Final handover guide: PENDING.
+- Final README review: PENDING.
+- Final Repomix generation after documentation changes: PENDING.
+- Final release commit and tag: PENDING.
+- Public deployment: NOT CONFIRMED.
+- Docker runtime validation: BLOCKED during earlier checks because Docker Engine was not running.
+- npm security review: PENDING; installation reported 9 vulnerabilities (8 high, 1 critical).
+
+## 5. Limitations
+The data is synthetic and represents 30 source leads. The analysis is descriptive and comparative, not causal or predictive. Small groups require cautious interpretation. The available data is not a complete longitudinal time series.
+
+## 6. Completion Decision
+Phase 3 implementation and several validation activities have supporting evidence. However, **final submission and release are not yet certified complete** because the outstanding items above remain unresolved.
+
+This report records previously verified evidence and does not claim that pending checks have passed.
+</file>
+
+<file path="docs/PHASE3_FINAL_ARCHITECTURE.md">
+# Phase 3 Final Architecture
+
+## 1. Project Overview
+POC-7 Lead Funnel Conversion Observatory — Phase 3 extends the existing operational dashboard with a canonical data foundation, descriptive analytical outputs, a Data Intelligence page, and a grounded assistant.
+
+## 2. Architecture Components
+
+### A. Source Data
+- Phase 2 source application: `src/data/crmData.ts`
+- Source sample: `data/source-sample/source_sample.csv`
+- The source dataset contains 30 source leads.
+
+### B. Canonical Data Foundation
+- Canonical dataset: `data/canonical/intelligence_data.csv`
+- Schema: `data/schema.json`
+- Manifest: `data/manifest.json`
+- Data version: `phase3-v2`
+- Canonical dataset size: 60 records and 20 columns.
+- Synthetic data status: confirmed.
+
+### C. Data Pipeline
+The pipeline scripts extract, sample, standardize, validate, and publish the canonical data:
+- `scripts/data_pipeline/extract_data.py`
+- `scripts/data_pipeline/sample_data.py`
+- `scripts/data_pipeline/standardize_data.py`
+- `scripts/data_pipeline/validate_data.py`
+- `scripts/data_pipeline/publish_data.py`
+
+The published JSON is written to `data/published/intelligence_data.json`.
+
+### D. Analytical Track
+Track A performs descriptive comparative analysis across:
+- Funnel stage
+- Product/category
+- Acquisition source/subcategory
+
+Relevant scripts and outputs are under `data-science/scripts/` and `data-science/outputs/`. The documented method version is `1.0.0`.
+
+### E. Application and Intelligence UI
+- Operational dashboard route: `/`
+- Data Intelligence route: `/data-intelligence`
+- Assistant API route: `/api/assistant`
+
+The application is built with Next.js. The production build previously completed successfully in both the working tree and the clean clone of the then-committed version.
+
+### F. Grounded Assistant
+The assistant uses the approved analytical results and evidence contract. Previously recorded fallback tests confirmed that the approved answer, evidence, and limitations were preserved when a simulated Gemini explanation failed.
+
+## 3. Validation and Quality Controls
+- Canonical data validation is part of the build pre-step.
+- Analytical readiness, quality, and representativeness assessments are implemented in `data-science/scripts/`.
+- Intelligence contract tests and browser tests provide automated checks.
+- Results remain descriptive and must not be presented as causal or predictive.
+
+## 4. Known Limitations
+- Data is synthetic and contains 30 source leads.
+- Small funnel-stage groups require caution.
+- Team and location are embedded in `text_value`, rather than dedicated analytical fields.
+- The available observations are not a complete longitudinal time series.
+- Public deployment has not been confirmed.
+- Docker runtime validation was blocked earlier because Docker Engine was not running.
+
+## 5. Release Status
+This document describes the known architecture and previously verified behavior. It does not certify that the final release has been deployed or fully validated.
+
+- Architecture documentation: created
+- Final-release regression: pending
+- Final release commit and tag: pending
+</file>
+
+<file path="docs/PHASE3_FINAL_UAT.md">
+# Phase 3 Final User Acceptance Testing (UAT)
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Data version: `phase3-v2`
+
+## 2. Previously Verified User Journeys
+
+| User journey | Recorded result |
+|---|---|
+| Operational dashboard loads | PASS |
+| Product filter updates records and metrics | PASS |
+| Reset Filters restores default view | PASS |
+| CSV download completes | PASS |
+| JSON download completes | PASS |
+| Navigate to Data Intelligence | PASS |
+| Browser back navigation | PASS |
+| Data Intelligence page displays results and validation metadata | PASS |
+| Assistant responds and presents evidence and limitations | PASS |
+
+These results reflect previously reported local manual checks.
+
+## 3. Previously Observed Dashboard Metrics
+- Synthetic CRM records: 30
+- Active opportunities: 5
+- Wins: 10
+- Conversion rate: approximately 33.33%
+- Average stage age: 13.1 days
+- Won pipeline value: 949,000
+
+## 4. Usability Note
+The conversion rate was displayed as `33.33333333333333%`. Consider rounding the displayed percentage for readability while retaining the underlying calculation.
+
+## 5. Limitations
+- Dataset is synthetic.
+- Analytical outputs are descriptive, not predictive or causal.
+- Small groups require cautious interpretation.
+- Public deployment has not been confirmed.
+- Docker runtime validation was blocked during earlier checks because Docker Engine was not running.
+
+## 6. Final-Release Acceptance Status
+- Previously reported local UAT checks: PASS
+- New UAT run against final-release changes: PENDING
+- Public deployment UAT: NOT CONFIRMED
+
+## 7. Decision
+Previously reported user journeys passed local checks. Final acceptance remains pending until the required UAT journeys are rerun against the final committed release.
+</file>
+
+<file path="docs/PHASE3_HANDOVER_GUIDE.md">
+# Phase 3 Handover Guide
+
+## Project
+POC-7 Lead Funnel Conversion Observatory - Phase 3.
+
+## Prerequisites
+- Node.js and npm
+- Python
+- Git
+- Docker Desktop if container validation is required
+
+## Install dependencies
+npm.cmd ci
+
+## Data validation
+npm.cmd run data:validate
+Expected: 60 canonical records and 20 columns.
+
+## Analytical validation
+python .\data-science\scripts\validate_analytical_track.py
+Expected: OVERALL VALIDATION: PASS.
+
+## Automated checks
+npm.cmd run lint
+npm.cmd run test:intelligence
+npm.cmd run build
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+
+## Important paths
+- Canonical data: data\canonical\intelligence_data.csv
+- Manifest: data\manifest.json
+- Published data: data\published\intelligence_data.json
+- Analytical outputs: data-science\outputs\
+- Tests: tests\
+- Documentation: docs\
+- Evidence: final-evidence\
+
+## Limitations
+- The dataset is synthetic.
+- Track A independently analyzes 30 source leads.
+- Three stage groups are below the sensitivity threshold of five.
+- Results are descriptive, not predictive or causal.
+
+## Security
+- Never commit .env.local, API keys, tokens, or secrets.
+- Review dependency audit findings before release.
+- Do not claim Docker validation passed unless Docker checks succeed.
+
+## Final release checklist
+- [ ] Rerun data and analytical validation.
+- [ ] Rerun lint, intelligence tests, build, and browser tests.
+- [ ] Review README and release documents.
+- [ ] Review evidence for completeness and secrets.
+- [ ] Regenerate repomix-output.xml after final changes.
+- [ ] Review Git status and the final diff.
+- [ ] Commit approved changes.
+- [ ] Create and verify the release tag.
+- [ ] Verify public deployment separately.
+- [ ] Record blocked checks and security findings.
+
+## Release status
+This checklist is not proof that the release is complete. Verify each item using evidence.
+</file>
+
+<file path="docs/PHASE3_RELEASE_MANIFEST.md">
+# Phase 3 Release Manifest
+
+## Release Identity
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: 3 — Grounded Data Assistant
+- Data package version: `phase3-v2`
+- Manifest status: `IN PROGRESS — RELEASE NOT CERTIFIED`
+- Git repository: https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3
+
+## Canonical Data Package
+- Source application: Phase 2 Lead Funnel Conversion Observatory
+- Source path: `src/data/crmData.ts`
+- Source sample: `data/source-sample/source_sample.csv`
+- Source records: 30
+- Sampling method: Full retention
+- Records retained: 30
+- Records removed: 0
+- Random sampling: No
+- Canonical dataset: `data/canonical/intelligence_data.csv`
+- Canonical records: 60
+- Canonical columns: 20
+- Schema: `data/schema.json`
+- Published dataset: `data/published/intelligence_data.json`
+- Quality profile: `data/quality/data_profile.json`
+- Validation report: `data/quality/validation_report.json`
+- Synthetic status: Confirmed
+
+## Data Pipeline
+1. Extract: `scripts/data_pipeline/extract_data.py`
+2. Sample: `scripts/data_pipeline/sample_data.py`
+3. Standardize: `scripts/data_pipeline/standardize_data.py`
+4. Validate: `scripts/data_pipeline/validate_data.py`
+5. Publish: `scripts/data_pipeline/publish_data.py`
+
+## Verified Validation Evidence
+- Canonical data validation: PASS
+- Data quality assessment: PASS; zero blocking issues
+- Representativeness assessment: PASS; 8/8 core coverage checks
+- Analytical readiness: PASS
+- Analytical track validation: PASS
+- Intelligence contract tests: 7/7 PASS
+- Browser tests: 36/36 PASS
+- ESLint: PASS
+- Production build: PASS
+- Assistant API fallback tests: PASS
+- Manual dashboard, filters, downloads, navigation, and assistant checks: verified during local testing
+
+## Release Limitations and Outstanding Checks
+- Public deployment: Not verified; no confirmed public deployment URL.
+- Docker image build: PASS for `lead-funnel-observatory-phase3:release-candidate`.
+- Docker container startup: PASS; container remained running during validation.
+- Dashboard and Data Intelligence routes: HTTP 200.
+- Assistant API valid-question test: PASS; response status `SUPPORTED`, metadata validation `PASS`.
+- Docker runtime evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- Final clean-clone validation: Not yet documented.
+- Final reports, handover guide, and initial evidence files: Present; final evidence review and clean-clone validation remain pending.
+- Final release commit and tag: Not yet created.
+
+## Release Decision
+This manifest records the known Phase 3 package identity and validation evidence. It does **not** certify the project as fully released. Final release approval requires completion and verification of the remaining checks and documentation.
+
+## Latest Known Commit at Manifest Preparation
+- Commit: `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`
+- Message: `Complete grounded assistant fallback validation`
+
+The commit above is the latest known commit at preparation time, not the final release commit.
+
+
+## Post-Dependency-Update Validation — 2026-10-16
+
+### Updated Dependencies
+- Next.js: 16.4.2
+- eslint-config-next: 16.4.2
+- Production dependency audit: PASS; zero reported vulnerabilities.
+- Full development dependency audit: OUTSTANDING; high-severity findings remain in the ESLint dependency chain. See npm audit output before release approval.
+
+### Post-Update Automated Checks
+- Canonical data validation: PASS.
+- Intelligence contract tests: 7/7 PASS.
+- Grounded assistant service tests: 12/12 PASS.
+- Gemini fallback tests: PASS, including missing key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
+- Assistant API fallback tests: PASS.
+- ESLint: PASS.
+- Production build: PASS.
+- Browser regression: first run 33 passed and 3 timed out; subsequent run 36/36 passed in 28.1 seconds. Both results are retained in the validation history.
+
+### Fresh Docker Validation
+- Image build using the updated dependencies: PASS.
+- Fresh container startup: PASS.
+- Homepage and Data Intelligence page: HTTP 200.
+- Supported assistant question: PASS; deterministic response returned `SUPPORTED`.
+- Missing-question handling: PASS; HTTP 400 with `MISSING_PARAMETER`.
+- Evidence file: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+
+### Remaining Release Gates
+- Full development dependency audit findings: review and document accepted risk or resolve without breaking the supported dependency set.
+- Clean-clone validation of the final proposed commit: PENDING.
+- Public deployment URL and remote smoke test: NOT VERIFIED.
+- Final release commit and tag: NOT CREATED.
+- Final release approval: PENDING.
+
+The successful local tests and Docker checks do not certify a public deployment or a final release. Manifest status remains `IN PROGRESS — RELEASE NOT CERTIFIED`.
+
+## Development Dependency Security Assessment — 2026-10-16
+
+- Production audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
+- Full development audit: OUTSTANDING; npm reports five high-severity findings associated with `braces@3.0.3`.
+- Dependency path: `eslint-config-next@16.4.2` -> `@next/eslint-plugin-next@16.4.2` -> `fast-glob@3.3.1` -> `micromatch@4.0.8` -> `braces@3.0.3`.
+- Advisory: GHSA-vfj7-8cjw-p6xm; stack-exhaustion denial of service through deeply nested patterns.
+- The advisory currently lists no patched version.
+- `npm audit fix --force` proposes a breaking downgrade to `eslint-config-next@14.2.35`; this was not applied.
+- No unofficial fork or unverified override was applied.
+- Disposition: UNRESOLVED; release owner review required. Do not represent the full dependency audit as clean.
+</file>
+
+<file path="final-evidence/ASSISTANT_TEST_VALIDATION.md">
+# Assistant Test Validation
+
+## Grounded Assistant Service
+Status: PASS
+- 12 service checks passed.
+- Supported answers and approved evidence were verified.
+- Unsupported prediction and prompt-injection requests were rejected.
+- Invalid inputs and configured question-length limits were handled safely.
+
+## Gemini Fallback
+Status: PASS
+- Missing API key preserves approved results.
+- HTTP 429 quota failure preserves approved results.
+- HTTP 503 provider failure preserves approved results.
+- HTTP 503 retry behavior was verified.
+- HTTP 504 gateway failure preserves approved results.
+
+## Assistant API Fallback
+Status: PASS
+- Normal API route preserves the approved answer.
+- Simulated Gemini failure preserves the answer.
+- Evidence and limitations remain available.
+
+## Related Browser Validation
+- Playwright run 1: 36/36 passed.
+- Playwright run 2: 36/36 passed.
+- A Gemini timeout was logged during browser tests; deterministic fallback tests passed.
+
+## Scope
+These are local test results. They do not certify public deployment or final clean-clone validation.
+
+## Post-Dependency-Update Validation — 2026-10-16
+
+### Grounded Assistant Service
+Status: PASS
+- 12/12 service checks passed after the dependency update.
+
+### Gemini Fallback
+Status: PASS
+- Missing API key, HTTP 429, HTTP 503 with one retry, and HTTP 504 cases passed.
+
+### Assistant API Fallback
+Status: PASS
+- Normal API response passed.
+- Simulated Gemini failure preserved the approved answer.
+- Evidence and limitations remained available.
+
+### Browser Regression
+- First post-update run: 33 passed; 3 tests timed out.
+- Second post-update run: 36/36 passed in 28.1 seconds.
+- The successful rerun covered numeric fidelity, mobile responsiveness, supported answers, and deterministic fallback.
+- The initial timeouts are retained in the validation history rather than omitted.
+
+### Release Scope
+These results confirm local validation only. Public deployment, fresh Docker validation after the dependency update, and clean-clone validation remain separate release checks.
+</file>
+
+<file path="final-evidence/DOCKER_RUNTIME_VALIDATION.md">
+# Docker Runtime Validation
+
+Date: 2026-10-16 14:57:50 +05:30
+Image: lead-funnel-observatory-phase3:release-candidate
+Container: lead-funnel-release-test
+Container ID: ecf823bc6ea8
+
+## Results
+- Docker image build: PASS
+- Container startup: PASS
+- Dashboard route (/): HTTP 200
+- Data Intelligence route (/data-intelligence): HTTP 200
+- Assistant API valid-question test: PASS
+- Assistant response status: SUPPORTED
+- Assistant metadata validation_result: PASS
+- Data version: phase3-v2
+- Highest-ranked product group: Payments
+- Recorded total lead value: 942000
+- LLM explanation: UNAVAILABLE; deterministic response succeeded
+
+## Limitation
+The assistant result is descriptive and based on the available synthetic sample.
+This report records local Docker validation only; it does not establish public deployment
+or clean-clone validation.
+
+## Post-Dependency-Update Docker Validation — 2026-10-16
+
+### Image Build
+Status: PASS
+- Image tag: lead-funnel-observatory-phase3:release-candidate
+- Image manifest digest: sha256:00af341076a96917ef7aab95cea3f7258064ff657ce8a53d1b0bb4f2d26d3f6c
+- Image configuration digest: sha256:804ed3eeb66c1f978b076b5a32b9a06a34a2b05d27df68c29a948b4aebc4c24f
+- Next.js version: 16.4.2
+
+### Fresh Container Runtime
+Status: PASS
+- Container: lead-funnel-release-test-v2
+- Container ID: a853b684d0137dd667562025fde36b4c279f3ca3753e2cdb3fcaa0863bd49f6c
+- Port mapping: 3002 -> 3000
+- Server startup: Ready in 316 ms
+- Homepage: HTTP 200
+- Data Intelligence page: HTTP 200
+
+### Assistant API
+Status: PASS
+- Supported question returned status SUPPORTED.
+- Payments was identified as the highest-ranked product group for total lead value.
+- Reported total lead value: 942000 across 12 leads.
+- Evidence, limitation, data version phase3-v2, method version 1.0.0, and VALIDATED_DESCRIPTIVE quality status were present.
+- Gemini explanation was unavailable; deterministic answer remained available.
+- Missing question returned HTTP 400 with status MISSING_PARAMETER.
+
+### Scope
+These are local Docker validation results. Public deployment and clean-clone validation remain outstanding.
+</file>
+
+<file path=".dockerignore">
+node_modules
+.next
+.git
+.git/**
+repomix-output.xml
+final-evidence/
+*.log
+.env
+.env.*
+!.env.example
+</file>
 
 <file path="assistant/core/explanation-grounding.ts">
 export type ExplanationGroundingInput = {
@@ -15226,7 +16074,7 @@ export default function StageAging({ data }: StageAgingProps) {
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T14:51:04.757150+00:00",
+  "generated_at": "2026-10-15T09:39:02.480846+00:00",
   "result_count": 16,
   "results": [
     {
@@ -15250,7 +16098,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -15275,7 +16123,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -15299,7 +16147,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Available temporal information is descriptive and does not constitute a full longitudinal time series."
     },
@@ -15327,7 +16175,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15355,7 +16203,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15383,7 +16231,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15411,7 +16259,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15439,7 +16287,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15467,7 +16315,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -15495,7 +16343,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15523,7 +16371,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15551,7 +16399,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15579,7 +16427,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15607,7 +16455,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15635,7 +16483,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -15663,7 +16511,7 @@ export default function StageAging({ data }: StageAgingProps) {
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     }
@@ -15720,7 +16568,7 @@ export default function StageAging({ data }: StageAgingProps) {
     "The available temporal information does not constitute a full longitudinal time series.",
     "Small stage groups require cautious interpretation."
   ],
-  "generated_at": "2026-10-05T14:51:04.757150+00:00"
+  "generated_at": "2026-10-15T09:39:02.480846+00:00"
 }
 </file>
 
@@ -17372,86 +18220,6 @@ try {
   console.error(error.message);
   process.exit(1);
 }
-</file>
-
-<file path="tests/assistant-api-fallback-test.ts">
-import assert from "node:assert/strict";
-import {
-  createPostHandler,
-  POST,
-} from "../src/app/api/assistant/route";
-import { answerQuestion } from "../assistant/core/assistant-service";
-import { explainWithGemini } from "../assistant/core/gemini-explainer";
-
-async function main() {
-  const question = "Which product has the highest lead value?";
-  const expected = answerQuestion(question);
-
-  // First, check the normal API route.
-  const normalRequest = new Request(
-    "http://localhost/api/assistant",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    },
-  );
-
-  const normalResponse = await POST(normalRequest);
-  const normalResult = await normalResponse.json();
-
-  assert.equal(normalResponse.status, 200);
-  assert.equal(normalResult.status, "SUPPORTED");
-  assert.equal(normalResult.answer, expected.answer);
-  assert.deepEqual(
-    normalResult.evidence_references,
-    expected.evidence_references,
-  );
-
-  // Now simulate Gemini failing inside the actual API route.
-  const fallbackHandler = createPostHandler({
-    answerQuestion,
-    explainWithGemini: (input) =>
-      explainWithGemini(input, {
-        generateContent: async () => {
-          throw new Error("Mock Gemini provider error: HTTP 429");
-        },
-      }),
-  });
-
-  const fallbackRequest = new Request(
-    "http://localhost/api/assistant",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    },
-  );
-
-  const fallbackResponse = await fallbackHandler(fallbackRequest);
-  const fallbackResult = await fallbackResponse.json();
-
-  assert.equal(fallbackResponse.status, 200);
-  assert.equal(fallbackResult.status, "SUPPORTED");
-  assert.equal(fallbackResult.answer, expected.answer);
-  assert.deepEqual(
-    fallbackResult.evidence_references,
-    expected.evidence_references,
-  );
-  assert.equal(fallbackResult.explanation, null);
-  assert.equal(fallbackResult.explanation_status, "UNAVAILABLE");
-  assert.equal(fallbackResult.limitation, expected.limitation);
-
-  console.log("PASS: Normal API route preserves the approved answer.");
-  console.log("PASS: Simulated Gemini failure preserves the answer.");
-  console.log("PASS: Evidence and limitations remain available.");
-  console.log("ALL API FALLBACK TESTS PASSED.");
-}
-
-main().catch((error) => {
-  console.error("API fallback test failed:", error);
-  process.exitCode = 1;
-});
 </file>
 
 <file path="tests/gemini-explainer-grounding-test.ts">
@@ -19828,7 +20596,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T14:51:04.757150+00:00",
+  "generated_at": "2026-10-15T09:39:02.480846+00:00",
   "result_count": 16,
   "results": [
     {
@@ -19852,7 +20620,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -19877,7 +20645,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Synthetic sample; descriptive result only."
     },
@@ -19901,7 +20669,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Available temporal information is descriptive and does not constitute a full longitudinal time series."
     },
@@ -19929,7 +20697,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -19957,7 +20725,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -19985,7 +20753,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -20013,7 +20781,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -20041,7 +20809,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -20069,7 +20837,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample; small stage groups require caution."
     },
@@ -20097,7 +20865,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20125,7 +20893,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20153,7 +20921,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20181,7 +20949,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20209,7 +20977,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20237,7 +21005,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     },
@@ -20265,7 +21033,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
       },
       "method_version": "1.0.0",
       "data_version": "phase3-v2",
-      "generated_at": "2026-10-05T14:51:04.757150+00:00",
+      "generated_at": "2026-10-15T09:39:02.480846+00:00",
       "quality_status": "VALIDATED_DESCRIPTIVE",
       "limitation": "Descriptive comparison within the available synthetic sample."
     }
@@ -20322,7 +21090,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
     "The available temporal information does not constitute a full longitudinal time series.",
     "Small stage groups require cautious interpretation."
   ],
-  "generated_at": "2026-10-05T14:51:04.757150+00:00"
+  "generated_at": "2026-10-15T09:39:02.480846+00:00"
 }
 </file>
 
@@ -20608,7 +21376,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T14:51:03.669834+00:00",
+  "generated_at": "2026-10-15T14:43:51.718965+00:00",
   "baseline": {
     "lead_count": 30,
     "total_lead_value": 2023000.0,
@@ -20814,7 +21582,7 @@ L030_days_in_stage,crm_lead_metric,2026-03-20,L030,,,Security,Partner,Won,Won,da
   "approved_track": "Track A - Comparative Intelligence",
   "data_version": "phase3-v2",
   "method_version": "1.0.0",
-  "generated_at": "2026-10-05T14:51:03.672657+00:00",
+  "generated_at": "2026-10-15T14:43:51.722114+00:00",
   "minimum_group_size_sensitivity": 5,
   "weak_cases": [
     {
@@ -25752,6 +26520,86 @@ console.log(
 );
 </file>
 
+<file path="tests/assistant-api-fallback-test.ts">
+import assert from "node:assert/strict";
+import {
+  createPostHandler,
+  POST,
+} from "../src/app/api/assistant/route";
+import { answerQuestion } from "../assistant/core/assistant-service";
+import { explainWithGemini } from "../assistant/core/gemini-explainer";
+
+async function main() {
+  const question = "Which product has the highest lead value?";
+  const expected = answerQuestion(question);
+
+  // First, check the normal API route.
+  const normalRequest = new Request(
+    "http://localhost/api/assistant",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    },
+  );
+
+  const normalResponse = await POST(normalRequest);
+  const normalResult = await normalResponse.json();
+
+  assert.equal(normalResponse.status, 200);
+  assert.equal(normalResult.status, "SUPPORTED");
+  assert.equal(normalResult.answer, expected.answer);
+  assert.deepEqual(
+    normalResult.evidence_references,
+    expected.evidence_references,
+  );
+
+  // Now simulate Gemini failing inside the actual API route.
+  const fallbackHandler = createPostHandler({
+    answerQuestion,
+    explainWithGemini: (input) =>
+      explainWithGemini(input, {
+        generateContent: async () => {
+          throw new Error("Mock Gemini provider error: HTTP 429");
+        },
+      }),
+  });
+
+  const fallbackRequest = new Request(
+    "http://localhost/api/assistant",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    },
+  );
+
+  const fallbackResponse = await fallbackHandler(fallbackRequest);
+  const fallbackResult = await fallbackResponse.json();
+
+  assert.equal(fallbackResponse.status, 200);
+  assert.equal(fallbackResult.status, "SUPPORTED");
+  assert.equal(fallbackResult.answer, expected.answer);
+  assert.deepEqual(
+    fallbackResult.evidence_references,
+    expected.evidence_references,
+  );
+  assert.equal(fallbackResult.explanation, null);
+  assert.equal(fallbackResult.explanation_status, "UNAVAILABLE");
+  assert.equal(fallbackResult.limitation, expected.limitation);
+
+  console.log("PASS: Normal API route preserves the approved answer.");
+  console.log("PASS: Simulated Gemini failure preserves the answer.");
+  console.log("PASS: Evidence and limitations remain available.");
+  console.log("ALL API FALLBACK TESTS PASSED.");
+}
+
+main().catch((error) => {
+  console.error("API fallback test failed:", error);
+  process.exitCode = 1;
+});
+</file>
+
 <file path="tests/assistant-service-test.ts">
 import assert from "node:assert/strict";
 
@@ -27354,11 +28202,11 @@ export async function explainWithGemini(
     "parse_success_rate": 100.0
   },
   "numeric": {
-    "longitude": {
+    "latitude": {
       "non_null_count": 0,
       "invalid_count": 0
     },
-    "latitude": {
+    "longitude": {
       "non_null_count": 0,
       "invalid_count": 0
     },
@@ -29816,30 +30664,68 @@ export default defineConfig({
 <file path="README.md">
 # POC-7 Lead Funnel Conversion Observatory - Phase 3
 
-## Canonical Data Foundation
+## Overview
+Phase 3 adds a canonical data foundation, analytical validation, a Data Intelligence dashboard, and a grounded assistant.
 
-Phase 3 establishes a controlled, standardized, local canonical data package for the Lead Funnel Conversion Observatory.
+## Application Capabilities
+- CRM dashboard with lead records, filters, navigation, and CSV/JSON exports.
+- Data Intelligence page with analytical results, evidence, methodology, and limitations.
+- Grounded assistant API with fallback handling when Gemini explanations are unavailable.
+- Synthetic data only; findings are descriptive, not causal or predictive.
 
-The Phase 2 application is preserved in this repository while the Phase 3 data foundation is added for future analysis.
+## Data and Analytics
+- Canonical dataset: data/canonical/intelligence_data.csv
+- Dataset version: phase3-v2
+- Canonical dataset size: 60 records and 20 columns.
+- Independent source-lead analysis: 30 leads.
+- Analytical outputs: data-science/outputs/
+- Analytical report: docs/ANALYTICAL_VALIDATION_REPORT.md
 
-## Phase 2 Application
+## Application Routes
+- / — CRM dashboard
+- /data-intelligence — Data Intelligence page
+- /api/assistant — assistant API
 
-The existing Phase 2 dashboard is preserved from the original project.
+## Setup and Validation
+Run from the repository root:
+```powershell
+npm.cmd ci
+npm.cmd run data:validate
+python .\data-science\scripts\run_analytical_track.py
+python .\data-science\scripts\validate_analytical_track.py
+npm.cmd run test:intelligence
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+npx.cmd tsx .\tests\assistant-api-fallback-test.ts
+```
 
-The application was tested locally after the Phase 3 data-package work:
+## Documentation
+- docs/PHASE3_RELEASE_MANIFEST.md — release details and status
+- docs/FINAL_ANALYTICAL_REVALIDATION.md — analytical revalidation
+- docs/BUILD_AND_ENVIRONMENT_VALIDATION.md — build and environment checks
+- docs/FINAL_OPERATIONAL_REGRESSION_REPORT.md — operational regression
+- docs/FINAL_DATA_INTELLIGENCE_VALIDATION.md — Data Intelligence checks
+- docs/FINAL_ASSISTANT_VALIDATION.md — assistant validation
+- docs/FINAL_AUTOMATED_TEST_REPORT.md — automated tests
+- docs/PHASE3_FINAL_UAT.md — user acceptance testing
+- docs/PHASE3_HANDOVER_GUIDE.md — handover instructions
 
-- Production build: successful
-- Development server: successful
-- Dashboard: visible
-- Dashboard filter interaction: working
-- Browser console: no red errors observed
+## Limitations
+- The dataset is synthetic and contains 30 source leads.
+- Small stage groups require cautious interpretation.
+- Findings describe the available data; they do not establish causation or predict future outcomes.
 
-## Source Data
+## Deployment Status
+Public deployment has not been verified. Certification remains pending until deployment evidence, final clean-clone validation, the evidence pack, and release tag are verified.
 
-The current Phase 2 CRM data source is:
-
-```text
-src/data/crmData.ts
+## Release Checklist
+- [ ] Final clean-clone validation completed against the release commit.
+- [ ] Required evidence and screenshots reviewed.
+- [ ] Deployment URL verified, or deployment limitation explicitly accepted.
+- [ ] Final Repomix generated after final documentation and evidence changes.
+- [ ] Release manifest SHA and release tag match.
+- [ ] Final certification decision recorded.
 </file>
 
 <file path="docs/GROUNDED_ASSISTANT_UAT.md">
@@ -30470,7 +31356,7 @@ export const POST = createPostHandler();
   "dependencies": {
     "@google/genai": "^2.28.0",
     "echarts": "^6.1.0",
-    "next": "16.3.4",
+    "next": "^16.4.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
@@ -30481,7 +31367,7 @@ export const POST = createPostHandler();
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "^16.4.2",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5"

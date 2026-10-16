@@ -143,11 +143,11 @@
     "parse_success_rate": 100.0
   },
   "numeric": {
-    "longitude": {
+    "latitude": {
       "non_null_count": 0,
       "invalid_count": 0
     },
-    "latitude": {
+    "longitude": {
       "non_null_count": 0,
       "invalid_count": 0
     },

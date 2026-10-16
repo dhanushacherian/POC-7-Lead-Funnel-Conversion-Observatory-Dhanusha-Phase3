@@ -1,0 +1,10 @@
+﻿node_modules
+.next
+.git
+.git/**
+repomix-output.xml
+final-evidence/
+*.log
+.env
+.env.*
+!.env.example
