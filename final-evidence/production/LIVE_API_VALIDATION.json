@@ -1,0 +1,40 @@
+﻿
+{
+  "project": "POC-7 Lead Funnel Conversion Observatory",
+  "phase": 3,
+  "environment": "Render production",
+  "application_url": "https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com",
+  "deployed_commit": "aace1f8",
+  "deployment_status": "LIVE",
+  "tests": [
+    {
+      "name": "Supported product comparison",
+      "request": "Which product has the highest lead value?",
+      "result": "PASS",
+      "http_status": 200,
+      "assistant_status": "SUPPORTED",
+      "finding": "Payments; total lead value 942000; 12 leads",
+      "data_version": "phase2-v2",
+      "method_version": "1.0.0",
+      "quality_status": "VALIDATED_DESCRIPTIVE",
+      "limitation": "Descriptive comparison within the available synthetic sample.",
+      "note": "Gemini explanation was unavailable; deterministic answer and evidence were returned."
+    },
+    {
+      "name": "Out-of-scope question",
+      "request": "Tell me the weather in Paris.",
+      "result": "PASS",
+      "http_status": 200,
+      "assistant_status": "OUT_OF_SCOPE",
+      "explanation_status": "UNAVAILABLE",
+      "llm_enabled": false,
+      "finding": "No evidence references returned; unsupported question rejected."
+    }
+  ],
+  "notes": [
+    "The API endpoint expects POST requests; a browser GET returned HTTP 405 as expected.",
+    "The metadata regression fix was deployed in commit aace1f8 and verified against the live production API.",
+    "The production dependency audit reported zero vulnerabilities; five high-severity development dependency findings remain unresolved."
+  ],
+  "certification_status": "PENDING"
+}
