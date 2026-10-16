@@ -11,7 +11,7 @@ async function main() {
   const question = "Which product has the highest lead value?";
   const expected = answerQuestion(question);
 
-  // First, check the normal API route.
+  // Test 1: Normal API route.
   const normalRequest = new Request(
     "http://localhost/api/assistant",
     {
@@ -32,7 +32,7 @@ async function main() {
     expected.evidence_references,
   );
 
-  // Now simulate Gemini failing inside the actual API route.
+  // Test 2: Gemini failure must preserve the deterministic answer.
   const fallbackHandler = createPostHandler({
     answerQuestion,
     explainWithGemini: (input) =>
@@ -65,10 +65,36 @@ async function main() {
   assert.equal(fallbackResult.explanation, null);
   assert.equal(fallbackResult.explanation_status, "UNAVAILABLE");
   assert.equal(fallbackResult.limitation, expected.limitation);
+  assert.equal(fallbackResult.metadata.llm_enabled, false);
+
+  // Test 3: Out-of-scope questions must not claim Gemini was used.
+  const outOfScopeRequest = new Request(
+    "http://localhost/api/assistant",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question: "Tell me the weather in Paris.",
+      }),
+    },
+  );
+
+  const outOfScopeResponse = await POST(outOfScopeRequest);
+  const outOfScopeResult = await outOfScopeResponse.json();
+
+  assert.equal(outOfScopeResponse.status, 200);
+  assert.equal(outOfScopeResult.status, "OUT_OF_SCOPE");
+  assert.equal(outOfScopeResult.metadata.llm_enabled, false);
+  assert.equal(outOfScopeResult.explanation, null);
+  assert.equal(
+    outOfScopeResult.explanation_status,
+    "UNAVAILABLE",
+  );
 
   console.log("PASS: Normal API route preserves the approved answer.");
-  console.log("PASS: Simulated Gemini failure preserves the answer.");
-  console.log("PASS: Evidence and limitations remain available.");
+  console.log("PASS: Gemini failure preserves the answer and evidence.");
+  console.log("PASS: Gemini failure reports llm_enabled as false.");
+  console.log("PASS: Out-of-scope response reports llm_enabled as false.");
   console.log("ALL API FALLBACK TESTS PASSED.");
 }
 

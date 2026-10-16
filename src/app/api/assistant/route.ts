@@ -78,6 +78,12 @@ export function createPostHandler(
         response.explanation_status = gemini.explanation_status;
       }
 
+      // Gemini is only attempted for supported questions with evidence.
+      // Other response statuses must not claim Gemini was used.
+      if (response.status !== "SUPPORTED") {
+        response.metadata.llm_enabled = false;
+      }
+
       return NextResponse.json(response, {
         status: response.status === "UNAVAILABLE" ? 503 : 200,
       });
