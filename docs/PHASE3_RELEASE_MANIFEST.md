@@ -47,12 +47,13 @@
 - Grounded assistant service tests: 12/12 PASS.
 - Gemini fallback tests: PASS, including missing API key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
 - Assistant API fallback tests: PASS.
-- Browser tests: 36/36 PASS.
+- Browser tests: 36/36 PASS in the latest clean-clone run.
 - ESLint: PASS.
 - Production build: PASS.
 - Production dependency audit: PASS; zero reported vulnerabilities.
 - Manual dashboard, filters, downloads, navigation, and assistant checks: verified during local testing.
-- Latest-commit clean-clone validation: PENDING.
+- Latest-commit clean-clone validation: PASS against `b0582876eba75589cdac5aa7279efd9d7f213099`.
+- Clean-clone validation report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`; report committed in `aa6544b`.
 
 ## Public Deployment and Production Evidence
 
@@ -86,10 +87,11 @@
 - Repository: `https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3`
 - Latest production-metadata fix commit: `aace1f8`.
 - Production evidence commit: `40a3192` — `Record production metadata fix verification`.
-- Working tree was reported clean and `main` was synchronized with `origin/main` after the evidence commit.
-- Earlier clean-clone validation: PASS against commit `fe7bbb52bf754cfceb226c818621cab505bb0160`.
-- Earlier clean-clone report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
-- Clean-clone validation against the latest repository commit: PENDING.
+- Clean-clone report commit: `aa6544b` — `Update clean-clone validation report for latest commit`.
+- Clean-clone validation target: `b0582876eba75589cdac5aa7279efd9d7f213099`.
+- Clean-clone validation report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
+- Clean-clone report confirms data validation, intelligence tests, lint, build, assistant tests, fallback tests, API fallback tests, and browser tests passed against the target commit.
+- The report-only commit `aa6544b` was made after that validation target; the code and dependencies were not changed by that report-only commit.
 - Final evidence and handover review: PENDING.
 - Final Repomix generation: PENDING.
 - Final release commit and tag: NOT CREATED.
@@ -112,7 +114,7 @@
 - Assistant API fallback tests: PASS.
 - ESLint: PASS.
 - Production build: PASS.
-- Browser regression: a later run passed 36/36 tests. An earlier run had 33 passes and 3 timeouts; both results remain part of the validation history.
+- Browser regression: the latest clean-clone run passed 36/36 tests. An earlier run had 33 passes and 3 timeouts; both results remain part of the validation history.
 
 ## Development Dependency Security Assessment — 2026-10-16
 
@@ -129,17 +131,16 @@
 ## Remaining Release Gates
 
 1. Obtain and record the release owner's security-risk disposition for the five high-severity development-dependency findings, or resolve them using a verified compatible dependency update.
-2. Run clean-clone validation against the latest repository commit and update `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
-3. Review production, Docker, assistant, browser, and other required evidence against the Post #6 handover requirements.
-4. Complete and commit any remaining documentation and evidence updates.
-5. Generate the final Repomix after the final source, documentation, and evidence changes are committed.
-6. Verify the final repository state and all required release gates.
-7. Create a release tag only after all mandatory gates pass and the security disposition is approved.
+2. Complete the final evidence and handover review against the mandatory Post #6 requirements.
+3. Complete and commit any remaining documentation and evidence updates.
+4. Generate the final Repomix after the final source, documentation, and evidence changes are committed.
+5. Verify the final repository state and all required release gates.
+6. Create a release tag only after all mandatory gates pass and the security disposition is approved.
 
 ## Release Decision
 
-**Current decision: PHASE 3 FINAL CHANGES REQUIRED.**
+**Current decision: PHASE 3 FINAL CHANGES REQUIRED — RELEASE NOT CERTIFIED.**
 
-The public deployment and recorded production smoke tests are verified. The recorded automated and Docker checks provide supporting evidence. However, the latest-commit clean-clone validation, final evidence review, final Repomix, and release approval remain outstanding.
+The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. However, the final evidence review, final Repomix, and release approval remain outstanding.
 
-The full development dependency audit is not clean, and its disposition remains unresolved. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is resolved.
+The full development dependency audit is not clean, and its disposition remains unresolved. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
