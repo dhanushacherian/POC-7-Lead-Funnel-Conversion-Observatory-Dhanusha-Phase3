@@ -1,13 +1,16 @@
+
 # Phase 3 Release Manifest
 
 ## Release Identity
+
 - Project: POC-7 Lead Funnel Conversion Observatory
-- Phase: 3 â€” Grounded Data Assistant
+- Phase: 3 — Grounded Data Assistant
 - Data package version: `phase3-v2`
-- Manifest status: `IN PROGRESS â€” RELEASE NOT CERTIFIED`
+- Manifest status: `IN PROGRESS — RELEASE NOT CERTIFIED`
 - Git repository: https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3
 
 ## Canonical Data Package
+
 - Source application: Phase 2 Lead Funnel Conversion Observatory
 - Source path: `src/data/crmData.ts`
 - Source sample: `data/source-sample/source_sample.csv`
@@ -26,6 +29,7 @@
 - Synthetic status: Confirmed
 
 ## Data Pipeline
+
 1. Extract: `scripts/data_pipeline/extract_data.py`
 2. Sample: `scripts/data_pipeline/sample_data.py`
 3. Standardize: `scripts/data_pipeline/standardize_data.py`
@@ -33,81 +37,109 @@
 5. Publish: `scripts/data_pipeline/publish_data.py`
 
 ## Verified Validation Evidence
-- Canonical data validation: PASS
-- Data quality assessment: PASS; zero blocking issues
-- Representativeness assessment: PASS; 8/8 core coverage checks
-- Analytical readiness: PASS
-- Analytical track validation: PASS
-- Intelligence contract tests: 7/7 PASS
-- Browser tests: 36/36 PASS
-- ESLint: PASS
-- Production build: PASS
-- Assistant API fallback tests: PASS
-- Manual dashboard, filters, downloads, navigation, and assistant checks: verified during local testing
 
-## Release Limitations and Outstanding Checks
-- Public deployment: Not verified; no confirmed public deployment URL.
+- Canonical data validation: PASS; 60 canonical records and 20 columns.
+- Data quality assessment: PASS; zero blocking issues.
+- Representativeness assessment: PASS; 8/8 core coverage checks.
+- Analytical readiness: PASS.
+- Analytical track validation: PASS.
+- Intelligence contract tests: 7/7 PASS.
+- Grounded assistant service tests: 12/12 PASS.
+- Gemini fallback tests: PASS, including missing API key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
+- Assistant API fallback tests: PASS.
+- Browser tests: 36/36 PASS.
+- ESLint: PASS.
+- Production build: PASS.
+- Production dependency audit: PASS; zero reported vulnerabilities.
+- Manual dashboard, filters, downloads, navigation, and assistant checks: verified during local testing.
+- Latest-commit clean-clone validation: PENDING.
+
+## Public Deployment and Production Evidence
+
+- Deployment platform: Render.
+- Service: `poc-7-lead-funnel-conversion-observatory-phase3`.
+- Public application URL: https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com
+- Deployment status: LIVE; production smoke tests were performed.
+- Production deployment commit verified: `aace1f8`.
+- Production evidence record subsequently committed in: `40a3192`.
+- Home route: HTTP 200 during production validation.
+- Data Intelligence route: HTTP 200 during production validation.
+- Assistant API: POST endpoint tested in production.
+- Supported question: PASS; the product comparison returned a deterministic answer identifying Payments as the highest-value product, with total lead value 942000 and 12 leads.
+- Out-of-scope question: PASS; returned `OUT_OF_SCOPE`, with `metadata.llm_enabled: false` and no evidence references.
+- Gemini explanation: UNAVAILABLE during the recorded production test; the deterministic supported answer still succeeded.
+- GET request to the POST-only assistant endpoint: HTTP 405 expected.
+- Production evidence file: `final-evidence/production/LIVE_API_VALIDATION.json`.
+
+## Docker Validation
+
 - Docker image build: PASS for `lead-funnel-observatory-phase3:release-candidate`.
-- Docker container startup: PASS; container remained running during validation.
+- Docker container startup: PASS during recorded validation.
 - Dashboard and Data Intelligence routes: HTTP 200.
-- Assistant API valid-question test: PASS; response status `SUPPORTED`, metadata validation `PASS`.
+- Supported assistant question: PASS; deterministic response returned `SUPPORTED`.
+- Missing-question handling: PASS; HTTP 400 with `MISSING_PARAMETER`.
 - Docker runtime evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
-- Final clean-clone validation: PASS against commit fe7bbb52bf754cfceb226c818621cab505bb0160; see docs/CLEAN_CLONE_VALIDATION_REPORT.md.
-- Final reports, handover guide, and initial evidence files: Present; final evidence review and clean-clone validation remain pending.
-- Final release commit and tag: Not yet created.
+- Docker validation is supporting evidence and does not replace production deployment validation.
 
-## Release Decision
-This manifest records the known Phase 3 package identity and validation evidence. It does **not** certify the project as fully released. Final release approval requires completion and verification of the remaining checks and documentation.
+## Repository and Clean-Clone Validation
 
-## Latest Known Commit at Manifest Preparation
-- Commit: `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`
-- Message: `Complete grounded assistant fallback validation`
+- Repository: `https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3`
+- Latest production-metadata fix commit: `aace1f8`.
+- Production evidence commit: `40a3192` — `Record production metadata fix verification`.
+- Working tree was reported clean and `main` was synchronized with `origin/main` after the evidence commit.
+- Earlier clean-clone validation: PASS against commit `fe7bbb52bf754cfceb226c818621cab505bb0160`.
+- Earlier clean-clone report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
+- Clean-clone validation against the latest repository commit: PENDING.
+- Final evidence and handover review: PENDING.
+- Final Repomix generation: PENDING.
+- Final release commit and tag: NOT CREATED.
 
-The commit above is the latest known commit at preparation time, not the final release commit.
-
-
-## Post-Dependency-Update Validation â€” 2026-10-16
+## Post-Dependency-Update Validation — 2026-10-16
 
 ### Updated Dependencies
-- Next.js: 16.4.2
-- eslint-config-next: 16.4.2
-- Production dependency audit: PASS; zero reported vulnerabilities.
-- Full development dependency audit: OUTSTANDING; high-severity findings remain in the ESLint dependency chain. See npm audit output before release approval.
+
+- Next.js: 16.4.2.
+- `eslint-config-next`: 16.4.2.
+- Production dependency audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
+- Full development dependency audit: five high-severity findings remain in the ESLint dependency chain; the disposition is unresolved.
 
 ### Post-Update Automated Checks
+
 - Canonical data validation: PASS.
 - Intelligence contract tests: 7/7 PASS.
 - Grounded assistant service tests: 12/12 PASS.
-- Gemini fallback tests: PASS, including missing key, HTTP 429, HTTP 503 with one retry, and HTTP 504.
+- Gemini fallback tests: PASS.
 - Assistant API fallback tests: PASS.
 - ESLint: PASS.
 - Production build: PASS.
-- Browser regression: first run 33 passed and 3 timed out; subsequent run 36/36 passed in 28.1 seconds. Both results are retained in the validation history.
+- Browser regression: a later run passed 36/36 tests. An earlier run had 33 passes and 3 timeouts; both results remain part of the validation history.
 
-### Fresh Docker Validation
-- Image build using the updated dependencies: PASS.
-- Fresh container startup: PASS.
-- Homepage and Data Intelligence page: HTTP 200.
-- Supported assistant question: PASS; deterministic response returned `SUPPORTED`.
-- Missing-question handling: PASS; HTTP 400 with `MISSING_PARAMETER`.
-- Evidence file: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
-
-### Remaining Release Gates
-- Full development dependency audit findings: review and document accepted risk or resolve without breaking the supported dependency set.
-- Clean-clone validation of release-candidate commit fe7bbb52bf754cfceb226c818621cab505bb0160: PASS.
-- Public deployment URL and remote smoke test: NOT VERIFIED.
-- Final release commit and tag: NOT CREATED.
-- Final release approval: PENDING.
-
-The successful local tests and Docker checks do not certify a public deployment or a final release. Manifest status remains `IN PROGRESS â€” RELEASE NOT CERTIFIED`.
-
-## Development Dependency Security Assessment â€” 2026-10-16
+## Development Dependency Security Assessment — 2026-10-16
 
 - Production audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
-- Full development audit: OUTSTANDING; npm reports five high-severity findings associated with `braces@3.0.3`.
-- Dependency path: `eslint-config-next@16.4.2` -> `@next/eslint-plugin-next@16.4.2` -> `fast-glob@3.3.1` -> `micromatch@4.0.8` -> `braces@3.0.3`.
-- Advisory: GHSA-vfj7-8cjw-p6xm; stack-exhaustion denial of service through deeply nested patterns.
-- The advisory currently lists no patched version.
-- `npm audit fix --force` proposes a breaking downgrade to `eslint-config-next@14.2.35`; this was not applied.
+- Full development dependency audit: NOT CLEAN; five high-severity findings are reported.
+- Affected dependency: `braces@3.0.3`.
+- Dependency path: `eslint-config-next@16.4.2` → `@next/eslint-plugin-next@16.4.2` → `fast-glob@3.3.1` → `micromatch@4.0.8` → `braces@3.0.3`.
+- Advisory: `GHSA-vfj7-8cjw-p6xm`; stack-exhaustion denial of service through deeply nested patterns.
+- The reviewed advisory listed no patched version at the time of assessment.
+- `npm audit fix --force` proposed a breaking downgrade to `eslint-config-next@14.2.35`; this was not applied.
 - No unofficial fork or unverified override was applied.
 - Disposition: UNRESOLVED; release owner review required. Do not represent the full dependency audit as clean.
+
+## Remaining Release Gates
+
+1. Obtain and record the release owner's security-risk disposition for the five high-severity development-dependency findings, or resolve them using a verified compatible dependency update.
+2. Run clean-clone validation against the latest repository commit and update `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
+3. Review production, Docker, assistant, browser, and other required evidence against the Post #6 handover requirements.
+4. Complete and commit any remaining documentation and evidence updates.
+5. Generate the final Repomix after the final source, documentation, and evidence changes are committed.
+6. Verify the final repository state and all required release gates.
+7. Create a release tag only after all mandatory gates pass and the security disposition is approved.
+
+## Release Decision
+
+**Current decision: PHASE 3 FINAL CHANGES REQUIRED.**
+
+The public deployment and recorded production smoke tests are verified. The recorded automated and Docker checks provide supporting evidence. However, the latest-commit clean-clone validation, final evidence review, final Repomix, and release approval remain outstanding.
+
+The full development dependency audit is not clean, and its disposition remains unresolved. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is resolved.
