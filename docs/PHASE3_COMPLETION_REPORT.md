@@ -30,7 +30,7 @@
 
 - Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
 - Verified public deployment: Render confirmed application commit `baa1d6a` as Live on 2026-10-17.
-- Latest previously pushed repository candidate: `498ce60`. This commit contains documentation, UAT, walkthrough, and Repomix updates; distinguish it from the verified deployed application commit.
+- Repository history: commit `498ce60` and subsequent commits contain documentation, UAT, walkthrough, and Repomix updates; they are distinct from the deployed application commit `baa1d6a`. Obtain the exact current certification candidate SHA from Git after the final documentation changes are committed.
 - Docker image build and runtime validation: PASS; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
 - Browser validation: 36/36 tests passed in the recorded run; see `final-evidence/FINAL_BROWSER_TEST_EVIDENCE.md`.
 - Production API checks and targeted live Data Intelligence and assistant checks: PASS in the recorded evidence.

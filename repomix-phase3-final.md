@@ -12620,66 +12620,6 @@ The original operational dashboard remains available at:
 /
 ````
 
-## File: docs/PHASE3_COMPLETION_REPORT.md
-````markdown
-# Phase 3 Completion Report
-
-## 1. Project
-- Project: POC-7 Lead Funnel Conversion Observatory
-- Phase: Phase 3 — Grounded Data Assistant
-- Data version: `phase3-v2`
-- Method version: `1.0.0`
-
-## 2. Scope Delivered
-- Canonical data package with 60 records and 20 columns.
-- Data validation and publication pipeline.
-- Track A descriptive comparative analysis.
-- Data Intelligence page.
-- Grounded assistant API and fallback behavior.
-- Supporting analytical, quality, testing, and architecture documentation.
-
-## 3. Previously Recorded Validation Results
-- Canonical data validation: PASS.
-- Data quality assessment: PASS; zero blocking issues.
-- Representativeness assessment: PASS; 8/8 core coverage checks.
-- Analytical track validation: PASS.
-- Intelligence contract tests: 7/7 PASS.
-- Browser tests: 36/36 PASS.
-- Assistant API fallback tests: PASS.
-- ESLint: PASS.
-- Production build: PASS.
-- Clean-clone build and lint: PASS for commit `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`.
-
-## 4. Current Certification Status
-
-- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
-- Verified public deployment: Render confirmed application commit `baa1d6a` as Live on 2026-10-17.
-- Latest previously pushed repository candidate: `498ce60`. This commit contains documentation, UAT, walkthrough, and Repomix updates; distinguish it from the verified deployed application commit.
-- Docker image build and runtime validation: PASS; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
-- Browser validation: 36/36 tests passed in the recorded run; see `final-evidence/FINAL_BROWSER_TEST_EVIDENCE.md`.
-- Production API checks and targeted live Data Intelligence and assistant checks: PASS in the recorded evidence.
-- Final Repomix snapshot: `repomix-phase3-final.md` is published. Regenerate it after this documentation-alignment pass.
-- Remaining certification gates: authorized security disposition for the five high-severity development-dependency findings, including Docker image exposure; verification of formal approval references and Post #6 Word-guide usage; final documentation/snapshot review; exact final candidate SHA; and release-owner certification.
-- Do not create a release tag until all mandatory certification gates are closed.
-## 5. Limitations
-The data is synthetic and represents 30 source leads. The analysis is descriptive and comparative, not causal or predictive. Small groups require cautious interpretation. The available data is not a complete longitudinal time series.
-
-## 6. Completion Decision
-
-**Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING.**
-
-The application and recorded validation deliverables have been accepted for technical review. This is not release certification. The authorized security-risk disposition, formal approval references, final aligned documentation and snapshot, exact candidate SHA, and final release-owner review must be completed before creating a release tag.
-
-The separate expanded demonstration dataset is not part of this certified baseline.
-
-## Formal Approval References
-
-- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
-- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
-- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
-- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
-````
-
 ## File: docs/PHASE3_DEMO_WALKTHROUGH.md
 ````markdown
 # Phase 3 Demo Walkthrough
@@ -12712,163 +12652,6 @@ Ask a supported question about the analyzed lead data. Review the returned answe
 
 ## Evidence note
 This is a written walkthrough with links to existing screenshots, not a recorded demo video. See the repository's final UAT, assistant validation, and deployment evidence for test results and limitations.
-````
-
-## File: docs/PHASE3_FINAL_ARCHITECTURE.md
-````markdown
-# Phase 3 Final Architecture
-
-## 1. Project Overview
-POC-7 Lead Funnel Conversion Observatory — Phase 3 extends the existing operational dashboard with a canonical data foundation, descriptive analytical outputs, a Data Intelligence page, and a grounded assistant.
-
-## 2. Architecture Components
-
-### A. Source Data
-- Phase 2 source application: `src/data/crmData.ts`
-- Source sample: `data/source-sample/source_sample.csv`
-- The source dataset contains 30 source leads.
-
-### B. Canonical Data Foundation
-- Canonical dataset: `data/canonical/intelligence_data.csv`
-- Schema: `data/schema.json`
-- Manifest: `data/manifest.json`
-- Data version: `phase3-v2`
-- Canonical dataset size: 60 records and 20 columns.
-- Synthetic data status: confirmed.
-
-### C. Data Pipeline
-The pipeline scripts extract, sample, standardize, validate, and publish the canonical data:
-- `scripts/data_pipeline/extract_data.py`
-- `scripts/data_pipeline/sample_data.py`
-- `scripts/data_pipeline/standardize_data.py`
-- `scripts/data_pipeline/validate_data.py`
-- `scripts/data_pipeline/publish_data.py`
-
-The published JSON is written to `data/published/intelligence_data.json`.
-
-### D. Analytical Track
-Track A performs descriptive comparative analysis across:
-- Funnel stage
-- Product/category
-- Acquisition source/subcategory
-
-Relevant scripts and outputs are under `data-science/scripts/` and `data-science/outputs/`. The documented method version is `1.0.0`.
-
-### E. Application and Intelligence UI
-- Operational dashboard route: `/`
-- Data Intelligence route: `/data-intelligence`
-- Assistant API route: `/api/assistant`
-
-The application is built with Next.js. The production build previously completed successfully in both the working tree and the clean clone of the then-committed version.
-
-### F. Grounded Assistant
-The assistant uses the approved analytical results and evidence contract. Previously recorded fallback tests confirmed that the approved answer, evidence, and limitations were preserved when a simulated Gemini explanation failed.
-
-## 3. Validation and Quality Controls
-- Canonical data validation is part of the build pre-step.
-- Analytical readiness, quality, and representativeness assessments are implemented in `data-science/scripts/`.
-- Intelligence contract tests and browser tests provide automated checks.
-- Results remain descriptive and must not be presented as causal or predictive.
-
-## 4. Known Limitations
-
-- Data is synthetic and contains 30 source leads in the approved `phase3-v2` baseline.
-- Small funnel-stage groups require cautious interpretation.
-- Team and location are embedded in `text_value`, rather than dedicated analytical fields.
-- The observations are not a complete longitudinal time series.
-- Track A results are descriptive and comparative, not causal or predictive.
-
-## 5. Deployment and Certification Status
-
-- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
-- Render confirmed the public application Live on 2026-10-17 for application commit `baa1d6a`.
-- Later repository candidate commit `498ce60` contains documentation, UAT, walkthrough, and Repomix updates. It is distinct from the verified deployed application commit.
-- Docker image build, startup, dashboard/Data Intelligence routes, supported assistant request, and missing-question handling passed in the recorded validation. Evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
-- The full dependency audit still reports five high-severity findings in the ESLint development dependency chain. The production-only audit reports zero vulnerabilities. The Docker image installs development dependencies, so the security disposition must explicitly consider that exposure.
-- Obtain and record the authorized release owner's security decision before certification. Do not apply a breaking dependency downgrade merely to clear the audit.
-- Link and verify the Track A approval and Post #5 Grounded Assistant approval. Confirm whether the Post #6 Word guide was used as the AI feeder.
-- The final Repomix must be regenerated after the current documentation-alignment changes and verified against the final candidate commit.
-- No release tag has been created. Certification remains pending until all mandatory gates pass.
-
-## Formal Approval References
-
-- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
-- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
-- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
-- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
-````
-
-## File: docs/PHASE3_HANDOVER_GUIDE.md
-````markdown
-# Phase 3 Handover Guide
-
-## Project
-POC-7 Lead Funnel Conversion Observatory - Phase 3.
-
-## Prerequisites
-- Node.js and npm
-- Python
-- Git
-- Docker Desktop if container validation is required
-
-## Install dependencies
-npm.cmd ci
-
-## Data validation
-npm.cmd run data:validate
-Expected: 60 canonical records and 20 columns.
-
-## Analytical validation
-python .\data-science\scripts\validate_analytical_track.py
-Expected: OVERALL VALIDATION: PASS.
-
-## Automated checks
-npm.cmd run lint
-npm.cmd run test:intelligence
-npm.cmd run build
-npm.cmd run test:browser -- --timeout=90000 --workers=1
-
-## Important paths
-- Canonical data: data\canonical\intelligence_data.csv
-- Manifest: data\manifest.json
-- Published data: data\published\intelligence_data.json
-- Analytical outputs: data-science\outputs\
-- Tests: tests\
-- Documentation: docs\
-- Evidence: final-evidence\
-
-## Limitations
-- The dataset is synthetic.
-- Track A independently analyzes 30 source leads.
-- Three stage groups are below the sensitivity threshold of five.
-- Results are descriptive, not predictive or causal.
-
-## Security
-- Never commit .env.local, API keys, tokens, or secrets.
-- Review dependency audit findings before release.
-- Recorded Docker build and runtime validation passed; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`. The image installs development dependencies, so the unresolved dependency findings must be considered in the authorized security decision.
-
-## Final release checklist
-- [ ] Rerun data and analytical validation.
-- [ ] Rerun lint, intelligence tests, build, and browser tests.
-- [ ] Review README and release documents.
-- [ ] Review evidence for completeness and secrets.
-- [x] Regenerated `repomix-phase3-final.md` after final documentation and evidence changes; excluded the stale `repomix-output.xml` snapshot.
-- [ ] Review Git status and the final diff.
-- [ ] Commit approved changes.
-- [ ] Create and verify a release tag only after all mandatory gates, including the recorded security disposition, have passed.
-- [ ] Verify public deployment separately.
-- [ ] Record blocked checks and security findings.
-
-## Release status
-This checklist is not proof that the release is complete. Verify each item using evidence.
-
-## Formal Approval References
-
-- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
-- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
-- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
-- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
 ````
 
 ## File: docs/REPRESENTATIVENESS_ASSESSMENT.md
@@ -22944,6 +22727,223 @@ The following checks passed after the Gemini integration changes:
 The API key must remain server-side. Do not log the key, include it in screenshots, or commit `.env.local`. Revoke exposed keys and replace them with new keys.
 ````
 
+## File: docs/PHASE3_COMPLETION_REPORT.md
+````markdown
+# Phase 3 Completion Report
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3 — Grounded Data Assistant
+- Data version: `phase3-v2`
+- Method version: `1.0.0`
+
+## 2. Scope Delivered
+- Canonical data package with 60 records and 20 columns.
+- Data validation and publication pipeline.
+- Track A descriptive comparative analysis.
+- Data Intelligence page.
+- Grounded assistant API and fallback behavior.
+- Supporting analytical, quality, testing, and architecture documentation.
+
+## 3. Previously Recorded Validation Results
+- Canonical data validation: PASS.
+- Data quality assessment: PASS; zero blocking issues.
+- Representativeness assessment: PASS; 8/8 core coverage checks.
+- Analytical track validation: PASS.
+- Intelligence contract tests: 7/7 PASS.
+- Browser tests: 36/36 PASS.
+- Assistant API fallback tests: PASS.
+- ESLint: PASS.
+- Production build: PASS.
+- Clean-clone build and lint: PASS for commit `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`.
+
+## 4. Current Certification Status
+
+- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
+- Verified public deployment: Render confirmed application commit `baa1d6a` as Live on 2026-10-17.
+- Repository history: commit `498ce60` and subsequent commits contain documentation, UAT, walkthrough, and Repomix updates; they are distinct from the deployed application commit `baa1d6a`. Obtain the exact current certification candidate SHA from Git after the final documentation changes are committed.
+- Docker image build and runtime validation: PASS; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- Browser validation: 36/36 tests passed in the recorded run; see `final-evidence/FINAL_BROWSER_TEST_EVIDENCE.md`.
+- Production API checks and targeted live Data Intelligence and assistant checks: PASS in the recorded evidence.
+- Final Repomix snapshot: `repomix-phase3-final.md` is published. Regenerate it after this documentation-alignment pass.
+- Remaining certification gates: authorized security disposition for the five high-severity development-dependency findings, including Docker image exposure; verification of formal approval references and Post #6 Word-guide usage; final documentation/snapshot review; exact final candidate SHA; and release-owner certification.
+- Do not create a release tag until all mandatory certification gates are closed.
+## 5. Limitations
+The data is synthetic and represents 30 source leads. The analysis is descriptive and comparative, not causal or predictive. Small groups require cautious interpretation. The available data is not a complete longitudinal time series.
+
+## 6. Completion Decision
+
+**Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING.**
+
+The application and recorded validation deliverables have been accepted for technical review. This is not release certification. The authorized security-risk disposition, formal approval references, final aligned documentation and snapshot, exact candidate SHA, and final release-owner review must be completed before creating a release tag.
+
+The separate expanded demonstration dataset is not part of this certified baseline.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
+````
+
+## File: docs/PHASE3_FINAL_ARCHITECTURE.md
+````markdown
+# Phase 3 Final Architecture
+
+## 1. Project Overview
+POC-7 Lead Funnel Conversion Observatory — Phase 3 extends the existing operational dashboard with a canonical data foundation, descriptive analytical outputs, a Data Intelligence page, and a grounded assistant.
+
+## 2. Architecture Components
+
+### A. Source Data
+- Phase 2 source application: `src/data/crmData.ts`
+- Source sample: `data/source-sample/source_sample.csv`
+- The source dataset contains 30 source leads.
+
+### B. Canonical Data Foundation
+- Canonical dataset: `data/canonical/intelligence_data.csv`
+- Schema: `data/schema.json`
+- Manifest: `data/manifest.json`
+- Data version: `phase3-v2`
+- Canonical dataset size: 60 records and 20 columns.
+- Synthetic data status: confirmed.
+
+### C. Data Pipeline
+The pipeline scripts extract, sample, standardize, validate, and publish the canonical data:
+- `scripts/data_pipeline/extract_data.py`
+- `scripts/data_pipeline/sample_data.py`
+- `scripts/data_pipeline/standardize_data.py`
+- `scripts/data_pipeline/validate_data.py`
+- `scripts/data_pipeline/publish_data.py`
+
+The published JSON is written to `data/published/intelligence_data.json`.
+
+### D. Analytical Track
+Track A performs descriptive comparative analysis across:
+- Funnel stage
+- Product/category
+- Acquisition source/subcategory
+
+Relevant scripts and outputs are under `data-science/scripts/` and `data-science/outputs/`. The documented method version is `1.0.0`.
+
+### E. Application and Intelligence UI
+- Operational dashboard route: `/`
+- Data Intelligence route: `/data-intelligence`
+- Assistant API route: `/api/assistant`
+
+The application is built with Next.js. The production build previously completed successfully in both the working tree and the clean clone of the then-committed version.
+
+### F. Grounded Assistant
+The assistant uses the approved analytical results and evidence contract. Previously recorded fallback tests confirmed that the approved answer, evidence, and limitations were preserved when a simulated Gemini explanation failed.
+
+## 3. Validation and Quality Controls
+- Canonical data validation is part of the build pre-step.
+- Analytical readiness, quality, and representativeness assessments are implemented in `data-science/scripts/`.
+- Intelligence contract tests and browser tests provide automated checks.
+- Results remain descriptive and must not be presented as causal or predictive.
+
+## 4. Known Limitations
+
+- Data is synthetic and contains 30 source leads in the approved `phase3-v2` baseline.
+- Small funnel-stage groups require cautious interpretation.
+- Team and location are embedded in `text_value`, rather than dedicated analytical fields.
+- The observations are not a complete longitudinal time series.
+- Track A results are descriptive and comparative, not causal or predictive.
+
+## 5. Deployment and Certification Status
+
+- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
+- Render confirmed the public application Live on 2026-10-17 for application commit `baa1d6a`.
+- Commit `498ce60` and subsequent commits contain documentation, UAT, walkthrough, and Repomix updates. They are distinct from the verified deployed application commit `baa1d6a`; obtain the exact current certification candidate SHA from Git after final documentation changes.
+- Docker image build, startup, dashboard/Data Intelligence routes, supported assistant request, and missing-question handling passed in the recorded validation. Evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- The full dependency audit still reports five high-severity findings in the ESLint development dependency chain. The production-only audit reports zero vulnerabilities. The Docker image installs development dependencies, so the security disposition must explicitly consider that exposure.
+- Obtain and record the authorized release owner's security decision before certification. Do not apply a breaking dependency downgrade merely to clear the audit.
+- Link and verify the Track A approval and Post #5 Grounded Assistant approval. Confirm whether the Post #6 Word guide was used as the AI feeder.
+- Final Markdown snapshot: `repomix-phase3-final.md`. It was refreshed after the documentation-alignment commit; regenerate it again if any further source, documentation, or evidence changes are made.
+- No release tag has been created. Certification remains pending until all mandatory gates pass.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
+````
+
+## File: docs/PHASE3_HANDOVER_GUIDE.md
+````markdown
+# Phase 3 Handover Guide
+
+## Project
+POC-7 Lead Funnel Conversion Observatory - Phase 3.
+
+## Prerequisites
+- Node.js and npm
+- Python
+- Git
+- Docker Desktop if container validation is required
+
+## Install dependencies
+npm.cmd ci
+
+## Data validation
+npm.cmd run data:validate
+Expected: 60 canonical records and 20 columns.
+
+## Analytical validation
+python .\data-science\scripts\validate_analytical_track.py
+Expected: OVERALL VALIDATION: PASS.
+
+## Automated checks
+npm.cmd run lint
+npm.cmd run test:intelligence
+npm.cmd run build
+npm.cmd run test:browser -- --timeout=90000 --workers=1
+
+## Important paths
+- Canonical data: data\canonical\intelligence_data.csv
+- Manifest: data\manifest.json
+- Published data: data\published\intelligence_data.json
+- Analytical outputs: data-science\outputs\
+- Tests: tests\
+- Documentation: docs\
+- Evidence: final-evidence\
+
+## Limitations
+- The dataset is synthetic.
+- Track A independently analyzes 30 source leads.
+- Three stage groups are below the sensitivity threshold of five.
+- Results are descriptive, not predictive or causal.
+
+## Security
+- Never commit .env.local, API keys, tokens, or secrets.
+- Review dependency audit findings before release.
+- Recorded Docker build and runtime validation passed; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`. The image installs development dependencies, so the unresolved dependency findings must be considered in the authorized security decision.
+
+## Final release checklist
+- [ ] Rerun data and analytical validation.
+- [ ] Rerun lint, intelligence tests, build, and browser tests.
+- [ ] Review README and release documents.
+- [ ] Review evidence for completeness and secrets.
+- [x] Regenerated `repomix-phase3-final.md` after final documentation and evidence changes; excluded the stale `repomix-output.xml` snapshot.
+- [ ] Review Git status and the final diff.
+- [ ] Commit approved changes.
+- [ ] Create and verify a release tag only after all mandatory gates, including the recorded security disposition, have passed.
+- [ ] Verify public deployment separately.
+- [ ] Record blocked checks and security findings.
+
+## Release status
+This checklist is not proof that the release is complete. Verify each item using evidence.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
+````
+
 ## File: docs/SAMPLING_AND_REDUCTION_REPORT.md
 ````markdown
 # Sampling and Reduction Report
@@ -28697,7 +28697,7 @@ The conversion rate was displayed as `33.33333333333333%`. Consider rounding the
 - Dataset is synthetic.
 - Analytical outputs are descriptive, not predictive or causal.
 - Small groups require cautious interpretation.
-- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Later commits fe91879 and subsequent handover edits contain documentation and snapshot changes.
+- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Subsequent documentation-only commits, including `498ce60` and `b39e5f2`, update handover evidence and Repomix; they do not change the deployed application code.
 - Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
 
 ## 6. Final-Release Acceptance Status
@@ -31770,6 +31770,116 @@ Do not commit API keys, passwords, tokens, private credentials, or populated loc
 Refer to the repository's license file, if present, for applicable license terms.
 ````
 
+## File: src/app/api/assistant/route.ts
+````typescript
+import { NextResponse } from "next/server";
+import { answerQuestion } from "../../../../assistant/core/assistant-service";
+import { explainWithGemini } from "../../../../assistant/core/gemini-explainer";
+import config from "../../../../assistant/config/assistant.config.json";
+
+export const runtime = "nodejs";
+
+type RouteDependencies = {
+  answerQuestion: typeof answerQuestion;
+  explainWithGemini: typeof explainWithGemini;
+};
+
+export function createPostHandler(
+  dependencies: RouteDependencies = {
+    answerQuestion,
+    explainWithGemini,
+  },
+) {
+  return async function POST(request: Request) {
+    try {
+      const body: unknown = await request.json();
+
+      if (
+        typeof body !== "object" ||
+        body === null ||
+        !("question" in body)
+      ) {
+        return NextResponse.json(
+          {
+            status: "MISSING_PARAMETER",
+            answer: "Please provide a question.",
+            explanation: null,
+            explanation_status: "UNAVAILABLE",
+          },
+          { status: 400 },
+        );
+      }
+
+      const question = (body as { question: unknown }).question;
+      const response = dependencies.answerQuestion(question);
+
+      if (
+        config.llm_enabled === true &&
+        response.status === "SUPPORTED" &&
+        response.evidence_references.length > 0 &&
+        typeof question === "string"
+      ) {
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+        const gemini = await Promise.race([
+          dependencies.explainWithGemini({
+            question,
+            deterministicAnswer: response.answer,
+            evidenceReferences: response.evidence_references,
+            limitation: response.limitation,
+          }),
+          new Promise<{
+            explanation: null;
+            explanation_status: "UNAVAILABLE";
+          }>((resolve) => {
+            timeoutId = setTimeout(
+              () =>
+                resolve({
+                  explanation: null,
+                  explanation_status: "UNAVAILABLE",
+                }),
+              45000,
+            );
+          }),
+        ]).finally(() => {
+          if (timeoutId) clearTimeout(timeoutId);
+        });
+
+        response.explanation = gemini.explanation;
+        response.metadata.llm_enabled =
+          gemini.explanation_status === "AVAILABLE";
+        response.explanation_status = gemini.explanation_status;
+      }
+
+      // Gemini is only attempted for supported questions with evidence.
+      // Other response statuses must not claim Gemini was used.
+      if (response.status !== "SUPPORTED") {
+        response.metadata.llm_enabled = false;
+      }
+
+      return NextResponse.json(response, {
+        status: response.status === "UNAVAILABLE" ? 503 : 200,
+      });
+    } catch (error) {
+      console.error("[Assistant API]", error);
+
+      return NextResponse.json(
+        {
+          status: "UNAVAILABLE",
+          answer:
+            "The assistant could not process this request. Please try an approved question again.",
+          explanation: null,
+          explanation_status: "UNAVAILABLE",
+        },
+        { status: 500 },
+      );
+    }
+  };
+}
+
+export const POST = createPostHandler();
+````
+
 ## File: docs/PHASE3_RELEASE_MANIFEST.md
 ````markdown
 # Phase 3 Release Manifest
@@ -31925,7 +32035,7 @@ Refer to the repository's license file, if present, for applicable license terms
 
 **Current decision: PHASE 3 FINAL CHANGES REQUIRED - RELEASE NOT CERTIFIED.**
 
-The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. The final Markdown Repomix has been published and must be regenerated after this documentation-alignment pass. Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING. The authorized security disposition and final release-owner certification remain outstanding.
+The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. The final Markdown Repomix was regenerated after the documentation-alignment pass and is published as `repomix-phase3-final.md`. Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING. The authorized security disposition and final release-owner certification remain outstanding.
 
 The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
 
@@ -31935,116 +32045,6 @@ The full development dependency audit is not clean, and its disposition is pendi
 - Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
 - Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
 - Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
-````
-
-## File: src/app/api/assistant/route.ts
-````typescript
-import { NextResponse } from "next/server";
-import { answerQuestion } from "../../../../assistant/core/assistant-service";
-import { explainWithGemini } from "../../../../assistant/core/gemini-explainer";
-import config from "../../../../assistant/config/assistant.config.json";
-
-export const runtime = "nodejs";
-
-type RouteDependencies = {
-  answerQuestion: typeof answerQuestion;
-  explainWithGemini: typeof explainWithGemini;
-};
-
-export function createPostHandler(
-  dependencies: RouteDependencies = {
-    answerQuestion,
-    explainWithGemini,
-  },
-) {
-  return async function POST(request: Request) {
-    try {
-      const body: unknown = await request.json();
-
-      if (
-        typeof body !== "object" ||
-        body === null ||
-        !("question" in body)
-      ) {
-        return NextResponse.json(
-          {
-            status: "MISSING_PARAMETER",
-            answer: "Please provide a question.",
-            explanation: null,
-            explanation_status: "UNAVAILABLE",
-          },
-          { status: 400 },
-        );
-      }
-
-      const question = (body as { question: unknown }).question;
-      const response = dependencies.answerQuestion(question);
-
-      if (
-        config.llm_enabled === true &&
-        response.status === "SUPPORTED" &&
-        response.evidence_references.length > 0 &&
-        typeof question === "string"
-      ) {
-        let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
-        const gemini = await Promise.race([
-          dependencies.explainWithGemini({
-            question,
-            deterministicAnswer: response.answer,
-            evidenceReferences: response.evidence_references,
-            limitation: response.limitation,
-          }),
-          new Promise<{
-            explanation: null;
-            explanation_status: "UNAVAILABLE";
-          }>((resolve) => {
-            timeoutId = setTimeout(
-              () =>
-                resolve({
-                  explanation: null,
-                  explanation_status: "UNAVAILABLE",
-                }),
-              45000,
-            );
-          }),
-        ]).finally(() => {
-          if (timeoutId) clearTimeout(timeoutId);
-        });
-
-        response.explanation = gemini.explanation;
-        response.metadata.llm_enabled =
-          gemini.explanation_status === "AVAILABLE";
-        response.explanation_status = gemini.explanation_status;
-      }
-
-      // Gemini is only attempted for supported questions with evidence.
-      // Other response statuses must not claim Gemini was used.
-      if (response.status !== "SUPPORTED") {
-        response.metadata.llm_enabled = false;
-      }
-
-      return NextResponse.json(response, {
-        status: response.status === "UNAVAILABLE" ? 503 : 200,
-      });
-    } catch (error) {
-      console.error("[Assistant API]", error);
-
-      return NextResponse.json(
-        {
-          status: "UNAVAILABLE",
-          answer:
-            "The assistant could not process this request. Please try an approved question again.",
-          explanation: null,
-          explanation_status: "UNAVAILABLE",
-        },
-        { status: 500 },
-      );
-    }
-  };
-}
-
-export const POST = createPostHandler();
 ````
 
 ## File: package.json

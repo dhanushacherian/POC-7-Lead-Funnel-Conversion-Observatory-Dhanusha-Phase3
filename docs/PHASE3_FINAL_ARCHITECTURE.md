@@ -64,12 +64,12 @@ The assistant uses the approved analytical results and evidence contract. Previo
 
 - Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
 - Render confirmed the public application Live on 2026-10-17 for application commit `baa1d6a`.
-- Later repository candidate commit `498ce60` contains documentation, UAT, walkthrough, and Repomix updates. It is distinct from the verified deployed application commit.
+- Commit `498ce60` and subsequent commits contain documentation, UAT, walkthrough, and Repomix updates. They are distinct from the verified deployed application commit `baa1d6a`; obtain the exact current certification candidate SHA from Git after final documentation changes.
 - Docker image build, startup, dashboard/Data Intelligence routes, supported assistant request, and missing-question handling passed in the recorded validation. Evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
 - The full dependency audit still reports five high-severity findings in the ESLint development dependency chain. The production-only audit reports zero vulnerabilities. The Docker image installs development dependencies, so the security disposition must explicitly consider that exposure.
 - Obtain and record the authorized release owner's security decision before certification. Do not apply a breaking dependency downgrade merely to clear the audit.
 - Link and verify the Track A approval and Post #5 Grounded Assistant approval. Confirm whether the Post #6 Word guide was used as the AI feeder.
-- The final Repomix must be regenerated after the current documentation-alignment changes and verified against the final candidate commit.
+- Final Markdown snapshot: `repomix-phase3-final.md`. It was refreshed after the documentation-alignment commit; regenerate it again if any further source, documentation, or evidence changes are made.
 - No release tag has been created. Certification remains pending until all mandatory gates pass.
 
 ## Formal Approval References

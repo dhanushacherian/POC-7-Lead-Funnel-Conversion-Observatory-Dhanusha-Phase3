@@ -36,7 +36,7 @@ The conversion rate was displayed as `33.33333333333333%`. Consider rounding the
 - Dataset is synthetic.
 - Analytical outputs are descriptive, not predictive or causal.
 - Small groups require cautious interpretation.
-- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Later commits fe91879 and subsequent handover edits contain documentation and snapshot changes.
+- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Subsequent documentation-only commits, including `498ce60` and `b39e5f2`, update handover evidence and Repomix; they do not change the deployed application code.
 - Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
 
 ## 6. Final-Release Acceptance Status
