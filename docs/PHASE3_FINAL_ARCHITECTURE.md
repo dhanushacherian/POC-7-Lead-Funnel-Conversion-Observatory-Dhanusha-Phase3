@@ -1,4 +1,4 @@
-﻿# Phase 3 Final Architecture
+# Phase 3 Final Architecture
 
 ## 1. Project Overview
 POC-7 Lead Funnel Conversion Observatory — Phase 3 extends the existing operational dashboard with a canonical data foundation, descriptive analytical outputs, a Data Intelligence page, and a grounded assistant.
@@ -53,16 +53,28 @@ The assistant uses the approved analytical results and evidence contract. Previo
 - Results remain descriptive and must not be presented as causal or predictive.
 
 ## 4. Known Limitations
-- Data is synthetic and contains 30 source leads.
-- Small funnel-stage groups require caution.
+
+- Data is synthetic and contains 30 source leads in the approved `phase3-v2` baseline.
+- Small funnel-stage groups require cautious interpretation.
 - Team and location are embedded in `text_value`, rather than dedicated analytical fields.
-- The available observations are not a complete longitudinal time series.
-- Public deployment has not been confirmed.
-- Docker runtime validation was blocked earlier because Docker Engine was not running.
+- The observations are not a complete longitudinal time series.
+- Track A results are descriptive and comparative, not causal or predictive.
 
-## 5. Release Status
-This document describes the known architecture and previously verified behavior. It does not certify that the final release has been deployed or fully validated.
+## 5. Deployment and Certification Status
 
-- Architecture documentation: created
-- Final-release regression: pending
-- Final release commit and tag: pending
+- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
+- Render confirmed the public application Live on 2026-10-17 for application commit `baa1d6a`.
+- Later repository candidate commit `498ce60` contains documentation, UAT, walkthrough, and Repomix updates. It is distinct from the verified deployed application commit.
+- Docker image build, startup, dashboard/Data Intelligence routes, supported assistant request, and missing-question handling passed in the recorded validation. Evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- The full dependency audit still reports five high-severity findings in the ESLint development dependency chain. The production-only audit reports zero vulnerabilities. The Docker image installs development dependencies, so the security disposition must explicitly consider that exposure.
+- Obtain and record the authorized release owner's security decision before certification. Do not apply a breaking dependency downgrade merely to clear the audit.
+- Link and verify the Track A approval and Post #5 Grounded Assistant approval. Confirm whether the Post #6 Word guide was used as the AI feeder.
+- The final Repomix must be regenerated after the current documentation-alignment changes and verified against the final candidate commit.
+- No release tag has been created. Certification remains pending until all mandatory gates pass.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.

@@ -1,4 +1,4 @@
-﻿# Phase 3 Release Manifest
+# Phase 3 Release Manifest
 
 ## Release Identity
 
@@ -91,8 +91,8 @@
 - Clean-clone validation report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
 - Clean-clone report confirms data validation, intelligence tests, lint, build, assistant tests, fallback tests, API fallback tests, and browser tests passed against the target commit.
 - The report-only commit `aa6544b` was made after that validation target; the code and dependencies were not changed by that report-only commit.
-- Final evidence and handover review: PENDING.
-- Final Repomix generation: COMPLETE; final Markdown snapshot: `repomix-phase3-final.md`.
+- Final evidence and handover review: IN PROGRESS; technical deliverables accepted, final certification gates remain.
+- Final Repomix generation: COMPLETE; `repomix-phase3-final.md` regenerated after documentation alignment.
 - Final release commit and tag: NOT CREATED.
 
 ## Post-Dependency-Update Validation - 2026-10-16
@@ -151,7 +151,13 @@
 
 **Current decision: PHASE 3 FINAL CHANGES REQUIRED - RELEASE NOT CERTIFIED.**
 
-The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. However, the final evidence review, final Repomix, and release approval remain outstanding.
+The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. The final Markdown Repomix has been published and must be regenerated after this documentation-alignment pass. Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING. The authorized security disposition and final release-owner certification remain outstanding.
 
 The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
 
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.

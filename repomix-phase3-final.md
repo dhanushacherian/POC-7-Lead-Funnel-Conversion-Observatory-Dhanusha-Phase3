@@ -240,40 +240,6 @@ tsconfig.json
 
 # Files
 
-## File: docs/PHASE3_DEMO_WALKTHROUGH.md
-````markdown
-# Phase 3 Demo Walkthrough
-
-**Project:** PoC-7 — Lead Funnel Conversion Observatory  
-**Live application:** https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com
-
-## 1. Operational dashboard
-Open the live application and review the dashboard and lead overview.
-
-Evidence: [Dashboard screenshot](../screenshots/dashboard.png)
-
-## 2. Filtering
-Use the product filter, inspect the updated metrics, and reset filters to return to the default view.
-
-Evidence: [Filter validation screenshot](../screenshots/Filter_Validation.png)
-
-## 3. Data Intelligence
-Open `/data-intelligence` and review the dataset version, analytical method version, results, and validation information.
-
-Evidence: [Data Intelligence screenshot](../screenshots/Intelligence.png)
-
-## 4. Responsive layout
-Open the application on a narrow/mobile viewport and check that the primary page content remains usable.
-
-Evidence: [Mobile responsive screenshot](../screenshots/Mobile_Responsive.png)
-
-## 5. Grounded assistant
-Ask a supported question about the analyzed lead data. Review the returned answer, evidence, and limitations. Unsupported questions should be handled by the documented out-of-scope response.
-
-## Evidence note
-This is a written walkthrough with links to existing screenshots, not a recorded demo video. See the repository's final UAT, assistant validation, and deployment evidence for test results and limitations.
-````
-
 ## File: assistant/core/explanation-grounding.ts
 ````typescript
 export type ExplanationGroundingInput = {
@@ -12684,24 +12650,68 @@ The original operational dashboard remains available at:
 - Production build: PASS.
 - Clean-clone build and lint: PASS for commit `8507f59316dd0a558383c5ec8db2dd1d46ed52e7`.
 
-## 4. Outstanding Items
-- Final-release tests against the intended final commit: PENDING.
-- Final evidence pack: INCOMPLETE.
-- Final handover guide: PENDING.
-- Final README review: PENDING.
-- Final Repomix generation after documentation changes: PENDING.
-- Final release commit and tag: PENDING.
-- Public deployment: NOT CONFIRMED.
-- Docker runtime validation: BLOCKED during earlier checks because Docker Engine was not running.
-- npm security review: PENDING; installation reported 9 vulnerabilities (8 high, 1 critical).
+## 4. Current Certification Status
 
+- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
+- Verified public deployment: Render confirmed application commit `baa1d6a` as Live on 2026-10-17.
+- Latest previously pushed repository candidate: `498ce60`. This commit contains documentation, UAT, walkthrough, and Repomix updates; distinguish it from the verified deployed application commit.
+- Docker image build and runtime validation: PASS; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- Browser validation: 36/36 tests passed in the recorded run; see `final-evidence/FINAL_BROWSER_TEST_EVIDENCE.md`.
+- Production API checks and targeted live Data Intelligence and assistant checks: PASS in the recorded evidence.
+- Final Repomix snapshot: `repomix-phase3-final.md` is published. Regenerate it after this documentation-alignment pass.
+- Remaining certification gates: authorized security disposition for the five high-severity development-dependency findings, including Docker image exposure; verification of formal approval references and Post #6 Word-guide usage; final documentation/snapshot review; exact final candidate SHA; and release-owner certification.
+- Do not create a release tag until all mandatory certification gates are closed.
 ## 5. Limitations
 The data is synthetic and represents 30 source leads. The analysis is descriptive and comparative, not causal or predictive. Small groups require cautious interpretation. The available data is not a complete longitudinal time series.
 
 ## 6. Completion Decision
-Phase 3 implementation and several validation activities have supporting evidence. However, **final submission and release are not yet certified complete** because the outstanding items above remain unresolved.
 
-This report records previously verified evidence and does not claim that pending checks have passed.
+**Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING.**
+
+The application and recorded validation deliverables have been accepted for technical review. This is not release certification. The authorized security-risk disposition, formal approval references, final aligned documentation and snapshot, exact candidate SHA, and final release-owner review must be completed before creating a release tag.
+
+The separate expanded demonstration dataset is not part of this certified baseline.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
+````
+
+## File: docs/PHASE3_DEMO_WALKTHROUGH.md
+````markdown
+# Phase 3 Demo Walkthrough
+
+**Project:** PoC-7 — Lead Funnel Conversion Observatory  
+**Live application:** https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com
+
+## 1. Operational dashboard
+Open the live application and review the dashboard and lead overview.
+
+Evidence: [Dashboard screenshot](../screenshots/dashboard.png)
+
+## 2. Filtering
+Use the product filter, inspect the updated metrics, and reset filters to return to the default view.
+
+Evidence: [Filter validation screenshot](../screenshots/Filter_Validation.png)
+
+## 3. Data Intelligence
+Open `/data-intelligence` and review the dataset version, analytical method version, results, and validation information.
+
+Evidence: [Data Intelligence screenshot](../screenshots/Intelligence.png)
+
+## 4. Responsive layout
+Open the application on a narrow/mobile viewport and check that the primary page content remains usable.
+
+Evidence: [Mobile responsive screenshot](../screenshots/Mobile_Responsive.png)
+
+## 5. Grounded assistant
+Ask a supported question about the analyzed lead data. Review the returned answer, evidence, and limitations. Unsupported questions should be handled by the documented out-of-scope response.
+
+## Evidence note
+This is a written walkthrough with links to existing screenshots, not a recorded demo video. See the repository's final UAT, assistant validation, and deployment evidence for test results and limitations.
 ````
 
 ## File: docs/PHASE3_FINAL_ARCHITECTURE.md
@@ -12761,19 +12771,31 @@ The assistant uses the approved analytical results and evidence contract. Previo
 - Results remain descriptive and must not be presented as causal or predictive.
 
 ## 4. Known Limitations
-- Data is synthetic and contains 30 source leads.
-- Small funnel-stage groups require caution.
+
+- Data is synthetic and contains 30 source leads in the approved `phase3-v2` baseline.
+- Small funnel-stage groups require cautious interpretation.
 - Team and location are embedded in `text_value`, rather than dedicated analytical fields.
-- The available observations are not a complete longitudinal time series.
-- Public deployment has not been confirmed.
-- Docker runtime validation was blocked earlier because Docker Engine was not running.
+- The observations are not a complete longitudinal time series.
+- Track A results are descriptive and comparative, not causal or predictive.
 
-## 5. Release Status
-This document describes the known architecture and previously verified behavior. It does not certify that the final release has been deployed or fully validated.
+## 5. Deployment and Certification Status
 
-- Architecture documentation: created
-- Final-release regression: pending
-- Final release commit and tag: pending
+- Reviewer outcome: **PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING**.
+- Render confirmed the public application Live on 2026-10-17 for application commit `baa1d6a`.
+- Later repository candidate commit `498ce60` contains documentation, UAT, walkthrough, and Repomix updates. It is distinct from the verified deployed application commit.
+- Docker image build, startup, dashboard/Data Intelligence routes, supported assistant request, and missing-question handling passed in the recorded validation. Evidence: `final-evidence/DOCKER_RUNTIME_VALIDATION.md`.
+- The full dependency audit still reports five high-severity findings in the ESLint development dependency chain. The production-only audit reports zero vulnerabilities. The Docker image installs development dependencies, so the security disposition must explicitly consider that exposure.
+- Obtain and record the authorized release owner's security decision before certification. Do not apply a breaking dependency downgrade merely to clear the audit.
+- Link and verify the Track A approval and Post #5 Grounded Assistant approval. Confirm whether the Post #6 Word guide was used as the AI feeder.
+- The final Repomix must be regenerated after the current documentation-alignment changes and verified against the final candidate commit.
+- No release tag has been created. Certification remains pending until all mandatory gates pass.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
 ````
 
 ## File: docs/PHASE3_HANDOVER_GUIDE.md
@@ -12824,22 +12846,29 @@ npm.cmd run test:browser -- --timeout=90000 --workers=1
 ## Security
 - Never commit .env.local, API keys, tokens, or secrets.
 - Review dependency audit findings before release.
-- Do not claim Docker validation passed unless Docker checks succeed.
+- Recorded Docker build and runtime validation passed; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`. The image installs development dependencies, so the unresolved dependency findings must be considered in the authorized security decision.
 
 ## Final release checklist
 - [ ] Rerun data and analytical validation.
 - [ ] Rerun lint, intelligence tests, build, and browser tests.
 - [ ] Review README and release documents.
 - [ ] Review evidence for completeness and secrets.
-- [ ] Regenerate repomix-output.xml after final changes.
+- [x] Regenerated `repomix-phase3-final.md` after final documentation and evidence changes; excluded the stale `repomix-output.xml` snapshot.
 - [ ] Review Git status and the final diff.
 - [ ] Commit approved changes.
-- [ ] Create and verify the release tag.
+- [ ] Create and verify a release tag only after all mandatory gates, including the recorded security disposition, have passed.
 - [ ] Verify public deployment separately.
 - [ ] Record blocked checks and security findings.
 
 ## Release status
 This checklist is not proof that the release is complete. Verify each item using evidence.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
 ````
 
 ## File: docs/REPRESENTATIVENESS_ASSESSMENT.md
@@ -22915,58 +22944,6 @@ The following checks passed after the Gemini integration changes:
 The API key must remain server-side. Do not log the key, include it in screenshots, or commit `.env.local`. Revoke exposed keys and replace them with new keys.
 ````
 
-## File: docs/PHASE3_FINAL_UAT.md
-````markdown
-# Phase 3 Final User Acceptance Testing (UAT)
-
-## 1. Project
-- Project: POC-7 Lead Funnel Conversion Observatory
-- Phase: Phase 3
-- Data version: `phase3-v2`
-
-## 2. Previously Verified User Journeys
-
-| User journey | Recorded result |
-|---|---|
-| Operational dashboard loads | PASS |
-| Product filter updates records and metrics | PASS |
-| Reset Filters restores default view | PASS |
-| CSV download completes | PASS |
-| JSON download completes | PASS |
-| Navigate to Data Intelligence | PASS |
-| Browser back navigation | PASS |
-| Data Intelligence page displays results and validation metadata | PASS |
-| Assistant responds and presents evidence and limitations | PASS |
-
-These results reflect previously reported local manual checks.
-
-## 3. Previously Observed Dashboard Metrics
-- Synthetic CRM records: 30
-- Active opportunities: 5
-- Wins: 10
-- Conversion rate: approximately 33.33%
-- Average stage age: 13.1 days
-- Won pipeline value: 949,000
-
-## 4. Usability Note
-The conversion rate was displayed as `33.33333333333333%`. Consider rounding the displayed percentage for readability while retaining the underlying calculation.
-
-## 5. Limitations
-- Dataset is synthetic.
-- Analytical outputs are descriptive, not predictive or causal.
-- Small groups require cautious interpretation.
-- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Later commits fe91879 and subsequent handover edits contain documentation and snapshot changes.
-- Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
-
-## 6. Final-Release Acceptance Status
-- Previously reported local UAT checks: PASS
-- Browser suite: PASS, 36/36 tests on application commit `baa1d6a`; targeted live Data Intelligence and assistant checks were confirmed on 2026-10-17.
-- Production API recheck: PASS; the live Data Intelligence page and assistant were also confirmed working. Full operational UI journeys were covered by the recorded browser suite; those journeys were not all separately rerun through the public browser.
-
-## 7. Decision
-Acceptance evidence: 36/36 browser tests passed on the deployed application code, and targeted production API, Data Intelligence, and assistant checks passed. Follow-on commits contain documentation and snapshot changes only. Scope limitation: the complete operational UI journey was not separately repeated through the public browser after those documentation-only commits.
-````
-
 ## File: docs/SAMPLING_AND_REDUCTION_REPORT.md
 ````markdown
 # Sampling and Reduction Report
@@ -28680,6 +28657,58 @@ Remaining gates include:
 5. Create a release tag only after all mandatory gates pass and the security disposition is approved.
 ````
 
+## File: docs/PHASE3_FINAL_UAT.md
+````markdown
+# Phase 3 Final User Acceptance Testing (UAT)
+
+## 1. Project
+- Project: POC-7 Lead Funnel Conversion Observatory
+- Phase: Phase 3
+- Data version: `phase3-v2`
+
+## 2. Previously Verified User Journeys
+
+| User journey | Recorded result |
+|---|---|
+| Operational dashboard loads | PASS |
+| Product filter updates records and metrics | PASS |
+| Reset Filters restores default view | PASS |
+| CSV download completes | PASS |
+| JSON download completes | PASS |
+| Navigate to Data Intelligence | PASS |
+| Browser back navigation | PASS |
+| Data Intelligence page displays results and validation metadata | PASS |
+| Assistant responds and presents evidence and limitations | PASS |
+
+These results reflect previously reported local manual checks.
+
+## 3. Previously Observed Dashboard Metrics
+- Synthetic CRM records: 30
+- Active opportunities: 5
+- Wins: 10
+- Conversion rate: approximately 33.33%
+- Average stage age: 13.1 days
+- Won pipeline value: 949,000
+
+## 4. Usability Note
+The conversion rate was displayed as `33.33333333333333%`. Consider rounding the displayed percentage for readability while retaining the underlying calculation.
+
+## 5. Limitations
+- Dataset is synthetic.
+- Analytical outputs are descriptive, not predictive or causal.
+- Small groups require cautious interpretation.
+- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Later commits fe91879 and subsequent handover edits contain documentation and snapshot changes.
+- Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
+
+## 6. Final-Release Acceptance Status
+- Previously reported local UAT checks: PASS
+- Browser suite: PASS, 36/36 tests on application commit `baa1d6a`; targeted live Data Intelligence and assistant checks were confirmed on 2026-10-17.
+- Production API recheck: PASS; the live Data Intelligence page and assistant were also confirmed working. Full operational UI journeys were covered by the recorded browser suite; those journeys were not all separately rerun through the public browser.
+
+## 7. Decision
+Acceptance evidence: 36/36 browser tests passed on the deployed application code, and targeted production API, Data Intelligence, and assistant checks passed. Follow-on commits contain documentation and snapshot changes only. Scope limitation: the complete operational UI journey was not separately repeated through the public browser after those documentation-only commits.
+````
+
 ## File: notebooks/01_canonical_data_validation_and_readiness.ipynb
 ````
 {
@@ -31836,8 +31865,8 @@ Refer to the repository's license file, if present, for applicable license terms
 - Clean-clone validation report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
 - Clean-clone report confirms data validation, intelligence tests, lint, build, assistant tests, fallback tests, API fallback tests, and browser tests passed against the target commit.
 - The report-only commit `aa6544b` was made after that validation target; the code and dependencies were not changed by that report-only commit.
-- Final evidence and handover review: PENDING.
-- Final Repomix generation: COMPLETE; final Markdown snapshot: `repomix-phase3-final.md`.
+- Final evidence and handover review: IN PROGRESS; technical deliverables accepted, final certification gates remain.
+- Final Repomix generation: COMPLETE; `repomix-phase3-final.md` regenerated after documentation alignment.
 - Final release commit and tag: NOT CREATED.
 
 ## Post-Dependency-Update Validation - 2026-10-16
@@ -31896,9 +31925,16 @@ Refer to the repository's license file, if present, for applicable license terms
 
 **Current decision: PHASE 3 FINAL CHANGES REQUIRED - RELEASE NOT CERTIFIED.**
 
-The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. However, the final evidence review, final Repomix, and release approval remain outstanding.
+The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. The final Markdown Repomix has been published and must be regenerated after this documentation-alignment pass. Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING. The authorized security disposition and final release-owner certification remain outstanding.
 
 The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
 ````
 
 ## File: src/app/api/assistant/route.ts

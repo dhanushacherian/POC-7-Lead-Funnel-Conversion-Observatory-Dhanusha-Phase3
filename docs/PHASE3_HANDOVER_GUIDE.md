@@ -1,4 +1,4 @@
-﻿# Phase 3 Handover Guide
+# Phase 3 Handover Guide
 
 ## Project
 POC-7 Lead Funnel Conversion Observatory - Phase 3.
@@ -44,19 +44,26 @@ npm.cmd run test:browser -- --timeout=90000 --workers=1
 ## Security
 - Never commit .env.local, API keys, tokens, or secrets.
 - Review dependency audit findings before release.
-- Do not claim Docker validation passed unless Docker checks succeed.
+- Recorded Docker build and runtime validation passed; see `final-evidence/DOCKER_RUNTIME_VALIDATION.md`. The image installs development dependencies, so the unresolved dependency findings must be considered in the authorized security decision.
 
 ## Final release checklist
 - [ ] Rerun data and analytical validation.
 - [ ] Rerun lint, intelligence tests, build, and browser tests.
 - [ ] Review README and release documents.
 - [ ] Review evidence for completeness and secrets.
-- [ ] Regenerate repomix-output.xml after final changes.
+- [x] Regenerated `repomix-phase3-final.md` after final documentation and evidence changes; excluded the stale `repomix-output.xml` snapshot.
 - [ ] Review Git status and the final diff.
 - [ ] Commit approved changes.
-- [ ] Create and verify the release tag.
+- [ ] Create and verify a release tag only after all mandatory gates, including the recorded security disposition, have passed.
 - [ ] Verify public deployment separately.
 - [ ] Record blocked checks and security findings.
 
 ## Release status
 This checklist is not proof that the release is complete. Verify each item using evidence.
+
+## Formal Approval References
+
+- Track A analytical approval reference (Post #3): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/3
+- Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
+- Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
+- Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
