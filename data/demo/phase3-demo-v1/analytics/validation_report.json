@@ -1,0 +1,24 @@
+{
+  "report_version": "phase3-demo-v1",
+  "status": "PASSED",
+  "dataset_classification": "SYNTHETIC DEMONSTRATION DATA - NOT REAL CUSTOMER DATA",
+  "data_version": "phase3-demo-v1",
+  "canonical_row_count": 1200,
+  "analytical_lead_count": 600,
+  "canonical_columns": 20,
+  "canonical_record_ids_unique": true,
+  "source_metric_pairing": "PASS",
+  "metric_counts": {
+    "lead_value": 600,
+    "days_in_stage": 600
+  },
+  "errors": [],
+  "group_counts": {
+    "stages": 6,
+    "products": 3,
+    "sources": 4,
+    "teams": 3,
+    "locations": 6,
+    "months": 12
+  }
+}

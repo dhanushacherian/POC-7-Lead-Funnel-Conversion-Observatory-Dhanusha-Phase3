@@ -1,0 +1,13 @@
+month,lead_count,total_lead_value,average_lead_value,average_days_in_stage,won_leads_snapshot_count,lost_leads_snapshot_count,interpretation_note
+2025-10,56,4980000.0,88928.57,14.89,10,5,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2025-11,52,4187000.0,80519.23,13.06,14,1,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2025-12,48,3695000.0,76979.17,14.85,7,6,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-01,55,4558000.0,82872.73,13.98,8,4,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-02,33,2707000.0,82030.3,14.36,5,2,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-03,63,5232000.0,83047.62,16.08,15,11,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-04,53,3947000.0,74471.7,12.77,7,5,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-05,47,3547000.0,75468.09,16.64,5,12,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-06,43,3380000.0,78604.65,15.63,5,6,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-07,49,3398000.0,69346.94,16.65,5,8,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-08,48,3786000.0,78875.0,14.23,7,3,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.
+2026-09,53,4296000.0,81056.6,14.85,7,9,Counts describe lead records dated in this month; these are not stage-transition or conversion rates.

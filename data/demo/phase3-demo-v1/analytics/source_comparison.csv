@@ -1,0 +1,5 @@
+source,lead_count,total_lead_value,average_lead_value,average_days_in_stage,median_days_in_stage,value_share_percent
+Website,211,16555000.0,78459.72,14.77,12,34.7
+Campaign,152,11706000.0,77013.16,15.12,13.0,24.53
+Referral,138,11452000.0,82985.51,13.86,12.0,24.0
+Partner,99,8000000.0,80808.08,15.89,15,16.77

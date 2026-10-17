@@ -1,0 +1,285 @@
+{
+  "project": "Lead Funnel Conversion Observatory",
+  "edition": "Expanded professional demonstration",
+  "track": "Track A — Comparative Intelligence",
+  "dataset_classification": "SYNTHETIC DEMONSTRATION DATA - NOT REAL CUSTOMER DATA",
+  "data_version": "phase3-demo-v1",
+  "random_seed": 20261017,
+  "observation_window": {
+    "start": "2025-10-01",
+    "end": "2026-09-30",
+    "calendar_months": 12
+  },
+  "analytical_unit": "One synthetic source CRM lead",
+  "overall_summary": {
+    "source_leads_analyzed": 600,
+    "canonical_rows_processed": 1200,
+    "total_lead_value": 47713000.0,
+    "average_lead_value": 79521.67,
+    "average_days_in_stage": 14.83,
+    "median_days_in_stage": 13.0
+  },
+  "highest_observed_groups": {
+    "highest_value_stage": {
+      "stage": "Opportunity",
+      "total_lead_value": 9241000.0
+    },
+    "highest_value_product": {
+      "product": "Payments",
+      "total_lead_value": 21427000.0
+    },
+    "highest_value_source": {
+      "source": "Website",
+      "total_lead_value": 16555000.0
+    },
+    "highest_average_age_stage": {
+      "stage": "Lost",
+      "average_days_in_stage": 24.83
+    }
+  },
+  "dimensions": {
+    "stage": [
+      {
+        "stage": "Opportunity",
+        "lead_count": 123,
+        "total_lead_value": 9241000.0,
+        "average_lead_value": 75130.08,
+        "average_days_in_stage": 19.07,
+        "median_days_in_stage": 19,
+        "value_share_percent": 19.37
+      },
+      {
+        "stage": "Lead",
+        "lead_count": 109,
+        "total_lead_value": 8482000.0,
+        "average_lead_value": 77816.51,
+        "average_days_in_stage": 6.8,
+        "median_days_in_stage": 7,
+        "value_share_percent": 17.78
+      },
+      {
+        "stage": "Qualified",
+        "lead_count": 112,
+        "total_lead_value": 8455000.0,
+        "average_lead_value": 75491.07,
+        "average_days_in_stage": 11.65,
+        "median_days_in_stage": 12.0,
+        "value_share_percent": 17.72
+      },
+      {
+        "stage": "Won",
+        "lead_count": 95,
+        "total_lead_value": 7909000.0,
+        "average_lead_value": 83252.63,
+        "average_days_in_stage": 12.39,
+        "median_days_in_stage": 13,
+        "value_share_percent": 16.58
+      },
+      {
+        "stage": "Proposal",
+        "lead_count": 89,
+        "total_lead_value": 7289000.0,
+        "average_lead_value": 81898.88,
+        "average_days_in_stage": 17.34,
+        "median_days_in_stage": 17,
+        "value_share_percent": 15.28
+      },
+      {
+        "stage": "Lost",
+        "lead_count": 72,
+        "total_lead_value": 6337000.0,
+        "average_lead_value": 88013.89,
+        "average_days_in_stage": 24.83,
+        "median_days_in_stage": 25.0,
+        "value_share_percent": 13.28
+      }
+    ],
+    "product": [
+      {
+        "product": "Payments",
+        "lead_count": 222,
+        "total_lead_value": 21427000.0,
+        "average_lead_value": 96518.02,
+        "average_days_in_stage": 14.2,
+        "median_days_in_stage": 12.0,
+        "value_share_percent": 44.91
+      },
+      {
+        "product": "Analytics",
+        "lead_count": 207,
+        "total_lead_value": 16030000.0,
+        "average_lead_value": 77439.61,
+        "average_days_in_stage": 15.24,
+        "median_days_in_stage": 13,
+        "value_share_percent": 33.6
+      },
+      {
+        "product": "Security",
+        "lead_count": 171,
+        "total_lead_value": 10256000.0,
+        "average_lead_value": 59976.61,
+        "average_days_in_stage": 15.16,
+        "median_days_in_stage": 14,
+        "value_share_percent": 21.5
+      }
+    ],
+    "source": [
+      {
+        "source": "Website",
+        "lead_count": 211,
+        "total_lead_value": 16555000.0,
+        "average_lead_value": 78459.72,
+        "average_days_in_stage": 14.77,
+        "median_days_in_stage": 12,
+        "value_share_percent": 34.7
+      },
+      {
+        "source": "Campaign",
+        "lead_count": 152,
+        "total_lead_value": 11706000.0,
+        "average_lead_value": 77013.16,
+        "average_days_in_stage": 15.12,
+        "median_days_in_stage": 13.0,
+        "value_share_percent": 24.53
+      },
+      {
+        "source": "Referral",
+        "lead_count": 138,
+        "total_lead_value": 11452000.0,
+        "average_lead_value": 82985.51,
+        "average_days_in_stage": 13.86,
+        "median_days_in_stage": 12.0,
+        "value_share_percent": 24.0
+      },
+      {
+        "source": "Partner",
+        "lead_count": 99,
+        "total_lead_value": 8000000.0,
+        "average_lead_value": 80808.08,
+        "average_days_in_stage": 15.89,
+        "median_days_in_stage": 15,
+        "value_share_percent": 16.77
+      }
+    ],
+    "team": [
+      {
+        "team": "Enterprise",
+        "lead_count": 214,
+        "total_lead_value": 22298000.0,
+        "average_lead_value": 104196.26,
+        "average_days_in_stage": 15.8,
+        "median_days_in_stage": 15.0,
+        "value_share_percent": 46.73
+      },
+      {
+        "team": "SMB",
+        "lead_count": 247,
+        "total_lead_value": 14368000.0,
+        "average_lead_value": 58170.04,
+        "average_days_in_stage": 13.98,
+        "median_days_in_stage": 12,
+        "value_share_percent": 30.11
+      },
+      {
+        "team": "Growth",
+        "lead_count": 139,
+        "total_lead_value": 11047000.0,
+        "average_lead_value": 79474.82,
+        "average_days_in_stage": 14.86,
+        "median_days_in_stage": 12,
+        "value_share_percent": 23.15
+      }
+    ],
+    "location": [
+      {
+        "location": "Mumbai",
+        "lead_count": 135,
+        "total_lead_value": 11643000.0,
+        "average_lead_value": 86244.44,
+        "average_days_in_stage": 14.1,
+        "median_days_in_stage": 12,
+        "value_share_percent": 24.4
+      },
+      {
+        "location": "Bangalore",
+        "lead_count": 125,
+        "total_lead_value": 9740000.0,
+        "average_lead_value": 77920.0,
+        "average_days_in_stage": 14.65,
+        "median_days_in_stage": 13,
+        "value_share_percent": 20.41
+      },
+      {
+        "location": "Delhi",
+        "lead_count": 100,
+        "total_lead_value": 7829000.0,
+        "average_lead_value": 78290.0,
+        "average_days_in_stage": 15.05,
+        "median_days_in_stage": 12.0,
+        "value_share_percent": 16.41
+      },
+      {
+        "location": "Chennai",
+        "lead_count": 90,
+        "total_lead_value": 6913000.0,
+        "average_lead_value": 76811.11,
+        "average_days_in_stage": 13.89,
+        "median_days_in_stage": 12.0,
+        "value_share_percent": 14.49
+      },
+      {
+        "location": "Hyderabad",
+        "lead_count": 87,
+        "total_lead_value": 6649000.0,
+        "average_lead_value": 76425.29,
+        "average_days_in_stage": 14.6,
+        "median_days_in_stage": 13,
+        "value_share_percent": 13.94
+      },
+      {
+        "location": "Pune",
+        "lead_count": 63,
+        "total_lead_value": 4939000.0,
+        "average_lead_value": 78396.83,
+        "average_days_in_stage": 18.08,
+        "median_days_in_stage": 16,
+        "value_share_percent": 10.35
+      }
+    ],
+    "month_count": 12,
+    "aging_buckets_per_stage": [
+      "01-07 days",
+      "08-14 days",
+      "15-30 days",
+      "31+ days"
+    ]
+  },
+  "interpretation": [
+    "The analysis covers 600 synthetic source CRM leads.",
+    "Total observed lead value is 47713000.00 currency-unspecified units.",
+    "Opportunity has the highest observed total value by stage in this synthetic sample.",
+    "Payments has the highest observed total value by product in this synthetic sample.",
+    "Website has the highest observed total value by acquisition source in this synthetic sample.",
+    "Lost has the highest average days in stage in this snapshot."
+  ],
+  "limitations": [
+    "All records are generated synthetic demonstration data and do not represent actual customers or observed business outcomes.",
+    "Group differences are descriptive only and do not establish causation or forecast future outcomes.",
+    "The data contains current-stage snapshots, not historical stage transitions; do not interpret stage counts as conversion rates.",
+    "Monthly counts reflect seeded randomized observation dates and must not be described as evidence of seasonality.",
+    "Values use currency-unspecified units.",
+    "Team and location dimensions are parsed from canonical text_value metadata."
+  ],
+  "outputs": [
+    "analysis_dataset.csv",
+    "stage_comparison.csv",
+    "product_comparison.csv",
+    "source_comparison.csv",
+    "team_comparison.csv",
+    "location_comparison.csv",
+    "monthly_activity.csv",
+    "stage_aging.csv",
+    "intelligence_summary.json",
+    "validation_report.json"
+  ]
+}
