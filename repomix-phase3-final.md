@@ -129,6 +129,7 @@ docs/
   OPERATIONAL_PAGE_REGRESSION_EVIDENCE.md
   OPERATIONAL_PAGE_REGRESSION_REPORT.md
   PHASE3_COMPLETION_REPORT.md
+  PHASE3_DEMO_WALKTHROUGH.md
   PHASE3_FINAL_ARCHITECTURE.md
   PHASE3_FINAL_UAT.md
   PHASE3_HANDOVER_GUIDE.md
@@ -238,6 +239,40 @@ tsconfig.json
 ````
 
 # Files
+
+## File: docs/PHASE3_DEMO_WALKTHROUGH.md
+````markdown
+# Phase 3 Demo Walkthrough
+
+**Project:** PoC-7 — Lead Funnel Conversion Observatory  
+**Live application:** https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com
+
+## 1. Operational dashboard
+Open the live application and review the dashboard and lead overview.
+
+Evidence: [Dashboard screenshot](../screenshots/dashboard.png)
+
+## 2. Filtering
+Use the product filter, inspect the updated metrics, and reset filters to return to the default view.
+
+Evidence: [Filter validation screenshot](../screenshots/Filter_Validation.png)
+
+## 3. Data Intelligence
+Open `/data-intelligence` and review the dataset version, analytical method version, results, and validation information.
+
+Evidence: [Data Intelligence screenshot](../screenshots/Intelligence.png)
+
+## 4. Responsive layout
+Open the application on a narrow/mobile viewport and check that the primary page content remains usable.
+
+Evidence: [Mobile responsive screenshot](../screenshots/Mobile_Responsive.png)
+
+## 5. Grounded assistant
+Ask a supported question about the analyzed lead data. Review the returned answer, evidence, and limitations. Unsupported questions should be handled by the documented out-of-scope response.
+
+## Evidence note
+This is a written walkthrough with links to existing screenshots, not a recorded demo video. See the repository's final UAT, assistant validation, and deployment evidence for test results and limitations.
+````
 
 ## File: assistant/core/explanation-grounding.ts
 ````typescript
@@ -22920,16 +22955,16 @@ The conversion rate was displayed as `33.33333333333333%`. Consider rounding the
 - Dataset is synthetic.
 - Analytical outputs are descriptive, not predictive or causal.
 - Small groups require cautious interpretation.
-- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Deployed commit verification remains pending.
+- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Render dashboard confirmed commit baa1d6a as Live on 2026-10-17. Later commits fe91879 and subsequent handover edits contain documentation and snapshot changes.
 - Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
 
 ## 6. Final-Release Acceptance Status
 - Previously reported local UAT checks: PASS
-- New UAT run against final-release changes: PENDING
-- Production API recheck: PASS; full public browser UAT remains pending.
+- Browser suite: PASS, 36/36 tests on application commit `baa1d6a`; targeted live Data Intelligence and assistant checks were confirmed on 2026-10-17.
+- Production API recheck: PASS; the live Data Intelligence page and assistant were also confirmed working. Full operational UI journeys were covered by the recorded browser suite; those journeys were not all separately rerun through the public browser.
 
 ## 7. Decision
-Previously reported user journeys passed local checks. Final acceptance remains pending until the required UAT journeys are rerun against the final committed release.
+Acceptance evidence: 36/36 browser tests passed on the deployed application code, and targeted production API, Data Intelligence, and assistant checks passed. Follow-on commits contain documentation and snapshot changes only. Scope limitation: the complete operational UI journey was not separately repeated through the public browser after those documentation-only commits.
 ````
 
 ## File: docs/SAMPLING_AND_REDUCTION_REPORT.md
@@ -31677,7 +31712,7 @@ The release manifest is the primary reference for the recorded deployment eviden
 
 The public Render deployment is live, and production smoke tests have been recorded. See `docs/PHASE3_RELEASE_MANIFEST.md` and `final-evidence/production/LIVE_API_VALIDATION.json` for the deployment details and evidence.
 
-**Phase 3 final release certification remains pending.** The final UAT and evidence review, final Repomix generation, and security-risk disposition must be completed before the project is declared certified. The full development dependency audit has previously reported five high-severity findings, and their disposition remains unresolved in the release manifest.
+**Phase 3 final release certification remains pending.** The fresh pre-certification snapshot is `repomix-phase3-final.md`. The browser suite passed 36/36 tests on application commit `baa1d6a`; targeted live checks also confirmed the Data Intelligence page and assistant were working. The full development dependency audit previously reported five high-severity findings. The reported security approval must be recorded with its authorized approver and supporting evidence before certification.
 
 No final release tag should be created until the required release gates have passed and the security disposition has been approved.
 

@@ -199,7 +199,7 @@ The release manifest is the primary reference for the recorded deployment eviden
 
 The public Render deployment is live, and production smoke tests have been recorded. See `docs/PHASE3_RELEASE_MANIFEST.md` and `final-evidence/production/LIVE_API_VALIDATION.json` for the deployment details and evidence.
 
-**Phase 3 final release certification remains pending.** The final UAT and evidence review, final Repomix generation, and security-risk disposition must be completed before the project is declared certified. The full development dependency audit has previously reported five high-severity findings, and their disposition remains unresolved in the release manifest.
+**Phase 3 final release certification remains pending.** The fresh pre-certification snapshot is `repomix-phase3-final.md`. The browser suite passed 36/36 tests on application commit `baa1d6a`; targeted live checks also confirmed the Data Intelligence page and assistant were working. The full development dependency audit previously reported five high-severity findings. The reported security approval must be recorded with its authorized approver and supporting evidence before certification.
 
 No final release tag should be created until the required release gates have passed and the security disposition has been approved.
 
