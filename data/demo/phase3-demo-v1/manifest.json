@@ -1,0 +1,67 @@
+{
+  "manifest_version": "phase3-demo-v1",
+  "dataset_classification": "SYNTHETIC DEMONSTRATION DATA - NOT REAL CUSTOMER DATA",
+  "data_version": "phase3-demo-v1",
+  "random_seed": 20261017,
+  "source": {
+    "path": "data/demo/phase3-demo-v1/source/source_leads.csv",
+    "record_count": 600,
+    "columns": [
+      "id",
+      "date",
+      "location",
+      "team",
+      "product",
+      "source",
+      "stage",
+      "daysInStage",
+      "value",
+      "is_synthetic",
+      "data_version",
+      "synthetic_notice"
+    ]
+  },
+  "canonical": {
+    "path": "data/demo/phase3-demo-v1/canonical/intelligence_data.csv",
+    "record_count": 1200,
+    "column_count": 20,
+    "columns": [
+      "record_id",
+      "record_type",
+      "observed_at",
+      "entity_id",
+      "related_entity_id",
+      "entity_name",
+      "category",
+      "subcategory",
+      "status",
+      "stage",
+      "metric_name",
+      "metric_value",
+      "metric_unit",
+      "text_value",
+      "latitude",
+      "longitude",
+      "source_name",
+      "source_record_id",
+      "is_synthetic",
+      "data_version"
+    ]
+  },
+  "published": {
+    "path": "data/demo/phase3-demo-v1/published/intelligence_data.json",
+    "record_count": 1200
+  },
+  "assumptions": "data/demo/phase3-demo-v1/assumptions.md",
+  "validation_report": "data/demo/phase3-demo-v1/validation_report.json",
+  "observation_window": {
+    "start": "2025-10-01",
+    "end": "2026-09-30",
+    "calendar_months": 12
+  },
+  "provenance": {
+    "synthetic_status": "confirmed",
+    "real_customer_data": false
+  },
+  "status": "PASSED"
+}

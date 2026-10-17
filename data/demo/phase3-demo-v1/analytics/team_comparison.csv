@@ -1,0 +1,4 @@
+team,lead_count,total_lead_value,average_lead_value,average_days_in_stage,median_days_in_stage,value_share_percent
+Enterprise,214,22298000.0,104196.26,15.8,15.0,46.73
+SMB,247,14368000.0,58170.04,13.98,12,30.11
+Growth,139,11047000.0,79474.82,14.86,12,23.15

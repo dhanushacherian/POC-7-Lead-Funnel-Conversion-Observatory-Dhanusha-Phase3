@@ -1,0 +1,7 @@
+location,lead_count,total_lead_value,average_lead_value,average_days_in_stage,median_days_in_stage,value_share_percent
+Mumbai,135,11643000.0,86244.44,14.1,12,24.4
+Bangalore,125,9740000.0,77920.0,14.65,13,20.41
+Delhi,100,7829000.0,78290.0,15.05,12.0,16.41
+Chennai,90,6913000.0,76811.11,13.89,12.0,14.49
+Hyderabad,87,6649000.0,76425.29,14.6,13,13.94
+Pune,63,4939000.0,78396.83,18.08,16,10.35
