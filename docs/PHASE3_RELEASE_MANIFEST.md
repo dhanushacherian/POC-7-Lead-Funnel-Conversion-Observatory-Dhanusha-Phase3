@@ -1,4 +1,3 @@
-
 # Phase 3 Release Manifest
 
 ## Release Identity
@@ -61,7 +60,7 @@
 - Service: `poc-7-lead-funnel-conversion-observatory-phase3`.
 - Public application URL: https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com
 - Deployment status: LIVE; production smoke tests were performed.
-- Production deployment commit verified: `aace1f8`.
+- Production deployment commit verified: `baa1d6a` (Render dashboard confirmed Live on 2026-10-17).
 - Production evidence record subsequently committed in: `40a3192`.
 - Home route: HTTP 200 during production validation.
 - Data Intelligence route: HTTP 200 during production validation.
@@ -137,7 +136,7 @@
 - Deterministic answer and evidence: PASS. External Gemini explanation remained unavailable; the deterministic answer succeeded.
 - Out-of-scope query: PASS; HTTP 200; status OUT_OF_SCOPE; zero evidence references; llm_enabled: false.
 - Evidence files: `final-evidence/production/LIVE_API_RECHECK_2026-10-17.json` and `final-evidence/production/OUT_OF_SCOPE_RECHECK_2026-10-17.json`.
-- Deployed Git commit verification: PENDING. The successful API recheck does not independently establish which Git commit is deployed.
+- Deployed Git commit verification: VERIFIED on 2026-10-17 in Render; source commit `baa1d6a`, status `Live`.
 - Release certification: PENDING; this recheck does not waive the security disposition, handover review, final Repomix, or other release gates.
 ## Remaining Release Gates
 
