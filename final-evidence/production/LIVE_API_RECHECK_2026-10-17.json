@@ -1,0 +1,21 @@
+﻿{
+    "project":  "POC-7 Lead Funnel Conversion Observatory",
+    "check_type":  "Production assistant API recheck",
+    "observed_at_utc":  "2026-10-17T01:41:23.3400254Z",
+    "endpoint":  "https://poc-7-lead-funnel-conversion-observatory-mll2.onrender.com/api/assistant",
+    "method":  "POST",
+    "question":  "Which product has the highest lead value?",
+    "request_body_file":  "Inline JSON question recorded in this evidence; temporary request file removed after capture.",
+    "http_status":  200,
+    "assistant_status":  "SUPPORTED",
+    "data_version":  "phase3-v2",
+    "method_version":  "1.0.0",
+    "validation_result":  "PASS",
+    "expected_top_product":  "Payments",
+    "total_lead_value":  942000,
+    "lead_count":  12,
+    "explanation_status":  "UNAVAILABLE",
+    "deterministic_answer_and_evidence":  "PASS",
+    "deployed_commit_verified":  false,
+    "certification_status":  "PENDING"
+}

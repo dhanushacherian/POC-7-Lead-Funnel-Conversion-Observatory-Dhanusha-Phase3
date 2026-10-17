@@ -4,9 +4,9 @@
 ## Release Identity
 
 - Project: POC-7 Lead Funnel Conversion Observatory
-- Phase: 3 — Grounded Data Assistant
+- Phase: 3 - Grounded Data Assistant
 - Data package version: `phase3-v2`
-- Manifest status: `IN PROGRESS — RELEASE NOT CERTIFIED`
+- Manifest status: `IN PROGRESS - RELEASE NOT CERTIFIED`
 - Git repository: https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3
 
 ## Canonical Data Package
@@ -86,8 +86,8 @@
 
 - Repository: `https://github.com/dhanushacherian/POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3`
 - Latest production-metadata fix commit: `aace1f8`.
-- Production evidence commit: `40a3192` — `Record production metadata fix verification`.
-- Clean-clone report commit: `aa6544b` — `Update clean-clone validation report for latest commit`.
+- Production evidence commit: `40a3192` - `Record production metadata fix verification`.
+- Clean-clone report commit: `aa6544b` - `Update clean-clone validation report for latest commit`.
 - Clean-clone validation target: `b0582876eba75589cdac5aa7279efd9d7f213099`.
 - Clean-clone validation report: `docs/CLEAN_CLONE_VALIDATION_REPORT.md`.
 - Clean-clone report confirms data validation, intelligence tests, lint, build, assistant tests, fallback tests, API fallback tests, and browser tests passed against the target commit.
@@ -96,7 +96,7 @@
 - Final Repomix generation: PENDING.
 - Final release commit and tag: NOT CREATED.
 
-## Post-Dependency-Update Validation — 2026-10-16
+## Post-Dependency-Update Validation - 2026-10-16
 
 ### Updated Dependencies
 
@@ -116,18 +116,29 @@
 - Production build: PASS.
 - Browser regression: the latest clean-clone run passed 36/36 tests. An earlier run had 33 passes and 3 timeouts; both results remain part of the validation history.
 
-## Development Dependency Security Assessment — 2026-10-16
+## Development Dependency Security Assessment - 2026-10-16
 
 - Production audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
 - Full development dependency audit: NOT CLEAN; five high-severity findings are reported.
 - Affected dependency: `braces@3.0.3`.
-- Dependency path: `eslint-config-next@16.4.2` → `@next/eslint-plugin-next@16.4.2` → `fast-glob@3.3.1` → `micromatch@4.0.8` → `braces@3.0.3`.
+- Dependency path: `eslint-config-next@16.4.2` -> `@next/eslint-plugin-next@16.4.2` -> `fast-glob@3.3.1` -> `micromatch@4.0.8` -> `braces@3.0.3`.
 - Advisory: `GHSA-vfj7-8cjw-p6xm`; stack-exhaustion denial of service through deeply nested patterns.
 - The reviewed advisory listed no patched version at the time of assessment.
 - `npm audit fix --force` proposed a breaking downgrade to `eslint-config-next@14.2.35`; this was not applied.
 - No unofficial fork or unverified override was applied.
-- Disposition: UNRESOLVED; release owner review required. Do not represent the full dependency audit as clean.
+- Disposition: PENDING RELEASE OWNER DECISION. No exception or risk acceptance has been approved or recorded. Do not represent the full dependency audit as clean.
 
+
+## Production API Recheck - 2026-10-17
+
+- Supported assistant query: PASS; HTTP 200; status SUPPORTED.
+- Production data version: phase3-v2; method version: 1.0.0; validation: PASS.
+- Highest-value product: Payments; total lead value: 942,000 across 12 leads.
+- Deterministic answer and evidence: PASS. External Gemini explanation remained unavailable; the deterministic answer succeeded.
+- Out-of-scope query: PASS; HTTP 200; status OUT_OF_SCOPE; zero evidence references; llm_enabled: false.
+- Evidence files: `final-evidence/production/LIVE_API_RECHECK_2026-10-17.json` and `final-evidence/production/OUT_OF_SCOPE_RECHECK_2026-10-17.json`.
+- Deployed Git commit verification: PENDING. The successful API recheck does not independently establish which Git commit is deployed.
+- Release certification: PENDING; this recheck does not waive the security disposition, handover review, final Repomix, or other release gates.
 ## Remaining Release Gates
 
 1. Obtain and record the release owner's security-risk disposition for the five high-severity development-dependency findings, or resolve them using a verified compatible dependency update.
@@ -139,8 +150,8 @@
 
 ## Release Decision
 
-**Current decision: PHASE 3 FINAL CHANGES REQUIRED — RELEASE NOT CERTIFIED.**
+**Current decision: PHASE 3 FINAL CHANGES REQUIRED - RELEASE NOT CERTIFIED.**
 
 The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. However, the final evidence review, final Repomix, and release approval remain outstanding.
 
-The full development dependency audit is not clean, and its disposition remains unresolved. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
+The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.

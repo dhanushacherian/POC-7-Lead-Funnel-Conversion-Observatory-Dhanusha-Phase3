@@ -1,4 +1,4 @@
-﻿# Phase 3 Final User Acceptance Testing (UAT)
+# Phase 3 Final User Acceptance Testing (UAT)
 
 ## 1. Project
 - Project: POC-7 Lead Funnel Conversion Observatory
@@ -36,13 +36,13 @@ The conversion rate was displayed as `33.33333333333333%`. Consider rounding the
 - Dataset is synthetic.
 - Analytical outputs are descriptive, not predictive or causal.
 - Small groups require cautious interpretation.
-- Public deployment has not been confirmed.
-- Docker runtime validation was blocked during earlier checks because Docker Engine was not running.
+- Public deployment is live; see final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md. Deployed commit verification remains pending.
+- Docker runtime validation subsequently passed; see final-evidence/DOCKER_RUNTIME_VALIDATION.md.
 
 ## 6. Final-Release Acceptance Status
 - Previously reported local UAT checks: PASS
 - New UAT run against final-release changes: PENDING
-- Public deployment UAT: NOT CONFIRMED
+- Production API recheck: PASS; full public browser UAT remains pending.
 
 ## 7. Decision
 Previously reported user journeys passed local checks. Final acceptance remains pending until the required UAT journeys are rerun against the final committed release.
