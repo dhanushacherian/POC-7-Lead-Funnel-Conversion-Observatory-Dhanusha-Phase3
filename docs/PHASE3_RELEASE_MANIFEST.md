@@ -1,4 +1,4 @@
-# Phase 3 Release Manifest
+﻿# Phase 3 Release Manifest
 
 ## Release Identity
 
@@ -92,7 +92,7 @@
 - Clean-clone report confirms data validation, intelligence tests, lint, build, assistant tests, fallback tests, API fallback tests, and browser tests passed against the target commit.
 - The report-only commit `aa6544b` was made after that validation target; the code and dependencies were not changed by that report-only commit.
 - Final evidence and handover review: PENDING.
-- Final Repomix generation: PENDING.
+- Final Repomix generation: COMPLETE; final Markdown snapshot: `repomix-phase3-final.md`.
 - Final release commit and tag: NOT CREATED.
 
 ## Post-Dependency-Update Validation - 2026-10-16
@@ -154,3 +154,4 @@
 The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. However, the final evidence review, final Repomix, and release approval remain outstanding.
 
 The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
+
