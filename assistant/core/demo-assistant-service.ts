@@ -1,4 +1,5 @@
-﻿import rawSummary from "../../data/demo/phase3-demo-v1/analytics/intelligence_summary.json";
+import rawSummary from "../../data/demo/phase3-demo-v1/analytics/intelligence_summary.json";
+import { GoogleGenAI } from "@google/genai";
 
 type MetricRow = {
   stage?: string;
@@ -74,8 +75,8 @@ type DemoReply = {
   status: ReplyStatus;
   intent: string | null;
   answer: string;
-  explanation: null;
-  explanation_status: "UNAVAILABLE";
+  explanation: string | null;
+  explanation_status: "GENERATED" | "UNAVAILABLE" | "SKIPPED";
   evidence_references: Evidence[];
   key_values: Record<string, string | number | boolean | null>;
   metadata: {
@@ -456,3 +457,81 @@ export function answerDemoQuestion(question: unknown): DemoReply {
   );
 }
 
+
+/**
+ * Keeps the deterministic answer authoritative.
+ * Gemini may explain supported evidence, but may not invent or alter findings.
+ */
+export async function answerDemoQuestionWithExplanation(
+  question: unknown,
+): Promise<DemoReply> {
+  const reply = answerDemoQuestion(question);
+
+  if (reply.status !== "SUPPORTED") {
+    return { ...reply, explanation: null, explanation_status: "SKIPPED" };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+
+  if (!apiKey) {
+    return {
+      ...reply,
+      explanation: null,
+      explanation_status: "UNAVAILABLE",
+      metadata: {
+        ...reply.metadata,
+        mode: "deterministic_only",
+        llm_enabled: false,
+      },
+    };
+  }
+
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+    const prompt = [
+      "You are explaining a deterministic answer from a synthetic CRM demonstration dataset.",
+      "The deterministic answer and supplied evidence are authoritative. Explain them clearly in 2-4 sentences.",
+      "Do not add or calculate numbers, rankings, facts, predictions, causal claims, conversion rates, or seasonality.",
+      "Do not contradict or rewrite the deterministic answer.",
+      "Mention that the dataset is synthetic where relevant and preserve the stated limitations.",
+      "Question: " + String(question),
+      "Deterministic answer: " + reply.answer,
+      "Approved evidence: " + JSON.stringify(reply.evidence_references),
+      "Approved key values: " + JSON.stringify(reply.key_values),
+      "Data version: " + reply.metadata.data_version,
+      "Method version: " + reply.metadata.method_version,
+      "Limitations: " + reply.limitation,
+    ].join("\n");
+
+    const result = await ai.models.generateContent({
+      model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
+      contents: prompt,
+    });
+
+    const explanation = result.text?.trim();
+    if (!explanation) throw new Error("Gemini returned no explanation.");
+
+    return {
+      ...reply,
+      explanation,
+      explanation_status: "GENERATED",
+      metadata: {
+        ...reply.metadata,
+        mode: "deterministic_with_gemini_explanation",
+        llm_enabled: true,
+      },
+    };
+  } catch {
+    // Gemini failure must never remove the validated answer or its evidence.
+    return {
+      ...reply,
+      explanation: null,
+      explanation_status: "UNAVAILABLE",
+      metadata: {
+        ...reply.metadata,
+        mode: "deterministic_fallback",
+        llm_enabled: false,
+      },
+    };
+  }
+}

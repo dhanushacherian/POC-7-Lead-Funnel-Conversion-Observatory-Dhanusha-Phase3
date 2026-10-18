@@ -1,5 +1,5 @@
-﻿import { NextResponse } from "next/server";
-import { answerDemoQuestion } from "../../../../../assistant/core/demo-assistant-service";
+import { NextResponse } from "next/server";
+import { answerDemoQuestionWithExplanation } from "../../../../../assistant/core/demo-assistant-service";
 
 export const runtime = "nodejs";
 
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         ? (body as { question: unknown }).question
         : undefined;
 
-    const response = answerDemoQuestion(question);
+    const response = await answerDemoQuestionWithExplanation(question);
 
     return NextResponse.json(response, {
       status: response.status === "MISSING_PARAMETER" ? 400 : 200,
