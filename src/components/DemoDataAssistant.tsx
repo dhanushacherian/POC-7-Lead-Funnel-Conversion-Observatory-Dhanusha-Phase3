@@ -107,7 +107,7 @@ export default function DemoDataAssistant() {
     <section className="space-y-6 overflow-hidden rounded-2xl border border-indigo-300/15 bg-white/[0.025] p-5 shadow-2xl backdrop-blur-xl md:p-6">
       <div>
         <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-300/60">
-          Phase 3 · Demo Intelligence
+          Phase 3 Â· Demo Intelligence
         </p>
         <h2 className="mt-2 text-xl font-semibold tracking-tight text-white md:text-2xl">
           Grounded Demo Assistant
@@ -122,7 +122,7 @@ export default function DemoDataAssistant() {
             Deterministic answers
           </span>
           <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-white/50">
-            Synthetic data · phase3-demo-v1
+            Synthetic data Â· phase3-demo-v1
           </span>
         </div>
       </div>
@@ -193,6 +193,17 @@ export default function DemoDataAssistant() {
             </p>
           </div>
 
+          {reply.explanation ? (
+            <div className="rounded-xl border border-indigo-300/15 bg-indigo-300/[0.04] p-4">
+              <h3 className="text-sm font-semibold text-indigo-100/80">Gemini explanation</h3>
+              <p className="mt-2 text-sm leading-7 text-white/70">{reply.explanation}</p>
+            </div>
+          ) : reply.explanation_status === "UNAVAILABLE" ? (
+            <p className="text-xs text-white/45">
+              Gemini explanation unavailable. The deterministic answer and supporting evidence remain available.
+            </p>
+          ) : null}
+
           {reply.evidence_references && reply.evidence_references.length > 0 && (
             <div className="rounded-xl border border-white/[0.08] bg-black/10 p-4">
               <h3 className="text-sm font-semibold text-white/75">Supporting evidence</h3>
@@ -202,12 +213,12 @@ export default function DemoDataAssistant() {
                     <p className="text-sm text-white/70">{evidence.finding}</p>
                     <p className="mt-1 break-all text-[10px] leading-5 text-white/35">
                       Source: {evidence.source_id}
-                      {evidence.metric ? ` · Metric: ${evidence.metric}` : ""}
-                      {evidence.value !== undefined ? ` · Value: ${evidence.value}` : ""}
+                      {evidence.metric ? ` Â· Metric: ${evidence.metric}` : ""}
+                      {evidence.value !== undefined ? ` Â· Value: ${evidence.value}` : ""}
                       {evidence.unit ? ` ${evidence.unit}` : ""}
                     </p>
                     <p className="text-[10px] text-white/30">
-                      Version: {evidence.data_version} · Method: {evidence.method_version}
+                      Version: {evidence.data_version} Â· Method: {evidence.method_version}
                     </p>
                   </div>
                 ))}
@@ -217,8 +228,8 @@ export default function DemoDataAssistant() {
 
           {reply.metadata && (
             <p className="text-[10px] leading-5 text-white/35">
-              Assistant: {reply.metadata.assistant_id} · Mode: {reply.metadata.mode}
-              {" · LLM enabled: "}
+              Assistant: {reply.metadata.assistant_id} Â· Mode: {reply.metadata.mode}
+              {" Â· LLM enabled: "}
               {String(reply.metadata.llm_enabled)}
             </p>
           )}
