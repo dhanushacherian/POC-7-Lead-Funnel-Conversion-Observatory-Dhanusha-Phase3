@@ -1,0 +1,69 @@
+# Phase 3 Docker Security Mitigation Review
+
+## Status
+Proposed mitigation; release-owner review and security disposition pending.
+This document does not authorize a release or declare the underlying dependency vulnerability fixed.
+
+## Baseline
+- Proposed baseline commit: `061dbabdfc51d96b4b92a74d224f7433353a540b`
+- Review branch: `security/docker-production-runtime`
+- Test image: `lead-funnel-observatory-security-review:061dbab`
+- Test container: `phase3-security-review`
+
+## Original Finding
+The previously recorded dependency audit identified five high-severity findings in the ESLint development dependency chain, including the reported path through `eslint-config-next`, `@next/eslint-plugin-next`, `fast-glob`, `micromatch`, and `braces@3.0.3`.
+
+The recorded advisory was `GHSA-vfj7-8cjw-p6xm`, relating to stack exhaustion from deeply nested patterns. The previous review recorded that `npm audit fix --force` proposed a breaking downgrade of `eslint-config-next` to `14.2.35`. That downgrade was not applied.
+
+## Proposed Mitigation
+- Enabled Next.js standalone output in `next.config.ts`.
+- Replaced the single-stage Docker build with separate builder and runtime stages.
+- Kept Python and `npm ci` in the builder stage for build-time tasks.
+- Copied the standalone server, traced dependencies, static assets, and public assets into the runtime stage.
+- Configured the runtime to run as non-root user `nextjs` (UID 1001).
+
+## Verification Results
+- Docker image build: passed.
+- Container startup: passed.
+- Main dashboard `/`: HTTP 200.
+- Data Intelligence page `/data-intelligence`: HTTP 200.
+- Valid assistant POST using PowerShell JSON serialization: returned `SUPPORTED` with evidence and limitations.
+- Assistant POST with an empty JSON object: HTTP 400, `MISSING_PARAMETER`.
+- Runtime identity: UID 1001, non-root.
+- Runtime Python check: `python3-not-found`.
+- Runtime ESLint check: `eslint-not-found`.
+- Next.js runtime dependency and standalone server checks: passed.
+- Searches for `braces/package.json`, `micromatch/package.json`, and `eslint-config-next/package.json` under runtime `node_modules` returned no paths.
+- `git diff --check`: no whitespace errors; Git printed line-ending conversion warnings.
+
+The initial `curl.exe` valid-question test returned HTTP 500 because the request body was malformed by command-line quoting. The corrected PowerShell-native JSON request returned a supported deterministic answer. This initial 500 should not be reported as a confirmed application or container defect.
+
+## Residual Risk and Limitations
+This mitigation reduces exposure in the final runtime image by excluding the audited ESLint packages found in the original dependency chain. It does not patch the vulnerable package or remove it from the builder environment, where development dependencies are still installed.
+
+The original dependency audit should be retained and rerun as required. The final runtime image should be audited independently where tooling permits. Confirm the package/advisory status with the authorized security or release owner and obtain an explicit disposition before release.
+
+## Release Controls
+- No dependency downgrade or override was made as part of this proposal.
+- No production deployment was made as part of this local test.
+- Do not merge or tag this mitigation as an approved release until review, required compliance gates, and release-owner disposition are complete.
+
+## Production-Only Dependency Audit — 2026-10-18
+
+Command executed:
+`npm.cmd audit --omit=dev`
+
+Recorded result:
+`found 0 vulnerabilities`
+
+Interpretation:
+The production-only dependency audit reported zero vulnerabilities. The full development dependency audit still has five high-severity findings in the documented ESLint dependency chain.
+
+The multi-stage Docker review image also passed its build and initial runtime checks. The final runtime container runs as non-root, does not contain Python or ESLint, and the audited `braces`, `micromatch`, and `eslint-config-next` package manifests were not found under its runtime `node_modules`.
+
+Limitations:
+These results reduce evidence of exposure in the final runtime image but do not patch the underlying vulnerable dependency or establish that the builder environment is free of findings. The security disposition remains pending an explicit decision by the authorized program/release owner.
+
+## Review Branch Tracking  -  2026-10-18
+
+The documented review work was committed on `security/docker-production-runtime` as `68df75d` and `7019385` (short SHAs; verify the full HEAD SHA with Git when freezing the final manifest). This is a proposed local runtime mitigation, not a dependency patch, risk acceptance, merge approval, or production deployment. The authorized release owner must record an explicit security disposition before the release gate can close. The current full development-dependency audit remains unresolved even though the production-only audit reported zero vulnerabilities.

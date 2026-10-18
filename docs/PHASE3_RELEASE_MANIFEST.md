@@ -161,3 +161,14 @@ The full development dependency audit is not clean, and its disposition is pendi
 - Grounded Data Assistant approval reference (Post #5): https://github.com/Real-Rails-Interns-Batch8-MAC/Phase3-DataScience-DecisionIntelligence/discussions/5
 - Post #6 Word guide usage: Unconfirmed; record Yes only if the guide was actually attached and used as the AI feeder.
 - Security disposition: PENDING AUTHORIZED RELEASE OWNER DECISION. Record the approver, date, decision, Docker development-dependency exposure consideration, and supporting evidence before closing this gate.
+
+## Latest Certification Gate Review  -  2026-10-18
+
+- Current decision: **PHASE 3 FINAL CHANGES REQUIRED  -  RELEASE NOT CERTIFIED**.
+- The full development dependency audit remains unresolved (five high-severity findings); `npm audit --omit=dev` recorded zero vulnerabilities. The multi-stage runtime mitigation does not patch the builder dependency tree. Authorized release-owner disposition is still required.
+- Release identities are separate: proposed original certification candidate `061dbabd`; historically recorded live application commit `baa1d6a`; expanded demo candidate `a7cf577`; security-mitigation branch `security/docker-production-runtime` with review commits `68df75d` and `7019385`. These must not be presented as one release identity.
+- Deployment evidence reconciliation is pending: `final-evidence/production/RENDER_DEPLOYMENT_VERIFICATION_2026-10-17.md` records `aace1f8`, while this manifest records `baa1d6a`. Recheck the exact SHA currently shown as Live in the relevant Render service(s), including the expanded demo separately, and record a dated observation.
+- The existing Post #3 and Post #5 links are discussion-thread URLs; direct maintainer approval-comment permalinks remain pending.
+- The Post #6 Word guide was used in the current review with `repomix-phase3-security-review.md`; usage during earlier AI runs remains unconfirmed. Complete approved Posts #1-#5 evidence must still be verified.
+- `repomix-phase3-security-review.md` is a pre-certification review input, not the final Repomix. Generate `repomix-phase3-final.md` after all final corrections are committed. Do not create a release tag until every mandatory gate is closed.
+- See `docs/PHASE3_FINAL_CERTIFICATION_GAP_REVIEW.md` for the evidence gaps and closure actions.
