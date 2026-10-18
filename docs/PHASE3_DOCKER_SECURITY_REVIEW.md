@@ -47,3 +47,19 @@ The original dependency audit should be retained and rerun as required. The fina
 - No dependency downgrade or override was made as part of this proposal.
 - No production deployment was made as part of this local test.
 - Do not merge or tag this mitigation as an approved release until review, required compliance gates, and release-owner disposition are complete.
+
+## Production-Only Dependency Audit — 2026-10-18
+
+Command executed:
+`npm.cmd audit --omit=dev`
+
+Recorded result:
+`found 0 vulnerabilities`
+
+Interpretation:
+The production-only dependency audit reported zero vulnerabilities. The full development dependency audit still has five high-severity findings in the documented ESLint dependency chain.
+
+The multi-stage Docker review image also passed its build and initial runtime checks. The final runtime container runs as non-root, does not contain Python or ESLint, and the audited `braces`, `micromatch`, and `eslint-config-next` package manifests were not found under its runtime `node_modules`.
+
+Limitations:
+These results reduce evidence of exposure in the final runtime image but do not patch the underlying vulnerable dependency or establish that the builder environment is free of findings. The security disposition remains pending an explicit decision by the authorized program/release owner.
