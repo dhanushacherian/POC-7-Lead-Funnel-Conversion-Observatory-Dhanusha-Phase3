@@ -1,4 +1,4 @@
-﻿# Final Operational Regression Report
+# Final Operational Regression Report
 
 ## 1. Project
 - Project: POC-7 Lead Funnel Conversion Observatory
@@ -44,3 +44,7 @@ The checks above reflect previously reported local testing. This document does n
 
 ## 7. Decision
 Operational regression has supporting historical evidence, but final-release regression approval remains pending until the final working tree is validated.
+
+## Historical Status Reconciliation  -  2026-10-18
+
+Earlier statements in this report that Docker was blocked and public deployment was unconfirmed reflect the earlier validation state. Later evidence records local Docker runtime success and targeted production route/API checks. The complete operational journey has not been demonstrated as freshly rerun against the final certification candidate in the current snapshot. Keep final-candidate operational regression pending and resolve the current Render SHA discrepancy before certification; see `docs/PHASE3_FINAL_CERTIFICATION_GAP_REVIEW.md`.

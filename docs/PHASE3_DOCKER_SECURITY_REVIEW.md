@@ -1,4 +1,4 @@
-﻿# Phase 3 Docker Security Mitigation Review
+# Phase 3 Docker Security Mitigation Review
 
 ## Status
 Proposed mitigation; release-owner review and security disposition pending.
@@ -63,3 +63,7 @@ The multi-stage Docker review image also passed its build and initial runtime ch
 
 Limitations:
 These results reduce evidence of exposure in the final runtime image but do not patch the underlying vulnerable dependency or establish that the builder environment is free of findings. The security disposition remains pending an explicit decision by the authorized program/release owner.
+
+## Review Branch Tracking  -  2026-10-18
+
+The documented review work was committed on `security/docker-production-runtime` as `68df75d` and `7019385` (short SHAs; verify the full HEAD SHA with Git when freezing the final manifest). This is a proposed local runtime mitigation, not a dependency patch, risk acceptance, merge approval, or production deployment. The authorized release owner must record an explicit security disposition before the release gate can close. The current full development-dependency audit remains unresolved even though the production-only audit reported zero vulnerabilities.

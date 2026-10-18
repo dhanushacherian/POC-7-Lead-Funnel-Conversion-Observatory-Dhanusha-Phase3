@@ -226,3 +226,7 @@ Do not commit API keys, passwords, tokens, private credentials, or populated loc
 ## License
 
 Refer to the repository's license file, if present, for applicable license terms.
+
+## Current Certification Status  -  2026-10-18
+
+**Status: PHASE 3 FINAL CHANGES REQUIRED  -  RELEASE NOT CERTIFIED.** The full development-dependency security disposition is pending, direct maintainer approval-comment links are not yet verified, and conflicting historical Render SHA records require reconciliation. Final-candidate regression/UAT and final Repomix/tag steps must not be represented as complete until their evidence is verified. See `docs/PHASE3_FINAL_CERTIFICATION_GAP_REVIEW.md` for the current gate list.

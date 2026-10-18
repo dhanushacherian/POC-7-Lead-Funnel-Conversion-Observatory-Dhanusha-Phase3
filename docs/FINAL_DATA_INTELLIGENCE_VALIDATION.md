@@ -1,4 +1,4 @@
-﻿# Final Data Intelligence Validation Report
+# Final Data Intelligence Validation Report
 
 ## 1. Project
 - Project: POC-7 Lead Funnel Conversion Observatory
@@ -53,3 +53,7 @@ The checks above summarize previously recorded evidence. They are not a claim th
 
 ## 7. Decision
 The previously tested Data Intelligence page and assistant passed their documented checks. Final release approval requires revalidation after all release changes are committed.
+
+## Historical Status Reconciliation  -  2026-10-18
+
+Earlier statements in this report that public deployment was not verified and Docker validation was blocked reflect the earlier validation state. Later evidence records successful local Docker route/API checks and targeted production Data Intelligence/assistant checks. Those later records do not prove that every final-candidate UI test was rerun or resolve the conflicting Render SHA evidence. Keep final-candidate validation pending until the exact candidate and deployment are revalidated; see `docs/PHASE3_FINAL_CERTIFICATION_GAP_REVIEW.md`.
