@@ -1,3 +1,4 @@
+ import { validateGroundedExplanation } from "./explanation-grounding";
 import rawSummary from "../../data/demo/phase3-demo-v1/analytics/intelligence_summary.json";
 import { GoogleGenAI } from "@google/genai";
 
@@ -462,6 +463,37 @@ export function answerDemoQuestion(question: unknown): DemoReply {
  * Keeps the deterministic answer authoritative.
  * Gemini may explain supported evidence, but may not invent or alter findings.
  */
+function createLocalExplanation(reply: DemoReply): DemoReply {
+  // The deterministic answer and its approved limitation remain authoritative.
+  const candidate = `${reply.answer} ${reply.limitation}`;
+
+  const grounding = validateGroundedExplanation(candidate, {
+    deterministicAnswer: reply.answer,
+    evidenceReferences: reply.evidence_references.map((item) => ({
+      group: item.group,
+      finding: item.finding,
+      value: item.value,
+      unit: item.unit,
+      data_version: item.data_version,
+      method_version: item.method_version,
+      limitation: item.limitation,
+    })),
+    limitation: reply.limitation,
+  });
+
+  const explanation = grounding.valid ? candidate : reply.answer;
+
+  return {
+    ...reply,
+    explanation,
+  explanation_status: grounding.valid ? "GENERATED" : "UNAVAILABLE",
+    metadata: {
+      ...reply.metadata,
+      mode: "deterministic_fallback",
+      llm_enabled: false,
+    },
+  };
+}
 export async function answerDemoQuestionWithExplanation(
   question: unknown,
 ): Promise<DemoReply> {
@@ -474,20 +506,21 @@ export async function answerDemoQuestionWithExplanation(
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
   if (!apiKey) {
-    return {
-      ...reply,
-      explanation: null,
-      explanation_status: "UNAVAILABLE",
-      metadata: {
-        ...reply.metadata,
-        mode: "deterministic_only",
-        llm_enabled: false,
-      },
-    };
+    return createLocalExplanation(reply);
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        timeout: 30000,
+        retryOptions: {
+          attempts: 1,
+          initialDelay: 1,
+          maxDelay: 3,
+        },
+      },
+    });
     const prompt = [
       "You are explaining a deterministic answer from a synthetic CRM demonstration dataset.",
       "The deterministic answer and supplied evidence are authoritative. Explain them clearly in 2-4 sentences.",
@@ -508,8 +541,34 @@ export async function answerDemoQuestionWithExplanation(
       contents: prompt,
     });
 
-    const explanation = result.text?.trim();
-    if (!explanation) throw new Error("Gemini returned no explanation.");
+const explanation = result.text?.trim();
+
+if (!explanation || explanation.length > 2000) {
+  throw new Error("Gemini returned an empty or oversized explanation.");
+}
+
+const grounding = validateGroundedExplanation(explanation, {
+  deterministicAnswer: reply.answer,
+  evidenceReferences: reply.evidence_references.map((item) => ({
+    group: item.group,
+    finding: item.finding,
+    value: item.value,
+    unit: item.unit,
+    data_version: item.data_version,
+    method_version: item.method_version,
+    limitation: item.limitation,
+  })),
+  limitation: reply.limitation,
+});
+
+if (!grounding.valid) {
+  console.warn(
+    "[Demo Gemini explanation rejected by grounding validator]",
+    grounding.reason,
+  );
+  throw new Error("Gemini explanation failed grounding validation.");
+}
+
 
     return {
       ...reply,
@@ -522,16 +581,8 @@ export async function answerDemoQuestionWithExplanation(
       },
     };
   } catch {
+    console.error("[Demo Gemini explanation failure]");
     // Gemini failure must never remove the validated answer or its evidence.
-    return {
-      ...reply,
-      explanation: null,
-      explanation_status: "UNAVAILABLE",
-      metadata: {
-        ...reply.metadata,
-        mode: "deterministic_fallback",
-        llm_enabled: false,
-      },
-    };
+    return createLocalExplanation(reply);
   }
 }

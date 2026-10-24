@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
 
 import { useMemo, useState } from "react";
@@ -123,7 +123,7 @@ export default function Home() {
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] text-sm font-medium text-white/60 transition hover:border-white/[0.15] hover:bg-white/[0.07] hover:text-white"
             aria-label="Open developer information"
           >
-            â“˜
+            ⓘ
           </button>
 
         </div>
@@ -131,7 +131,7 @@ export default function Home() {
       </header>
 
       {/* Main */}
-      <main className="relative mx-auto min-h-screen max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
+      <main data-demo-ui="true" className="relative mx-auto min-h-screen max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
 
         {/* Observatory Source */}
         <section className="mb-6 flex flex-col justify-between gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 backdrop-blur-xl md:flex-row md:items-center">
@@ -306,11 +306,11 @@ export default function Home() {
           <div className="flex flex-col justify-between gap-2 text-[10px] uppercase tracking-[0.2em] text-white/20 sm:flex-row">
 
             <span>
-              Lead Funnel Conversion Observatory Â· PoC-7
+              Lead Funnel Conversion Observatory | PoC-7
             </span>
 
             <span>
-              Synthetic Data Â· Decision Support Interface
+              Synthetic Data | Decision Support Interface
             </span>
 
           </div>
@@ -330,8 +330,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-
-

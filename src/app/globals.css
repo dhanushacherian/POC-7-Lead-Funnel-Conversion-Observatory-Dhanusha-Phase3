@@ -133,3 +133,261 @@ select option {
     transform: translateY(0);
   }
 }
+
+/* PHASE3_UIUX_READABILITY_OVERRIDES */
+/* Scoped to the synthetic demo dashboard; the production/operational routes stay unchanged. */
+[data-demo-ui="true"] {
+  --demo-ink: #172b4d;
+  --demo-muted: #52627a;
+  --demo-subtle: #5d6b80;
+  --demo-border: #d9e1ec;
+  --demo-surface: #ffffff;
+  --demo-surface-soft: #f7f9fc;
+  --demo-accent: #2457c5;
+  color: var(--demo-ink);
+  color-scheme: light;
+  background: #f4f7fb;
+  border-radius: 0;
+}
+
+[data-demo-ui="true"] section,
+[data-demo-ui="true"] article {
+  border-color: var(--demo-border) !important;
+  background-color: var(--demo-surface) !important;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 5%) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+[data-demo-ui="true"] h1,
+[data-demo-ui="true"] h2,
+[data-demo-ui="true"] h3,
+[data-demo-ui="true"] h4 {
+  color: var(--demo-ink) !important;
+  letter-spacing: -0.02em;
+}
+
+[data-demo-ui="true"] p,
+[data-demo-ui="true"] li,
+[data-demo-ui="true"] label,
+[data-demo-ui="true"] th,
+[data-demo-ui="true"] td,
+[data-demo-ui="true"] span {
+  text-shadow: none !important;
+}
+
+[data-demo-ui="true"] .text-white,
+[data-demo-ui="true"] .text-white\/90,
+[data-demo-ui="true"] .text-white\/80,
+[data-demo-ui="true"] .text-white\/75,
+[data-demo-ui="true"] .text-white\/70,
+[data-demo-ui="true"] .text-white\/65,
+[data-demo-ui="true"] .text-white\/60,
+[data-demo-ui="true"] .text-white\/55,
+[data-demo-ui="true"] .text-white\/50,
+[data-demo-ui="true"] .text-white\/45,
+[data-demo-ui="true"] .text-white\/40,
+[data-demo-ui="true"] .text-white\/35,
+[data-demo-ui="true"] .text-white\/30,
+[data-demo-ui="true"] .text-white\/25,
+[data-demo-ui="true"] .text-white\/20 {
+  color: var(--demo-muted) !important;
+}
+
+[data-demo-ui="true"] .text-indigo-300,
+[data-demo-ui="true"] .text-indigo-200,
+[data-demo-ui="true"] .text-indigo-300\/50 {
+  color: var(--demo-accent) !important;
+}
+
+[data-demo-ui="true"] .border-white\/10,
+[data-demo-ui="true"] .border-white\/\[0\.08\],
+[data-demo-ui="true"] .border-white\/\[0\.06\],
+[data-demo-ui="true"] .border-white\/\[0\.07\],
+[data-demo-ui="true"] .border-white\/\[0\.05\],
+[data-demo-ui="true"] .border-white\/\[0\.04\] {
+  border-color: var(--demo-border) !important;
+}
+
+[data-demo-ui="true"] .bg-white\/\[0\.025\],
+[data-demo-ui="true"] .bg-white\/\[0\.02\],
+[data-demo-ui="true"] .bg-white\/\[0\.035\],
+[data-demo-ui="true"] .bg-white\/\[0\.03\] {
+  background-color: var(--demo-surface) !important;
+}
+
+[data-demo-ui="true"] input,
+[data-demo-ui="true"] select,
+[data-demo-ui="true"] textarea {
+  min-height: 42px;
+  border: 1px solid #bdc9d9 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  color: #172b4d !important;
+}
+
+[data-demo-ui="true"] input::placeholder,
+[data-demo-ui="true"] textarea::placeholder {
+  color: #68788f !important;
+  opacity: 1;
+}
+
+[data-demo-ui="true"] button,
+[data-demo-ui="true"] a {
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+[data-demo-ui="true"] button:focus-visible,
+[data-demo-ui="true"] a:focus-visible,
+[data-demo-ui="true"] input:focus-visible,
+[data-demo-ui="true"] select:focus-visible,
+[data-demo-ui="true"] textarea:focus-visible {
+  outline: 3px solid #80a7ff !important;
+  outline-offset: 2px;
+}
+
+[data-demo-ui="true"] footer,
+[data-demo-ui="true"] [class*="text-[10px]"],
+[data-demo-ui="true"] [class*="text-xs"] {
+  color: #52627a;
+}
+
+@media (max-width: 639px) {
+  [data-demo-ui="true"] {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  [data-demo-ui="true"] section {
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-demo-ui="true"] *,
+  [data-demo-ui="true"] *::before,
+  [data-demo-ui="true"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* PHASE3_PROFESSIONAL_DEMO_LAYOUT_V2 */
+:root {
+  --demo-bg: #F4F7FB;
+  --demo-surface: #FFFFFF;
+  --demo-ink: #172339;
+  --demo-muted: #52647B;
+  --demo-border: #DFE6F0;
+  --demo-accent: #345ED7;
+  --demo-sidebar: #142641;
+}
+
+/* Compact the existing demo filter panel without changing its state or semantics. */
+main[data-demo-ui="true"] > section:nth-of-type(2) {
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(20, 38, 65, 0.04) !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) > div:first-child {
+  margin-bottom: 10px !important;
+  align-items: center !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) h2 {
+  margin-top: 2px !important;
+  font-size: 14px !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) .grid {
+  gap: 10px !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) label {
+  margin-bottom: 4px !important;
+  font-size: 11px !important;
+  letter-spacing: .06em !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) input,
+main[data-demo-ui="true"] > section:nth-of-type(2) select {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) > div:last-child {
+  margin-top: 8px !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) > div:last-child button {
+  padding: 7px 12px !important;
+  font-size: 12px !important;
+  letter-spacing: 0 !important;
+}
+main[data-demo-ui="true"] > section:nth-of-type(2) + div {
+  margin-top: 8px !important;
+}
+main[data-demo-ui="true"] > div.mt-4 {
+  margin-top: 10px !important;
+}
+main[data-demo-ui="true"] > section,
+main[data-demo-ui="true"] > div.rounded-2xl {
+  box-shadow: 0 1px 2px rgba(20, 38, 65, 0.04) !important;
+}
+main[data-demo-ui="true"] .text-\[10px\] {
+  font-size: 11px !important;
+  letter-spacing: .08em !important;
+}
+main[data-demo-ui="true"] .text-white\/35,
+main[data-demo-ui="true"] .text-white\/40,
+main[data-demo-ui="true"] .text-white\/45 {
+  color: #52647B !important;
+}
+main[data-demo-ui="true"] a:focus-visible,
+main[data-demo-ui="true"] button:focus-visible,
+main[data-demo-ui="true"] input:focus-visible,
+main[data-demo-ui="true"] select:focus-visible {
+  outline: 3px solid #80A7FF !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 767px) {
+  main[data-demo-ui="true"] > section:nth-of-type(2) { padding: 12px !important; }
+  main[data-demo-ui="true"] > section:nth-of-type(2) .grid { gap: 10px !important; }
+}
+
+/* =========================================================
+   PHASE 3 DEMO — LIGHT-THEME FILTER CONTROLS
+   Keeps dropdown menus readable and consistent with the UI.
+   ========================================================= */
+
+select {
+  color-scheme: light;
+  background-color: #ffffff;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+select option {
+  background-color: #ffffff;
+  color: #334155;
+}
+
+select optgroup {
+  background-color: #ffffff;
+  color: #334155;
+}
+
+select:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Keep form controls consistent with the dashboard theme. */
+input,
+textarea {
+  color-scheme: light;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
