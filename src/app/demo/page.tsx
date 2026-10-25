@@ -76,7 +76,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070912] text-white">
+    <div className="min-h-screen bg-[#F4F7FB] text-[#172B4D]">
 
       {/* Atmospheric Background */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
@@ -92,9 +92,9 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#070912]/80 backdrop-blur-2xl">
 
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-4 sm:flex-nowrap sm:justify-between sm:px-6 lg:px-8">
 
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1 basis-full sm:basis-auto">
 
             <div className="flex items-center gap-3">
 
@@ -106,7 +106,7 @@ export default function Home() {
 
             </div>
 
-            <h1 className="mt-2 truncate text-xl font-semibold tracking-tight text-white sm:text-2xl">
+            <h1 className="mt-2 break-words text-lg font-semibold tracking-tight text-white sm:truncate sm:text-2xl">
               Lead Funnel Conversion Observatory
             </h1>
 

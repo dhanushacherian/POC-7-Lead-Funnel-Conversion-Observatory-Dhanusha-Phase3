@@ -1,4 +1,4 @@
-export type ExplanationGroundingInput = {
+﻿export type ExplanationGroundingInput = {
   deterministicAnswer: string;
   evidenceReferences: Array<{
     group?: string;
@@ -20,12 +20,42 @@ function extractNumbers(text: string): number[] {
     .filter(Number.isFinite);
 }
 
-function expectedWinningGroup(answer: string): string | null {
-  const match = answer.match(
-    /identify\s+(.+?)\s+as the highest-ranked group/i
-  );
+function expectedWinningGroup(
+  answer: string,
+  evidenceReferences: ExplanationGroundingInput["evidenceReferences"]
+): string | null {
+  const answerPatterns = [
+    /identify\s+(.+?)\s+as the highest-ranked group/i,
+    /(?:the\s+)?([A-Za-z][A-Za-z0-9_-]*)\s+(?:stage|product|source|category|group)\s+(?:has|is|was)\s+(?:the\s+)?(?:highest|largest|greatest|top-ranked|top ranked)/i,
+  ];
 
-  return match?.[1]?.trim() ?? null;
+  for (const pattern of answerPatterns) {
+    const match = answer.match(pattern);
+    if (match?.[1]) {
+      return match[1].trim();
+    }
+  }
+
+  // Fall back to the approved evidence when the answer uses different wording.
+  for (const item of evidenceReferences) {
+    const finding = item.finding ?? "";
+    const findingMatch = finding.match(
+      /^\s*([A-Za-z][A-Za-z0-9_-]*)\s+(?:has|is|was)\s+(?:the\s+)?(?:highest|largest|greatest|top-ranked|top ranked)\b/i
+    );
+
+    if (findingMatch?.[1]) {
+      return findingMatch[1].trim();
+    }
+
+    if (
+      item.group &&
+      /\b(?:highest|largest|greatest|top-ranked|top ranked)\b/i.test(finding)
+    ) {
+      return item.group.trim();
+    }
+  }
+
+  return null;
 }
 
 export function validateGroundedExplanation(
@@ -65,12 +95,15 @@ export function validateGroundedExplanation(
     };
   }
 
-  // Reject an explanation that names a different highest-ranked group.
-  const winner = expectedWinningGroup(input.deterministicAnswer);
+  // Reject claims that assign the highest ranking to a different group.
+  const winner = expectedWinningGroup(
+    input.deterministicAnswer,
+    input.evidenceReferences
+  );
 
   if (winner) {
     const competingWinner = explanation.match(
-      /\b([A-Za-z][A-Za-z0-9_-]*)\s+(?:stage|product|source|category|group)\b[^.!?]{0,100}\b(?:highest|largest|greatest|top-ranked|top ranked)\b/i
+      /\b([A-Za-z][A-Za-z0-9_-]*)\s+(?:(?:stage|product|source|category|group)\s+)?(?:has|is|was|holds?)\s+(?:the\s+)?(?:highest|largest|greatest|top-ranked|top ranked)\b/i
     );
 
     if (

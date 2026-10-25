@@ -35,7 +35,7 @@
 - Browser validation: 36/36 tests passed in the recorded run; see `final-evidence/FINAL_BROWSER_TEST_EVIDENCE.md`.
 - Production API checks and targeted live Data Intelligence and assistant checks: PASS in the recorded evidence.
 - Final Repomix snapshot: `repomix-phase3-final.md` is published. Regenerate it after this documentation-alignment pass.
-- Remaining certification gates: authorized security disposition for the five high-severity development-dependency findings, including Docker image exposure; verification of formal approval references and Post #6 Word-guide usage; final documentation/snapshot review; exact final candidate SHA; and release-owner certification.
+- Remaining certification gates: verification of the current clean full audit against the lockfile and Docker image exposure, plus authorized release-owner security disposition; verification of formal approval references and Post #6 Word-guide usage; final documentation/snapshot review; exact final candidate SHA; and release-owner certification.
 - Do not create a release tag until all mandatory certification gates are closed.
 ## 5. Limitations
 The data is synthetic and represents 30 source leads. The analysis is descriptive and comparative, not causal or predictive. Small groups require cautious interpretation. The available data is not a complete longitudinal time series.

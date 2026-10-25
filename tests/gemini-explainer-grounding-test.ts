@@ -60,6 +60,30 @@ async function run(): Promise<void> {
     "PASS: Rejects an incorrect mocked Gemini number and preserves the deterministic answer.",
   );
 
+  // CONTRADICTORY RANKING TEST: Gemini must not reverse the approved winner.
+  const contradictoryResult = await explainWithGemini(
+    {
+      question: QUESTION,
+      deterministicAnswer: originalAnswer,
+      evidenceReferences,
+      limitation: "Descriptive comparison using a synthetic sample.",
+    },
+    {
+      generateContent: async () => ({
+        text:
+          "Lost has the highest total lead value in the approved stage comparison, " +
+          "with 949000 recorded.",
+      }),
+    },
+  );
+
+  assert.equal(
+    contradictoryResult.explanation_status,
+    "UNAVAILABLE",
+    "A contradictory ranking must be rejected.",
+  );
+  assert.equal(contradictoryResult.explanation, null);
+  console.log("PASS: Rejects a contradictory highest-ranked stage.");
   // Test 2: Accept a number supported by approved evidence.
   const validResult = await explainWithGemini(
     {

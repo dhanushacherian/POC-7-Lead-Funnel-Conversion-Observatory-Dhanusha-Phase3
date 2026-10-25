@@ -102,7 +102,7 @@
 - Next.js: 16.4.2.
 - `eslint-config-next`: 16.4.2.
 - Production dependency audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
-- Full development dependency audit: five high-severity findings remain in the ESLint dependency chain; the disposition is unresolved.
+- Historical full development dependency audit (2026-10-16): five high-severity findings were reported in the ESLint dependency chain. The current full audit recheck reports zero vulnerabilities; see final-evidence/npm-audit-confirmation.json. Confirm the lockfile, Docker image exposure, and release-owner security disposition before closing this gate.
 
 ### Post-Update Automated Checks
 
@@ -118,7 +118,7 @@
 ## Development Dependency Security Assessment - 2026-10-16
 
 - Production audit: PASS; `npm audit --omit=dev` reports zero vulnerabilities.
-- Full development dependency audit: NOT CLEAN; five high-severity findings are reported.
+- Historical full development dependency audit (2026-10-16): five high-severity findings were reported. Current full audit recheck: zero vulnerabilities; see final-evidence/npm-audit-confirmation.json. Docker image exposure and release-owner disposition still require confirmation.
 - Affected dependency: `braces@3.0.3`.
 - Dependency path: `eslint-config-next@16.4.2` -> `@next/eslint-plugin-next@16.4.2` -> `fast-glob@3.3.1` -> `micromatch@4.0.8` -> `braces@3.0.3`.
 - Advisory: `GHSA-vfj7-8cjw-p6xm`; stack-exhaustion denial of service through deeply nested patterns.
@@ -140,7 +140,7 @@
 - Release certification: PENDING; this recheck does not waive the security disposition, handover review, final Repomix, or other release gates.
 ## Remaining Release Gates
 
-1. Obtain and record the release owner's security-risk disposition for the five high-severity development-dependency findings, or resolve them using a verified compatible dependency update.
+1. Verify the current lockfile and Docker image dependency exposure against the clean full audit; record the authorized release owner's security disposition and supporting evidence.
 2. Complete the final evidence and handover review against the mandatory Post #6 requirements.
 3. Complete and commit any remaining documentation and evidence updates.
 4. Generate the final Repomix after the final source, documentation, and evidence changes are committed.
@@ -153,7 +153,7 @@
 
 The public deployment and recorded production smoke tests are verified. The recorded automated, clean-clone, and Docker checks provide supporting evidence. The final Markdown Repomix was regenerated after the documentation-alignment pass and is published as `repomix-phase3-final.md`. Reviewer outcome: PHASE 3 TECHNICAL DELIVERABLES ACCEPTED — FINAL CERTIFICATION PENDING. The authorized security disposition and final release-owner certification remain outstanding.
 
-The full development dependency audit is not clean, and its disposition is pending a release-owner decision. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
+The latest full development dependency audit recheck reports zero vulnerabilities. Historical findings remain documented; lockfile and Docker exposure verification and authorized release-owner disposition are still pending. This manifest does not certify Phase 3 as released. Do not create a final release tag or represent the project as certified until all required gates pass and the security disposition is approved.
 
 ## Formal Approval References
 

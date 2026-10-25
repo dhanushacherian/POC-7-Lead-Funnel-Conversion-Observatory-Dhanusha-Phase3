@@ -197,6 +197,11 @@ def main() -> None:
     leads = generate_leads()
     rows = canonical_rows(leads)
     report = validate(leads, rows)
+    if report["errors"]:
+        print("Demo data validation: FAILED")
+        for error in report["errors"]:
+            print(f"ERROR: {error}")
+        raise SystemExit(1)
     # Write only into this version-specific demo directory.
     write_csv(SOURCE_FILE, SOURCE_COLUMNS, leads)
     write_csv(CANONICAL_FILE, CANONICAL_COLUMNS, rows)

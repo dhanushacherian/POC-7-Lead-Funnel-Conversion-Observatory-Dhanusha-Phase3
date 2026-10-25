@@ -1,0 +1,5 @@
+Production dependency audit : exit 0
+Full dependency audit : exit 0
+Data and production build : exit 0
+ESLint : exit 0
+Intelligence contract tests : exit 0
