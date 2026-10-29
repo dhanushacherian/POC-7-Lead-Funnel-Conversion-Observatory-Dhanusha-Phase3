@@ -92,26 +92,26 @@ export default function Home() {
       {/* LeadScope sidebar */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden md:block w-56 flex-col bg-[#142844] px-5 py-6 text-white md:flex">
         <Link href="/demo" className="text-xl font-bold tracking-tight">
-          LeadScope <span className="text-blue-400">â—</span>
+          LeadScope <span className="text-blue-400">◆</span>
         </Link>
         <p className="mt-1 text-xs text-slate-300">Conversion Observatory</p>
 
         <nav aria-label="Main navigation" className="mt-8 space-y-2">
           <Link href="/demo" className="flex items-center rounded-lg bg-blue-700 px-3 py-3 text-sm font-semibold text-white">
-            <span className="mr-3" aria-hidden="true">â–¦</span> Overview
+            <span className="mr-3" aria-hidden="true">▦</span> Overview
           </Link>
           <Link href="/demo/data-intelligence" className="flex items-center rounded-lg px-3 py-3 text-sm text-slate-200 transition hover:bg-white/10">
-            <span className="mr-3" aria-hidden="true">â–¤</span> Data Intelligence
+            <span className="mr-3" aria-hidden="true">◈</span> Data Intelligence
           </Link>
           <a href="#demo-assistant" className="flex items-center rounded-lg px-3 py-3 text-sm text-slate-200 transition hover:bg-white/10">
-            <span className="mr-3" aria-hidden="true">â—Œ</span> Ask Assistant
+            <span className="mr-3" aria-hidden="true">✦</span> Ask Assistant
           </a>
         </nav>
 
         <div className="mt-auto rounded-xl border border-white/10 bg-white/5 p-3">
           <p className="text-xs font-semibold text-white">Synthetic dataset</p>
           <p className="mt-1 text-xs text-slate-300">phase3-demo-v1</p>
-          <p className="mt-2 text-xs text-emerald-300">â— 600 synthetic leads</p>
+          <p className="mt-2 text-xs text-emerald-300">● 600 synthetic leads</p>
         </div>
       </aside>
       {/* Header */}

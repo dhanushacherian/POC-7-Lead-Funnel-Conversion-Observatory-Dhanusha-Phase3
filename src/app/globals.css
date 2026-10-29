@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #070912;
@@ -354,7 +354,7 @@ main[data-demo-ui="true"] select:focus-visible {
 }
 
 /* =========================================================
-   PHASE 3 DEMO â€” LIGHT-THEME FILTER CONTROLS
+   PHASE 3 DEMO - LIGHT-THEME FILTER CONTROLS
    Keeps dropdown menus readable and consistent with the UI.
    ========================================================= */
 
@@ -695,5 +695,37 @@ body:has(main[data-demo-ui="true"]) {
   [class*="assistant"] {
     break-before: auto !important;
     page-break-before: auto !important;
+  }
+}
+
+/* PART D RESPONSIVE WIDTH SAFEGUARDS */
+@media screen {
+  main[data-demo-ui="true"] {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  main[data-demo-ui="true"] *,
+  main[data-demo-ui="true"] *::before,
+  main[data-demo-ui="true"] *::after {
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  main[data-demo-ui="true"] img,
+  main[data-demo-ui="true"] svg,
+  main[data-demo-ui="true"] canvas {
+    max-width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    main[data-demo-ui="true"] {
+      overflow-wrap: anywhere;
+    }
+
+    main[data-demo-ui="true"] .grid {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
   }
 }
