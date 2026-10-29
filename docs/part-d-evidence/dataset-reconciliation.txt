@@ -1,0 +1,62 @@
+PART D — READ-ONLY DATASET RECONCILIATION
+Timestamp: 2026-10-29T14:57:41.7047264+05:30
+Git HEAD: 5912ebbe283d1198f22762382e93461bd5296f37
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\canonical\intelligence_data.csv
+  TotalRows=60; StageColumn=status; AgeColumn=
+  OpportunityRows=10
+  Columns=record_id, record_type, observed_at, entity_id, related_entity_id, entity_name, category, subcategory, status, stage, metric_name, metric_value, metric_unit, text_value, latitude, longitude, source_name, source_record_id, is_synthetic, data_version
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\analytics\analysis_dataset.csv
+  TotalRows=600; StageColumn=stage; AgeColumn=days_in_stage
+  OpportunityRows=123
+  OpportunityBuckets: {"1-7":14,"8-14":25,"15-30":68,"31+":16,"MissingOrOther":0}
+  BucketSum=123
+  Columns=source_record_id, date, location, team, product, source, stage, days_in_stage, lead_value, is_synthetic, data_version, synthetic_notice
+
+CANDIDATE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\analytics\source_comparison.csv
+  Rows=4; Columns=source, lead_count, total_lead_value, average_lead_value, average_days_in_stage, median_days_in_stage, value_share_percent
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\analytics\stage_aging.csv
+  TotalRows=24; StageColumn=stage; AgeColumn=average_days_in_stage
+  OpportunityRows=4
+  OpportunityBuckets: {"1-7":0,"8-14":0,"15-30":4,"31+":0,"MissingOrOther":0}
+  BucketSum=4
+  Columns=stage, lead_count, average_days_in_stage, median_days_in_stage, aging_bucket, bucket_lead_count
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\analytics\stage_comparison.csv
+  TotalRows=6; StageColumn=stage; AgeColumn=average_days_in_stage
+  OpportunityRows=1
+  OpportunityBuckets: {"1-7":0,"8-14":0,"15-30":1,"31+":0,"MissingOrOther":0}
+  BucketSum=1
+  Columns=stage, lead_count, total_lead_value, average_lead_value, average_days_in_stage, median_days_in_stage, value_share_percent
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\canonical\intelligence_data.csv
+  TotalRows=1200; StageColumn=status; AgeColumn=
+  OpportunityRows=246
+  Columns=record_id, record_type, observed_at, entity_id, related_entity_id, entity_name, category, subcategory, status, stage, metric_name, metric_value, metric_unit, text_value, latitude, longitude, source_name, source_record_id, is_synthetic, data_version
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\demo\phase3-demo-v1\source\source_leads.csv
+  TotalRows=600; StageColumn=stage; AgeColumn=
+  OpportunityRows=123
+  Columns=id, date, location, team, product, source, stage, daysInStage, value, is_synthetic, data_version, synthetic_notice
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data\source-sample\source_sample.csv
+  TotalRows=30; StageColumn=stage; AgeColumn=
+  OpportunityRows=5
+  Columns=id, date, location, team, product, source, stage, daysInStage, value
+
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data-science\outputs\track_a_analysis_dataset.csv
+  TotalRows=30; StageColumn=status; AgeColumn=days_in_stage
+  OpportunityRows=5
+  OpportunityBuckets: {"1-7":0,"8-14":1,"15-30":4,"31+":0,"MissingOrOther":0}
+  BucketSum=5
+  Columns=source_record_id, category, subcategory, status, stage, observed_at, lead_value, is_synthetic, data_version, days_in_stage
+
+CANDIDATE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data-science\outputs\track_a_source_comparison.csv
+  Rows=4; Columns=subcategory, lead_count, total_lead_value, average_lead_value, average_days_in_stage, median_days_in_stage, value_share_percent
+FILE: C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3\data-science\outputs\track_a_stage_comparison.csv
+  TotalRows=6; StageColumn=stage; AgeColumn=average_days_in_stage
+  OpportunityRows=1
+  OpportunityBuckets: {"1-7":0,"8-14":0,"15-30":1,"31+":0,"MissingOrOther":0}
+  BucketSum=1
+  Columns=stage, lead_count, total_lead_value, average_lead_value, average_days_in_stage, median_days_in_stage, value_share_percent

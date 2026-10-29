@@ -37,10 +37,10 @@ export default function FilterBar({
   onReset,
 }: FilterBarProps) {
   return (
-    <section className="rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 shadow-xl backdrop-blur-xl md:p-6">
+    <section className="print-filter-section min-w-0 rounded-2xl border border-white/[0.08] bg-white/[0.025] p-3 shadow-xl backdrop-blur-xl sm:p-3 md:p-4">
 
       {/* Header */}
-      <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
+      <div className="mb-3 flex flex-col justify-between gap-2 sm:flex-row sm:items-start">
 
         <div>
           <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-300/50">
@@ -61,7 +61,7 @@ export default function FilterBar({
       </div>
 
       {/* Filters */}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid min-w-0 grid-cols-1 gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-5">
 
         {/* From Date */}
         <div>
@@ -79,7 +79,7 @@ export default function FilterBar({
             onChange={(event) =>
               onStartDateChange(event.target.value)
             }
-            className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function FilterBar({
             onChange={(event) =>
               onEndDateChange(event.target.value)
             }
-            className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
           />
         </div>
 
@@ -118,7 +118,7 @@ export default function FilterBar({
             onChange={(event) =>
               onLocationChange(event.target.value)
             }
-            className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
           >
             <option value="All">
               All Locations
@@ -151,7 +151,7 @@ export default function FilterBar({
             onChange={(event) =>
               onTeamChange(event.target.value)
             }
-            className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
           >
             <option value="All">
               All Teams
@@ -184,7 +184,7 @@ export default function FilterBar({
             onChange={(event) =>
               onProductChange(event.target.value)
             }
-            className="h-12 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
+            className="h-10 w-full rounded-xl border border-white/[0.08] bg-black/20 px-4 text-sm text-white outline-none transition focus:border-indigo-300/[0.35] focus:bg-white/[0.04]"
           >
             <option value="All">
               All Products
@@ -205,7 +205,7 @@ export default function FilterBar({
       </div>
 
       {/* Reset */}
-      <div className="mt-4 flex justify-end">
+      <div className="mt-2 flex justify-end">
         <button
           type="button"
           onClick={onReset}

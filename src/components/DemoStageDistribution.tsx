@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
@@ -36,7 +36,7 @@ export default function DemoStageDistribution({ data }: Props) {
         left: "12%",
         right: "8%",
         top: "5%",
-        bottom: "8%",
+        bottom: "28%",
         containLabel: true,
       },
       tooltip: {
@@ -54,19 +54,19 @@ export default function DemoStageDistribution({ data }: Props) {
         type: "value",
         min: 0,
         name: "Lead count",
-        nameTextStyle: { color: "rgba(255,255,255,0.45)" },
-        axisLabel: { color: "rgba(255,255,255,0.5)" },
-        axisLine: { lineStyle: { color: "rgba(255,255,255,0.1)" } },
+        nameTextStyle: { color: "#475569" },
+        axisLabel: { color: "#475569" },
+        axisLine: { lineStyle: { color: "#cbd5e1" } },
         splitLine: {
-          lineStyle: { color: "rgba(255,255,255,0.06)" },
+          lineStyle: { color: "#e2e8f0" },
         },
       },
       yAxis: {
         type: "category",
         inverse: true,
         data: stages,
-        axisLabel: { color: "rgba(255,255,255,0.65)" },
-        axisLine: { lineStyle: { color: "rgba(255,255,255,0.1)" } },
+        axisLabel: { color: "#334155" },
+        axisLine: { lineStyle: { color: "#cbd5e1" } },
       },
       series: [
         {
@@ -77,7 +77,7 @@ export default function DemoStageDistribution({ data }: Props) {
           label: {
             show: true,
             position: "right",
-            color: "rgba(255,255,255,0.75)",
+            color: "#334155",
           },
           itemStyle: {
             color: "#647ee8",
@@ -99,27 +99,27 @@ export default function DemoStageDistribution({ data }: Props) {
   }, [data]);
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 shadow-2xl backdrop-blur-xl md:p-6">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4 md:p-6">
       <div className="mb-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-300/50">
           Primary Signal
         </p>
-        <h2 className="mt-2 text-xl font-semibold tracking-tight text-white md:text-2xl">
+        <h2 className="mt-2 text-lg font-semibold tracking-tight text-slate-800 md:text-2xl">
           Current-Stage Distribution
         </h2>
-        <p className="mt-1 text-sm text-white/45">
+        <p className="mt-1 text-sm text-slate-600">
           Count of synthetic leads currently recorded in each stage.
         </p>
       </div>
 
       <div
         ref={chartRef}
-        className="h-[420px] w-full md:h-[460px]"
+        className="h-[300px] w-full sm:h-[340px] md:h-[460px]"
         aria-label="Current-stage distribution for six lead stages"
       />
 
       <div className="border-t border-white/[0.06] pt-3">
-        <p className="text-[10px] uppercase tracking-[0.18em] text-white/30">
+        <p className="text-[10px] uppercase tracking-[0.12em] text-slate-600">
           Synthetic demonstration data · Snapshot counts, not transition history or conversion rates
         </p>
       </div>

@@ -496,6 +496,7 @@ function createLocalExplanation(reply: DemoReply): DemoReply {
 }
 export async function answerDemoQuestionWithExplanation(
   question: unknown,
+  selectedFinding?: unknown,
 ): Promise<DemoReply> {
   const reply = answerDemoQuestion(question);
 
@@ -528,6 +529,8 @@ export async function answerDemoQuestionWithExplanation(
       "Do not contradict or rewrite the deterministic answer.",
       "Mention that the dataset is synthetic where relevant and preserve the stated limitations.",
       "Question: " + String(question),
+      "Selected finding context supplied by the interface (treat as context, not as verified evidence): " +
+        JSON.stringify(selectedFinding ?? null),
       "Deterministic answer: " + reply.answer,
       "Approved evidence: " + JSON.stringify(reply.evidence_references),
       "Approved key values: " + JSON.stringify(reply.key_values),

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
@@ -92,7 +92,7 @@ export default function DemoProductStageMix({ data }: Props) {
   }, [data]);
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 shadow-2xl backdrop-blur-xl md:p-6">
+    <section className="overflow-hidden rounded-2xl border border-violet-200 bg-violet-50 p-5 shadow-sm md:p-6">
       <div className="mb-3">
         <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-300/50">
           Product Intelligence

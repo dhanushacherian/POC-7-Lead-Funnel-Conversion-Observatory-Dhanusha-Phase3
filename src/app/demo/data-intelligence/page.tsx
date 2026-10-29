@@ -137,6 +137,7 @@ export default function DemoDataIntelligencePage() {
   const [showMethodology, setShowMethodology] = useState(false);
   const [ageSort, setAgeSort] = useState<"desc" | "asc">("desc");
   const [recordQuery, setRecordQuery] = useState("");
+  const [selectedFinding, setSelectedFinding] = useState<Finding | null>(null);
 
   const findings: Finding[] = useMemo(() => {
     const stageValue =
@@ -260,6 +261,7 @@ export default function DemoDataIntelligencePage() {
       );
   })();
   function chooseFinding(f: Finding) {
+    setSelectedFinding(f);
     setDimension(f.dimension);
     setSelectedGroup(f.group);
     setMetric(f.metric);
@@ -649,7 +651,7 @@ export default function DemoDataIntelligencePage() {
           )}
         </section>
 
-        <section className="overflow-hidden rounded-2xl border border-[#DFE6F0] bg-white shadow-sm">
+        <section className="print-evidence-section overflow-hidden rounded-2xl border border-[#DFE6F0] bg-white shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#DFE6F0] p-4 sm:p-5">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.13em] text-[#345ED7]">
@@ -660,11 +662,11 @@ export default function DemoDataIntelligencePage() {
               </h2>
               <p className="mt-1 text-sm text-[#52647B]">
                 {selectedRow
-                  ? `Records matching ${dimension}: ${groupValue(
+                  ? `Full demo dataset: ${demoCrmData.length} synthetic leads. Selected group: ${dimension} = ${groupValue(
                       selectedRow,
                       dimension
-                    )}. The list is derived from the demo lead-level dataset.`
-                  : "Select a comparison group to inspect records."}
+                    )}. Search narrows this group's records only; it does not change the approved finding or dataset-wide summary.`
+                  : `Full demo dataset: ${demoCrmData.length} synthetic leads. Select a comparison group to inspect its records.`}
               </p>
             </div>
 
@@ -704,12 +706,12 @@ export default function DemoDataIntelligencePage() {
                 </button>
 
                 <span className="text-sm text-[#52647B]">
-                  {scopedRecords.length} matching records
+                  {scopedRecords.length} search-matching records in this selected group
                 </span>
               </div>
 
-              <div className="overflow-x-auto rounded-lg border border-[#DFE6F0]">
-                <table className="w-full min-w-[780px] text-left text-sm">
+              <div className="print-evidence-table-wrap overflow-x-auto rounded-lg border border-[#DFE6F0]">
+                <table className="print-evidence-table w-full min-w-[780px] text-left text-sm">
                   <thead className="bg-[#F4F7FB] text-xs text-[#52647B]">
                     <tr>
                       {[
@@ -771,7 +773,7 @@ export default function DemoDataIntelligencePage() {
           )}
         </section>
 
-        <section className="rounded-2xl border border-[#DFE6F0] bg-white p-4 shadow-sm sm:p-5">
+        <section className="print-assistant-section rounded-2xl border border-[#DFE6F0] bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3">
             <p className="text-xs font-semibold uppercase tracking-[0.13em] text-[#345ED7]">
               Grounded explanation
@@ -785,7 +787,7 @@ export default function DemoDataIntelligencePage() {
               preserved.
             </p>
           </div>
-          <DemoDataAssistant />
+          <DemoDataAssistant key={selectedFinding ? [selectedFinding.dimension, selectedFinding.group, selectedFinding.metric].join("-") : "default"} selectedFinding={selectedFinding} />
         </section>
 
         <footer className="flex flex-wrap justify-between gap-2 border-t border-[#DFE6F0] py-4 text-xs text-[#52647B]">

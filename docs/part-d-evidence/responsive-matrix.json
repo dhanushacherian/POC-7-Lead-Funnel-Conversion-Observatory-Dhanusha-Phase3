@@ -1,0 +1,134 @@
+[
+  {
+    "route": "/demo",
+    "viewport": "1440x900",
+    "status": 200,
+    "viewportWidth": 1440,
+    "documentWidth": 1440,
+    "bodyWidth": 1440,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo",
+    "viewport": "1366x768",
+    "status": 200,
+    "viewportWidth": 1366,
+    "documentWidth": 1366,
+    "bodyWidth": 1366,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo",
+    "viewport": "1280x800",
+    "status": 200,
+    "viewportWidth": 1280,
+    "documentWidth": 1280,
+    "bodyWidth": 1280,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo",
+    "viewport": "768x1024",
+    "status": 200,
+    "viewportWidth": 768,
+    "documentWidth": 768,
+    "bodyWidth": 768,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo",
+    "viewport": "390x844",
+    "status": 200,
+    "viewportWidth": 390,
+    "documentWidth": 390,
+    "bodyWidth": 390,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo",
+    "viewport": "320x720",
+    "status": 200,
+    "viewportWidth": 320,
+    "documentWidth": 320,
+    "bodyWidth": 320,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "1440x900",
+    "status": 200,
+    "viewportWidth": 1440,
+    "documentWidth": 1440,
+    "bodyWidth": 1440,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "1366x768",
+    "status": 200,
+    "viewportWidth": 1366,
+    "documentWidth": 1366,
+    "bodyWidth": 1366,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "1280x800",
+    "status": 200,
+    "viewportWidth": 1280,
+    "documentWidth": 1280,
+    "bodyWidth": 1280,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "768x1024",
+    "status": 200,
+    "viewportWidth": 768,
+    "documentWidth": 768,
+    "bodyWidth": 768,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "390x844",
+    "status": 200,
+    "viewportWidth": 390,
+    "documentWidth": 390,
+    "bodyWidth": 390,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  },
+  {
+    "route": "/demo/data-intelligence",
+    "viewport": "320x720",
+    "status": 200,
+    "viewportWidth": 320,
+    "documentWidth": 320,
+    "bodyWidth": 320,
+    "overflow": false,
+    "pageErrors": [],
+    "result": "PASS"
+  }
+]

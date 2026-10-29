@@ -1,0 +1,136 @@
+**********************
+Windows PowerShell transcript start
+Start time: 20261029160610
+Username: LAPTOP-P8KRSGRR\LENOVO
+RunAs User: LAPTOP-P8KRSGRR\LENOVO
+Configuration Name: 
+Machine: LAPTOP-P8KRSGRR (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\LENOVO\AppData\Local\Programs\Microsoft VS Code\2a59476c9b\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 3832
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is docs\part-d-evidence\part-d-final-verification-20261029-160610.txt
+PS C:\Users\LENOVO\POC-7-Lead-Funnel-Conversion-Observatory-Dhanusha-Phase3> try {
+    Write-Host "`n===== PART D FINAL VERIFICATION =====" -ForegroundColor Cyan
+    Get-Date -Format "yyyy-MM-dd HH:mm:ss zzz"
+
+    Write-Host "`n===== BUILD =====" -ForegroundColor Cyan
+    npm.cmd run build
+    if ($LASTEXITCODE -ne 0) { throw "Build failed." }
+
+    Write-Host "`n===== LINT =====" -ForegroundColor Cyan
+    npx.cmd eslint src assistant tests
+    if ($LASTEXITCODE -ne 0) { throw "Lint failed." }
+
+    Write-Host "`n===== BROWSER TESTS =====" -ForegroundColor Cyan
+    npm.cmd run test:browser -- --workers=1
+    if ($LASTEXITCODE -ne 0) { throw "Browser tests failed." }
+
+    Write-Host "`n===== DIFF CHECK =====" -ForegroundColor Cyan
+    git diff --check
+    if ($LASTEXITCODE -ne 0) { throw "Git diff check failed." }
+
+    Write-Host "`n===== ACCEPTANCE CHECKLIST =====" -ForegroundColor Cyan
+    Get-Content "docs\part-d-evidence\PART_D_ACCEPTANCE_CHECKLIST.md"
+
+    Write-Host "`n===== CURRENT GIT STATUS =====" -ForegroundColor Cyan
+    git status --short --branch
+
+    Write-Host "`n===== LOCAL COMMIT =====" -ForegroundColor Cyan
+    git rev-parse HEAD
+
+    Write-Host "`n===== REMOTE-TRACKING COMMIT =====" -ForegroundColor Cyan
+    git rev-parse origin/phase3/final-certification-review
+
+    Write-Host "`n===== VERIFICATION REPORT =====" -ForegroundColor Green
+    Write-Host $report
+}
+finally {
+    Stop-Transcript
+}
+
+===== PART D FINAL VERIFICATION =====
+2026-10-29 16:06:10 +05:30
+
+===== BUILD =====
+
+
+===== LINT =====
+
+
+===== BROWSER TESTS =====
+
+
+===== DIFF CHECK =====
+
+
+===== ACCEPTANCE CHECKLIST =====
+# Part D — Final Acceptance Checklist
+
+Statuses: NOT TESTED, PASS, FAIL.
+Do not mark PASS without recorded evidence.
+
+## P0 — Release-blocking
+
+- [ ] Navigation: Dashboard ↔ Intelligence; active state; shared shell.
+- [ ] First fold: 1440x900 header, filters, KPIs, first-chart content visible without scrolling.
+- [ ] Filter footprint: desktop toolbar <= 88px in normal state.
+- [ ] Filter behavior: filtering, reset, export and empty states preserve correct data.
+- [ ] Chart grid: aligned charts; logical secondary grouping; no clipping or excessive blank space.
+- [ ] Intelligence UX: chart-led dimension explorer; one active dimension table; no five-table report scroll.
+- [ ] Data correctness: all values match approved phase3-demo-v1 source/analytics; no hardcoded preview values.
+- [ ] Gemini safety: deterministic answer, evidence, status and limitation preserved.
+- [ ] Contrast: readable text and controls; target WCAG AA contrast; no essential tiny/faint text.
+- [ ] Responsive: test 1440x900, 1366x768, 1280x800, 768x1024, 390x844, 320x720.
+- [ ] No horizontal overflow or clipped chart legends at any required viewport.
+
+## P1 — Accessibility and polish
+
+- [ ] Visible keyboard focus; labelled controls; keyboard-usable tabs.
+- [ ] Charts have accessible descriptions; tables have headers.
+- [ ] Consistent spacing, units, titles, tooltips, hover states.
+- [ ] Export and loading feedback are clear and consistent.
+
+## Evidence
+
+- [ ] Before/after desktop and mobile screenshots.
+- [ ] Build, lint, data, assistant and browser test logs.
+- [ ] Opportunity record count independently reconciled to 123.
+- [ ] Aging buckets independently reconciled: 14 + 25 + 68 + 16 = 123.
+- [ ] Selected comparison matches displayed source records.
+- [ ] Original phase3-v2 baseline preserved.
+- [ ] Updated demo walkthrough.
+- [ ] Exact final commit SHA recorded.
+- [ ] Live deployed commit independently verified.
+- [ ] Public demo and intelligence URLs verified.
+- [ ] Fresh Repomix generated from the final committed state.
+- [ ] Known limitations and outstanding approvals documented.
+
+## Review rule
+
+A prior successful test is not a current PASS.
+Record command, exit code, date, and evidence for each executed check.
+Formal certification approvals must remain separate from technical test results.
+
+===== CURRENT GIT STATUS =====
+
+
+===== LOCAL COMMIT =====
+
+
+===== REMOTE-TRACKING COMMIT =====
+
+
+===== VERIFICATION REPORT =====
+docs\part-d-evidence\part-d-final-verification-20261029-160610.txt
+**********************
+Windows PowerShell transcript end
+End time: 20261029160722
+**********************

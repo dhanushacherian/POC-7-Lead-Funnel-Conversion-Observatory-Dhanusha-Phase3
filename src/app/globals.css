@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   --background: #070912;
@@ -354,7 +354,7 @@ main[data-demo-ui="true"] select:focus-visible {
 }
 
 /* =========================================================
-   PHASE 3 DEMO — LIGHT-THEME FILTER CONTROLS
+   PHASE 3 DEMO â€” LIGHT-THEME FILTER CONTROLS
    Keeps dropdown menus readable and consistent with the UI.
    ========================================================= */
 
@@ -390,4 +390,310 @@ input::placeholder,
 textarea::placeholder {
   color: #94a3b8;
   opacity: 1;
+}
+
+/* Dashboard print pagination: keep primary chart cards intact */
+@media print {
+  main[data-demo-ui="true"] section.print-primary-charts > div {
+    overflow: visible !important;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+}
+/* Part C: consolidated browser and PDF styling */
+body:has(main[data-demo-ui="true"]) {
+  background: #f4f7fb !important;
+  background-image: none !important;
+}
+
+@media print {
+  @page {
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #172B4D !important;
+  }
+
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  main[data-demo-ui="true"] {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    color: #172B4D !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] section {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    break-before: auto !important;
+    page-break-before: auto !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  main[data-demo-ui="true"] h2,
+  main[data-demo-ui="true"] h3 {
+    break-after: avoid-page;
+    page-break-after: avoid;
+  }
+
+  main[data-demo-ui="true"] table,
+  main[data-demo-ui="true"] .print-evidence-table {
+    display: table !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 8px !important;
+  }
+
+  main[data-demo-ui="true"] thead {
+    display: table-header-group !important;
+  }
+
+  main[data-demo-ui="true"] th,
+  main[data-demo-ui="true"] td {
+    padding: 3px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  main[data-demo-ui="true"] tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  main[data-demo-ui="true"] .overflow-x-auto,
+  main[data-demo-ui="true"] .print-evidence-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table tbody tr {
+    display: table-row !important;
+  }
+
+  section.print-evidence-section,
+  section.print-assistant-section {
+    break-before: auto !important;
+    page-break-before: auto !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  main[data-demo-ui="true"] button,
+  main[data-demo-ui="true"] input,
+  main[data-demo-ui="true"] select,
+  main[data-demo-ui="true"] textarea {
+    box-shadow: none !important;
+  }
+}
+/* Part C: consolidated PDF table flow and assistant heading */
+@media print {
+  main[data-demo-ui="true"] .print-evidence-section {
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 6.5px !important;
+    border-collapse: collapse !important;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table th,
+  main[data-demo-ui="true"] .print-evidence-table td {
+    padding: 2px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(1),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(1) { width: 7%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(2),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(2) { width: 11%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(3),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(3) { width: 11%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(4),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(4) { width: 7%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(5),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(5) { width: 12%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(6),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(6) { width: 12%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(7),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(7) { width: 10%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(8),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(8) { width: 12%; }
+
+  main[data-demo-ui="true"] .print-evidence-table th:nth-child(9),
+  main[data-demo-ui="true"] .print-evidence-table td:nth-child(9) { width: 18%; }
+
+  main[data-demo-ui="true"] section.print-assistant-section {
+    break-before: page !important;
+    page-break-before: always !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  main[data-demo-ui="true"] section.print-assistant-section > div:first-child {
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+  }
+
+  main[data-demo-ui="true"] .print-evidence-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 7px !important;
+  }
+}
+
+/* PDF pagination refinement v2 */
+@media print {
+  main[data-demo-ui="true"] {
+    margin-left: 0 !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  main[data-demo-ui="true"] .print-filter-section {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    background: #ffffff !important;
+    color: #172B4D !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] .print-primary-charts,
+  main[data-demo-ui="true"] .print-secondary-charts {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) !important;
+    align-items: start !important;
+    gap: 8px !important;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  main[data-demo-ui="true"] .print-primary-charts > div,
+  main[data-demo-ui="true"] .print-secondary-charts > div {
+    min-width: 0 !important;
+    overflow: visible !important;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] .print-secondary-charts > div > section,
+  main[data-demo-ui="true"] .print-secondary-charts > div > div {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] #demo-assistant {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+
+  main[data-demo-ui="true"] #demo-assistant > section {
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  main[data-demo-ui="true"] #demo-assistant h2,
+  main[data-demo-ui="true"] #demo-assistant h3 {
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+
+  main[data-demo-ui="true"] footer {
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+  }
+}
+/* PDF print overlap fix v3 */
+@media print {
+  /* Sticky application chrome must not overlay printable content. */
+  body:has(main[data-demo-ui="true"]) header.sticky {
+    display: none !important;
+    position: static !important;
+    inset: auto !important;
+    z-index: auto !important;
+    backdrop-filter: none !important;
+  }
+
+  body:has(main[data-demo-ui="true"]) aside {
+    display: none !important;
+  }
+
+  /* Keep printable dashboard content independent of screen navigation. */
+  main[data-demo-ui="true"] {
+    position: static !important;
+    margin-left: 0 !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+  }
+
+  main[data-demo-ui="true"] .print-primary-charts > div,
+  main[data-demo-ui="true"] .print-secondary-charts > div {
+    position: static !important;
+    transform: none !important;
+  }
+}
+
+/* Targeted PDF pagination correction */
+@media print {
+  .print-secondary-charts {
+    break-after: auto !important;
+    page-break-after: auto !important;
+  }
+
+  .print-secondary-charts > *,
+  .print-primary-charts > * {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  [class*="assistant"] {
+    break-before: auto !important;
+    page-break-before: auto !important;
+  }
 }

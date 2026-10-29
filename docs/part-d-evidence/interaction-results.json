@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Dashboard filter controls",
+    "result": "PASS",
+    "detail": "Found 3 dropdowns; expected 3"
+  },
+  {
+    "name": "Dashboard filter selection",
+    "result": "PASS",
+    "detail": "Selected Pune"
+  },
+  {
+    "name": "Reset filters",
+    "result": "PASS",
+    "detail": "Dropdowns=[\"All\",\"All\",\"All\"]; dates=[\"\",\"\"]"
+  },
+  {
+    "name": "Download CSV export",
+    "result": "PASS",
+    "detail": "Download started: lead-funnel-data.csv"
+  },
+  {
+    "name": "Download JSON export",
+    "result": "PASS",
+    "detail": "Download started: lead-funnel-data.json"
+  },
+  {
+    "name": "Finding-to-record evidence section",
+    "result": "PASS",
+    "detail": "Contributing CRM records section is visible after selecting the finding"
+  },
+  {
+    "name": "Opportunity finding context",
+    "result": "PASS",
+    "detail": "Checked visible page text for the selected finding context"
+  }
+]

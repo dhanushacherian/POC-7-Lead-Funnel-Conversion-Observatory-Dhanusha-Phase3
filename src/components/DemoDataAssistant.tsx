@@ -1,4 +1,4 @@
-﻿
+
 "use client";
 
 import { useState, type FormEvent } from "react";
@@ -48,11 +48,39 @@ const questions = [
   "What data version is being used?",
 ];
 
-export default function DemoDataAssistant() {
-  const [question, setQuestion] = useState("");
+type SelectedFinding = {
+  title: string;
+  dimension: string;
+  group: string;
+  metric: string;
+  summary: string;
+  review: string;
+};
+
+type DemoDataAssistantProps = {
+  selectedFinding?: SelectedFinding | null;
+};
+
+export default function DemoDataAssistant({
+  selectedFinding = null,
+}: DemoDataAssistantProps) {
+  const [question, setQuestion] = useState(() => {
+    if (!selectedFinding) return "";
+    if (selectedFinding.metric === "average_days_in_stage") {
+      return "Which stage has the highest average age?";
+    }
+    if (selectedFinding.dimension === "stage") {
+      return "Which stage has the highest total lead value?";
+    }
+    if (selectedFinding.dimension === "product") {
+      return "Which product has the highest total lead value?";
+    }
+    return "Which source has the highest total lead value?";
+  });
   const [reply, setReply] = useState<DemoReply | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
 
   async function submitQuestion(
     event?: FormEvent<HTMLFormElement>,
@@ -81,7 +109,7 @@ export default function DemoDataAssistant() {
       const response = await fetch("/api/demo/assistant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: submitted }),
+        body: JSON.stringify({ question: submitted, selectedFinding }),
       });
 
       const data = (await response.json()) as DemoReply;

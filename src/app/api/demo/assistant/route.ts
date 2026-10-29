@@ -14,7 +14,17 @@ export async function POST(request: Request) {
         ? (body as { question: unknown }).question
         : undefined;
 
-    const response = await answerDemoQuestionWithExplanation(question);
+    const selectedFinding =
+      typeof body === "object" &&
+      body !== null &&
+      "selectedFinding" in body
+        ? (body as { selectedFinding: unknown }).selectedFinding
+        : undefined;
+
+    const response = await answerDemoQuestionWithExplanation(
+      question,
+      selectedFinding,
+    );
 
     return NextResponse.json(response, {
       status: response.status === "MISSING_PARAMETER" ? 400 : 200,

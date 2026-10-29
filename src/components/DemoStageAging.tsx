@@ -84,13 +84,13 @@ export default function DemoStageAging({ data }: StageAgingProps) {
         data: stages,
 
         axisLabel: {
-          color: "rgba(255,255,255,0.5)",
+          color: "#475569",
           fontSize: 11,
         },
 
         axisLine: {
           lineStyle: {
-            color: "rgba(255,255,255,0.08)",
+            color: "#cbd5e1",
           },
         },
       },
@@ -100,16 +100,16 @@ export default function DemoStageAging({ data }: StageAgingProps) {
 
         name: "Days",
         nameTextStyle: {
-          color: "rgba(255,255,255,0.3)",
+          color: "#475569",
         },
 
         axisLabel: {
-          color: "rgba(255,255,255,0.4)",
+          color: "#475569",
         },
 
         splitLine: {
           lineStyle: {
-            color: "rgba(255,255,255,0.06)",
+            color: "#e2e8f0",
           },
         },
       },
@@ -125,7 +125,7 @@ export default function DemoStageAging({ data }: StageAgingProps) {
           label: {
             show: true,
             position: "top",
-            color: "rgba(255,255,255,0.65)",
+            color: "#334155",
             fontSize: 11,
             formatter: "{c}d",
           },
@@ -161,24 +161,24 @@ export default function DemoStageAging({ data }: StageAgingProps) {
   }, [data]);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 shadow-2xl backdrop-blur-xl md:p-6">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
       <div className="mb-2 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
         <div>
-          <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-300/50">
+          <p className="text-[10px] font-medium uppercase tracking-[0.3em] text-indigo-700">
             Bottleneck Signal
           </p>
 
-          <h2 className="mt-2 text-xl font-semibold tracking-tight text-white md:text-2xl">
+          <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-900 md:text-2xl">
             Stage Aging
           </h2>
 
-          <p className="mt-1 text-sm text-white/40">
+          <p className="mt-1 text-sm text-slate-600">
             Average recorded age of leads currently in each stage
           </p>
         </div>
 
-        <div className="rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5">
-          <span className="text-[10px] uppercase tracking-wider text-white/35">
+        <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">
+          <span className="text-[10px] uppercase tracking-wider text-slate-600">
             Aging Analysis
           </span>
         </div>
@@ -190,8 +190,8 @@ export default function DemoStageAging({ data }: StageAgingProps) {
         aria-label="Average stage aging chart"
       />
 
-      <div className="border-t border-white/[0.06] pt-3">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-white/25">
+      <div className="border-t border-slate-200 pt-3">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-slate-600">
           Synthetic demo data - descriptive age by current stage; not a transition history
         </p>
       </div>

@@ -8,9 +8,9 @@ import { downloadCSV, downloadJSON } from "@/lib/download";
 import DemoCohortHeatmap from "@/components/DemoCohortHeatmap";
 import FilterBar from "@/components/FilterBar";
 import DemoStageDistribution from "@/components/DemoStageDistribution";
+import DemoProductStageMix from "@/components/DemoProductStageMix";
 import DemoKPISection from "@/components/DemoKPISection";
 import MetadataModal from "@/components/MetadataModal";
-import DemoProductStageMix from "@/components/DemoProductStageMix";
 import DemoStageAging from "@/components/DemoStageAging";
 import DemoDataAssistant from "@/components/DemoDataAssistant";
 
@@ -89,10 +89,35 @@ export default function Home() {
 
       </div>
 
+      {/* LeadScope sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden md:block w-56 flex-col bg-[#142844] px-5 py-6 text-white md:flex">
+        <Link href="/demo" className="text-xl font-bold tracking-tight">
+          LeadScope <span className="text-blue-400">â—</span>
+        </Link>
+        <p className="mt-1 text-xs text-slate-300">Conversion Observatory</p>
+
+        <nav aria-label="Main navigation" className="mt-8 space-y-2">
+          <Link href="/demo" className="flex items-center rounded-lg bg-blue-700 px-3 py-3 text-sm font-semibold text-white">
+            <span className="mr-3" aria-hidden="true">â–¦</span> Overview
+          </Link>
+          <Link href="/demo/data-intelligence" className="flex items-center rounded-lg px-3 py-3 text-sm text-slate-200 transition hover:bg-white/10">
+            <span className="mr-3" aria-hidden="true">â–¤</span> Data Intelligence
+          </Link>
+          <a href="#demo-assistant" className="flex items-center rounded-lg px-3 py-3 text-sm text-slate-200 transition hover:bg-white/10">
+            <span className="mr-3" aria-hidden="true">â—Œ</span> Ask Assistant
+          </a>
+        </nav>
+
+        <div className="mt-auto rounded-xl border border-white/10 bg-white/5 p-3">
+          <p className="text-xs font-semibold text-white">Synthetic dataset</p>
+          <p className="mt-1 text-xs text-slate-300">phase3-demo-v1</p>
+          <p className="mt-2 text-xs text-emerald-300">â— 600 synthetic leads</p>
+        </div>
+      </aside>
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#070912]/80 backdrop-blur-2xl">
 
-        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-4 sm:flex-nowrap sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full min-w-0 max-w-[1600px] flex-wrap items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3 sm:flex-nowrap sm:justify-between md:px-6 lg:px-8 md:ml-56 md:w-[calc(100%_-_14rem)]">
 
           <div className="min-w-0 flex-1 basis-full sm:basis-auto">
 
@@ -106,7 +131,7 @@ export default function Home() {
 
             </div>
 
-            <h1 className="mt-2 break-words text-lg font-semibold tracking-tight text-white sm:truncate sm:text-2xl">
+            <h1 className="mt-2 break-words break-words text-base font-semibold leading-tight tracking-tight text-white sm:truncate sm:text-2xl">
               Lead Funnel Conversion Observatory
             </h1>
 
@@ -116,14 +141,14 @@ export default function Home() {
 
           </div>
 
-          <Link href="/demo/data-intelligence" className="rounded-xl border border-indigo-300/20 bg-indigo-300/[0.06] px-3 py-2 text-xs font-medium text-indigo-100/80 transition hover:bg-indigo-300/[0.12] hover:text-white">Demo Data Intelligence</Link>
+          <Link href="/demo/data-intelligence" className="inline-flex shrink-0 whitespace-nowrap rounded-xl border border-indigo-300/20 bg-indigo-300/[0.06] px-2 py-2 text-[11px] font-medium text-indigo-100/80 transition hover:bg-indigo-300/[0.12] hover:text-white sm:px-3 sm:text-xs">Demo Data Intelligence</Link>
           <button
             type="button"
             onClick={() => setIsMetadataOpen(true)}
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] text-sm font-medium text-white/60 transition hover:border-white/[0.15] hover:bg-white/[0.07] hover:text-white"
             aria-label="Open developer information"
           >
-            ⓘ
+            i
           </button>
 
         </div>
@@ -131,22 +156,22 @@ export default function Home() {
       </header>
 
       {/* Main */}
-      <main data-demo-ui="true" className="relative mx-auto min-h-screen max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
+      <main data-demo-ui="true" className="relative mx-auto min-h-screen w-full max-w-[1600px] overflow-x-clip px-3 py-3 sm:px-4 sm:py-3 lg:px-6 md:ml-56 md:w-[calc(100%_-_14rem)]">
 
         {/* Observatory Source */}
-        <section className="mb-6 flex flex-col justify-between gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 backdrop-blur-xl md:flex-row md:items-center">
+        <section className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
 
           <div>
 
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/25">
+            <p className="text-[10px] uppercase tracking-wide text-slate-500">
               Observatory Source
             </p>
 
-            <p className="mt-1 text-sm font-medium text-white/70">
+            <p className="text-sm font-medium text-slate-800">
               Synthetic Demo Dataset | phase3-demo-v1
             </p>
 
-            <p className="mt-1 text-xs text-white/35">
+            <p className="text-xs text-slate-600">
               600 synthetic leads | 12 months | not real customer data
             </p>
 
@@ -165,6 +190,7 @@ export default function Home() {
         </section>
 
         {/* Filters */}
+        {/* Filters */}
         <FilterBar
           startDate={startDate}
           endDate={endDate}
@@ -182,8 +208,23 @@ export default function Home() {
           onReset={resetFilters}
         />
 
-        {/* Active Scope */}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        {/* KPI Section */}
+        <section className="mt-3">
+          <DemoKPISection data={filteredData} />
+        </section>
+
+        {/* Primary charts */}
+        <section className="print-primary-charts mt-3 grid min-w-0 items-stretch gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-3">
+            <DemoStageDistribution data={filteredData} />
+          </div>
+          <div className="min-w-0 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] p-3">
+
+            <DemoProductStageMix data={filteredData} />
+          </div>
+        </section>
+{/* Active Scope */}
+        <div className="mt-2 flex flex-wrap items-center gap-2">
 
           <span className="text-[10px] uppercase tracking-[0.25em] text-white/25">
             Active Scope
@@ -220,7 +261,7 @@ export default function Home() {
         </div>
 
         {/* Data Export */}
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3 backdrop-blur-xl">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2">
 
           <div>
 
@@ -228,7 +269,7 @@ export default function Home() {
               Data Export
             </p>
 
-            <p className="mt-1 text-xs text-white/35">
+            <p className="text-xs text-slate-600">
               Download the currently filtered CRM records
             </p>
 
@@ -256,48 +297,17 @@ export default function Home() {
 
         </div>
 
-        {/* KPI Section */}
-        <section className="mt-6">
-          <DemoKPISection data={filteredData} />
-        </section>
-
-        {/* Primary Funnel */}
-        <section className="relative mt-8 overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] p-2 shadow-2xl">
-
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(99,102,241,0.10),transparent_45%)]" />
-
-          <div className="relative">
-
-            <DemoStageDistribution data={filteredData} />
-
-          </div>
-
-        </section>
-
         {/* Secondary Visualizations */}
-        <section className="mt-6 grid gap-6 lg:grid-cols-2">
-
-          <DemoProductStageMix
-            data={filteredData}
-          />
-
-          <DemoCohortHeatmap
-            data={filteredData}
-          />
-
+        <section className="print-secondary-charts mt-4 grid min-w-0 items-stretch gap-3 lg:grid-cols-2">
+          <div className="min-w-0">
+            <DemoCohortHeatmap data={filteredData} />
+          </div>
+          <div className="min-w-0">
+            <DemoStageAging data={filteredData} />
+          </div>
         </section>
-
-        {/* Stage Aging */}
-        <section className="mt-6">
-
-          <DemoStageAging
-            data={filteredData}
-          />
-
-        </section>
-
         {/* Demo Grounded Assistant */}
-        <section className="mt-6">
+        <section id="demo-assistant" className="mt-3">
           <DemoDataAssistant />
         </section>
         {/* Footer */}
